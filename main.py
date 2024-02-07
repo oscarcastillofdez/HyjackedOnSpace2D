@@ -7,15 +7,21 @@ def main():
     screen = pygame.display.set_mode((1280, 720))
     clock = pygame.time.Clock()
     running = True
-    dt = 0
+    deltaTime = 0
 
     jumping = False
+    left = False
+    leftMov = 0
+    right = False
+    rightMov = 0
+    INERTIA = 20
+    MAX_VELOCITY = 500
     GRAVITY = 1
     JUMP_HEIGHT = 20
-    Y_VELOCITY = JUMP_HEIGHT
+    jumpVelocity = JUMP_HEIGHT
 
-    #player_pos = X_POS, Y_POS
-    player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+    #playerPos = X_POS, Y_POS
+    playerPos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 1.5)
 
     while running:
         # poll for events
@@ -27,26 +33,42 @@ def main():
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("blue")
 
-        pygame.draw.circle(screen, "red", player_pos, 30)
+        pygame.draw.circle(screen, "red", playerPos, 30)
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            player_pos.y -= 300 * dt
-        if keys[pygame.K_s]:
-            player_pos.y += 300 * dt
         if keys[pygame.K_a]:
-            player_pos.x -= 300 * dt
+            left = True
         if keys[pygame.K_d]:
-            player_pos.x += 300 * dt
+            right = True
         if keys[pygame.K_SPACE]:
             jumping = True
 
+        if left:
+            if leftMov < MAX_VELOCITY:
+                leftMov += INERTIA
+            left = False
+        else: 
+            if leftMov > INERTIA - 1:
+                leftMov -= INERTIA
+            else:
+                leftMov = 0
+        playerPos.x -= leftMov * deltaTime
+
+        if right:
+            if rightMov < MAX_VELOCITY:
+                rightMov += INERTIA
+            right = False
+        else: 
+            if rightMov > INERTIA -1:
+                rightMov -= INERTIA
+        playerPos.x += rightMov * deltaTime
+        
         if jumping:
-            player_pos.y -= Y_VELOCITY
-            Y_VELOCITY -= GRAVITY
-            if Y_VELOCITY < -JUMP_HEIGHT:
+            playerPos.y -= jumpVelocity
+            jumpVelocity -= GRAVITY
+            if jumpVelocity < -JUMP_HEIGHT:
                 jumping = False
-                Y_VELOCITY = JUMP_HEIGHT
+                jumpVelocity = JUMP_HEIGHT
 
         # flip() the display to put your work on screen
         pygame.display.flip()
@@ -54,7 +76,7 @@ def main():
         # limits FPS to 60
         # dt is delta time in seconds since last frame, used for framerate-
         # independent physics.
-        dt = clock.tick(60) / 1000
+        deltaTime = clock.tick(60) / 1000
 
     pygame.quit()
     
