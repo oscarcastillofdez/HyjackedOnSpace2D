@@ -1,5 +1,24 @@
 import pygame
 
+INERTIA = 20
+MAX_VELOCITY = 500
+GRAVITY = 1
+MIN_JUMP_HEIGHT = 20
+MAX_JUMP_HEIGHT = 30
+
+def move_horizontal(pressed, movement, deltaTime):
+    if pressed:
+        if movement < MAX_VELOCITY:
+            movement += INERTIA
+        pressed = False
+    else: 
+        if movement > INERTIA - 1:
+            movement -= INERTIA
+        else:
+            movement = 0
+    return (pressed, movement, movement * deltaTime)
+
+
 def main():
     pygame.init()
     pygame.display.set_caption("Hyjacked on Space")
@@ -13,19 +32,15 @@ def main():
     leftMov = 0
     right = False
     rightMov = 0
-    INERTIA = 20
-    MAX_VELOCITY = 500
-    GRAVITY = 1
-    JUMP_HEIGHT = 20
-    jumpVelocity = JUMP_HEIGHT
+    jumpVelocity = MIN_JUMP_HEIGHT
 
     BACKGROUND = pygame.image.load("Assets/space/spr_big_meteor.png")
     standing = pygame.transform.scale(pygame.image.load("Assets/move1.png"), (100,100))
 
     
-    player_rect = standing.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
+    playerRect = standing.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
     #player_pos = X_POS, Y_POS
-    player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+    playerPos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
     while running:
         # poll for events
@@ -34,7 +49,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
         screen.fill("blue")
-        screen.blit(standing, player_rect)
+        screen.blit(standing, playerRect)
         screen.blit(BACKGROUND, (0,0))
         # fill the screen with a color to wipe away anything from last frame
 
@@ -47,37 +62,21 @@ def main():
         if keys[pygame.K_SPACE]:
             jumping = True
 
-        if left:
-            if leftMov < MAX_VELOCITY:
-                leftMov += INERTIA
-            left = False
-        else: 
-            if leftMov > INERTIA - 1:
-                leftMov -= INERTIA
-            else:
-                leftMov = 0
-        playerPos.x -= leftMov * deltaTime
+        left, leftMov, newPosLeft = move_horizontal(left, leftMov, deltaTime)
+        right, rightMov, newPosRight = move_horizontal(right, rightMov, deltaTime)
+        playerPos.x += (newPosRight- newPosLeft)
 
-        if right:
-            if rightMov < MAX_VELOCITY:
-                rightMov += INERTIA
-            right = False
-        else: 
-            if rightMov > INERTIA -1:
-                rightMov -= INERTIA
-        playerPos.x += rightMov * deltaTime
-        
         if jumping:
             playerPos.y -= jumpVelocity
             jumpVelocity -= GRAVITY
-            if jumpVelocity < -JUMP_HEIGHT:
+            if jumpVelocity < -MIN_JUMP_HEIGHT:
                 jumping = False
-                jumpVelocity = JUMP_HEIGHT
+                jumpVelocity = MIN_JUMP_HEIGHT
                 
 
-        player_rect = standing.get_rect(center=player_pos)
+        playerRect = standing.get_rect(center=playerPos)
 
-        player_rect = standing.get_rect(center=player_pos)
+        playerRect = standing.get_rect(center=playerPos)
 
         # flip() the display to put your work on screen
         pygame.display.flip()
