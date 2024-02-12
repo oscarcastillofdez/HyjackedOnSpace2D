@@ -54,7 +54,6 @@ def main():
         def draw(self):
             for tile in self.tile_list:
                 screen.blit(tile[0], tile[1])
-                pygame.draw.rect(screen, (255,255,255), tile[1], 2)
 
     class Player():
         def __init__(self,x,y):
@@ -62,6 +61,8 @@ def main():
             self.playerRect = self.standing.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
             self.playerRect.x = x
             self.playerRect.y = y
+            self.width = self.standing.get_width()
+            self.height = self.standing.get_height()
             self.vel_y = 0
             self.jumped = False
         
@@ -71,11 +72,11 @@ def main():
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_a]:
-                dx -= 5
+                dx -= 7.5
             if keys[pygame.K_d]:
-                dx += 5
+                dx += 7.5
             if keys[pygame.K_SPACE] and self.jumped == False:
-                self.vel_y = -15
+                self.vel_y = -25
                 self.jumped = True
             if keys[pygame.K_SPACE] == False:
                 self.jumped = False
@@ -84,6 +85,19 @@ def main():
             if self.vel_y > 10:
                 self.vel_y = 10
             dy += self.vel_y
+
+            for tile in world.tile_list:
+                if tile[1].colliderect(self.playerRect.x + dx, self.playerRect.y, self.width, self.height):
+                    dx = 0
+
+                if tile[1].colliderect(self.playerRect.x, self.playerRect.y + dy, self.width, self.height):
+                    if self.vel_y < 0:
+                        dy = tile[1].bottom - self.playerRect.top
+                        self.vel_y = 0
+                    elif self.vel_y >= 0:
+                        dy = tile[1].top - self.playerRect.bottom
+                        self.vel_y = 0
+                
 
             self.playerRect.x += dx
             self.playerRect.y += dy
@@ -98,8 +112,12 @@ def main():
                   [1,1,0,1,1,1,1,1,1],
                   [1,1,1,1,1,1,1,1,1],
                   [1,1,1,1,1,1,1,1,1],
+                  [1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1],
                   [1,1,1,1,1,1,1,1,1],
-                  [1,1,1,1,1,1,1,1,1]]
+                  [0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1],]
     
     world = World(world_data)
     player = Player(100, SCREEN_HEIGTH - 130)
@@ -120,10 +138,7 @@ def main():
         world.draw()
         #pygame.draw.rect(screen, (255,255,255), playerRect, 2)
 
-        #for tile in world.tile_list:
-        #    if tile[1].colliderect(playerRect.x, playerRect.y, playerRect.width, playerRect.height):
-        #        if jumpVelocity < 0:
-        #            dy = tile[1].bottom - 
+
                 
         #playerRect = standing.get_rect(center=playerPos)
 
