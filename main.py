@@ -5,6 +5,8 @@ MAX_VELOCITY = 500
 GRAVITY = 1
 MIN_JUMP_HEIGHT = 20
 MAX_JUMP_HEIGHT = 30
+SCREEN_WIDTH = 1280
+SCREEN_HEIGTH = 720
 
 def move_horizontal(pressed, movement, deltaTime):
     if pressed:
@@ -22,68 +24,111 @@ def move_horizontal(pressed, movement, deltaTime):
 def main():
     pygame.init()
     pygame.display.set_caption("Hyjacked on Space")
-    screen = pygame.display.set_mode((1280, 720))
+    
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGTH))
     clock = pygame.time.Clock()
     running = True
     deltaTime = 0
 
-    jumping = False
-    left = False
-    leftMov = 0
-    right = False
-    rightMov = 0
-    jumpVelocity = MIN_JUMP_HEIGHT
+    TILE_SIZE = 45
 
-    BACKGROUND = pygame.image.load("Assets/space/spr_big_meteor.png")
-    standing = pygame.transform.scale(pygame.image.load("Assets/move1.png"), (100,100))
+    class World():
+        def __init__(self,data):
+            self.tile_list = []
+            suelo = pygame.image.load('Assets/img/tile_1.png')
+            
+            row_count = 0
+            for row in data:
+                col_count = 0
+                for tile in row:
+                    if tile == 1:
+                        img = pygame.transform.scale(suelo, (TILE_SIZE, TILE_SIZE))
+                        img_rect = img.get_rect()
+                        img_rect.x = col_count * TILE_SIZE
+                        img_rect.y = row_count * TILE_SIZE
+                        tile = (img, img_rect)
+                        self.tile_list.append(tile)
+                    col_count += 1
+                row_count += 1
 
+        def draw(self):
+            for tile in self.tile_list:
+                screen.blit(tile[0], tile[1])
+                pygame.draw.rect(screen, (255,255,255), tile[1], 2)
+
+    class Player():
+        def __init__(self,x,y):
+            self.standing = pygame.transform.scale(pygame.image.load("Assets/move1.png"), (100,100))
+            self.playerRect = self.standing.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
+            self.playerRect.x = x
+            self.playerRect.y = y
+            self.vel_y = 0
+            self.jumped = False
+        
+        def update(self):
+            dx = 0
+            dy = 0
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_a]:
+                dx -= 5
+            if keys[pygame.K_d]:
+                dx += 5
+            if keys[pygame.K_SPACE] and self.jumped == False:
+                self.vel_y = -15
+                self.jumped = True
+            if keys[pygame.K_SPACE] == False:
+                self.jumped = False
+            
+            self.vel_y += 1
+            if self.vel_y > 10:
+                self.vel_y = 10
+            dy += self.vel_y
+
+            self.playerRect.x += dx
+            self.playerRect.y += dy
+
+            if self.playerRect.bottom > SCREEN_HEIGTH:
+                self.playerRect.bottom = SCREEN_HEIGTH
+                dy = 0
+            screen.blit(self.standing, self.playerRect)
+
+    world_data = [[1,1,1,1,1,1,1,1,1],
+                  [1,1,1,1,1,1,1,1,1],
+                  [1,1,0,1,1,1,1,1,1],
+                  [1,1,1,1,1,1,1,1,1],
+                  [1,1,1,1,1,1,1,1,1],
+                  [1,1,1,1,1,1,1,1,1],
+                  [1,1,1,1,1,1,1,1,1]]
     
-    playerRect = standing.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
-    #player_pos = X_POS, Y_POS
-    playerPos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+    world = World(world_data)
+    player = Player(100, SCREEN_HEIGTH - 130)
 
+    def draw_grid():
+        for line in range(0,10):
+            pygame.draw.line(screen, (255, 255, 255), (line * TILE_SIZE, 0), (line * TILE_SIZE, SCREEN_HEIGTH))
+            pygame.draw.line(screen, (255, 255, 255), (0, line * TILE_SIZE), (SCREEN_WIDTH, line * TILE_SIZE))
+        
     while running:
-        # poll for events
-        # pygame.QUIT event means the user clicked X to close your window
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
         screen.fill("blue")
-        screen.blit(standing, playerRect)
-        screen.blit(BACKGROUND, (0,0))
-        # fill the screen with a color to wipe away anything from last frame
+        player.update()
+        #screen.blit(BACKGROUND, (0,0))
+        #draw_grid()
+        world.draw()
+        #pygame.draw.rect(screen, (255,255,255), playerRect, 2)
 
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_a]:
-            left = True
-        if keys[pygame.K_d]:
-            right = True
-        if keys[pygame.K_SPACE]:
-            jumping = True
-
-        left, leftMov, newPosLeft = move_horizontal(left, leftMov, deltaTime)
-        right, rightMov, newPosRight = move_horizontal(right, rightMov, deltaTime)
-        playerPos.x += (newPosRight- newPosLeft)
-
-        if jumping:
-            playerPos.y -= jumpVelocity
-            jumpVelocity -= GRAVITY
-            if jumpVelocity < -MIN_JUMP_HEIGHT:
-                jumping = False
-                jumpVelocity = MIN_JUMP_HEIGHT
+        #for tile in world.tile_list:
+        #    if tile[1].colliderect(playerRect.x, playerRect.y, playerRect.width, playerRect.height):
+        #        if jumpVelocity < 0:
+        #            dy = tile[1].bottom - 
                 
+        #playerRect = standing.get_rect(center=playerPos)
 
-        playerRect = standing.get_rect(center=playerPos)
-
-        playerRect = standing.get_rect(center=playerPos)
-
-        # flip() the display to put your work on screen
         pygame.display.flip()
 
-        # limits FPS to 60
-        # dt is delta time in seconds since last frame, used for framerate-
-        # independent physics.
         deltaTime = clock.tick(60) / 1000
 
     pygame.quit()
