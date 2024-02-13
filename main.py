@@ -33,6 +33,10 @@ def main():
     TILE_SIZE = 45
     GAME_OVER = False
 
+    resetImage = pygame.transform.scale(pygame.image.load('Assets/img/reset.png'),(150,150))
+
+    
+
     class World():
         def __init__(self,data):
             self.tile_list = []
@@ -61,15 +65,7 @@ def main():
 
     class Player():
         def __init__(self,x,y):
-            self.standing = pygame.transform.scale(pygame.image.load("Assets/move1.png"), (100,100))
-            self.rect = self.standing.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
-            self.rect.x = x
-            self.rect.y = y
-            self.width = self.standing.get_width()
-            self.height = self.standing.get_height()
-            self.vel_y = 0
-            self.jumped = False
-            self.dead_image = pygame.transform.rotate(self.standing,90)
+            self.reset(x,y)
         
         def update(self, GAME_OVER):
             if GAME_OVER == False:
@@ -81,7 +77,7 @@ def main():
                     dx -= 7.5
                 if keys[pygame.K_d]:
                     dx += 7.5
-                if keys[pygame.K_SPACE] and self.jumped == False:
+                if keys[pygame.K_SPACE] and self.jumped == False and self.in_air == False:
                     self.vel_y = -25
                     self.jumped = True
                 if keys[pygame.K_SPACE] == False:
@@ -92,17 +88,19 @@ def main():
                     self.vel_y = 10
                 dy += self.vel_y
 
+                self.in_air = True
                 for tile in world.tile_list:
                     if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                         dx = 0
 
                     if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                        if self.vel_y < 0:
+                        if self.vel_y < 0: #Saltando
                             dy = tile[1].bottom - self.rect.top
                             self.vel_y = 0
-                        elif self.vel_y >= 0:
+                        elif self.vel_y >= 0: #Callendo
                             dy = tile[1].top - self.rect.bottom
                             self.vel_y = 0
+                            self.in_air = False
 
                     if pygame.sprite.spritecollide(self, enemies_group, False):
                         GAME_OVER = True
@@ -114,6 +112,7 @@ def main():
 
                 if self.rect.bottom > SCREEN_HEIGTH:
                     self.rect.bottom = SCREEN_HEIGTH
+                    self.in_air = False
                     dy = 0
             else:
                 self.standing = self.dead_image
@@ -121,6 +120,18 @@ def main():
 
             screen.blit(self.standing, self.rect)
             return GAME_OVER
+
+        def reset(self,x,y):
+            self.standing = pygame.transform.scale(pygame.image.load("Assets/move1.png"), (100,100))
+            self.rect = self.standing.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
+            self.rect.x = x
+            self.rect.y = y
+            self.width = self.standing.get_width()
+            self.height = self.standing.get_height()
+            self.vel_y = 0
+            self.jumped = False
+            self.in_air = True
+            self.dead_image = pygame.transform.rotate(self.standing,90)
 
     class Enemy(pygame.sprite.Sprite):
         def __init__(self,x,y):
@@ -139,12 +150,40 @@ def main():
                 self.moved = 0
             self.rect.x += self.move_dir
 
-    world_data = [[1,1,1,1,1,1,1,1,1],
-                  [1,1,1,1,1,1,1,1,1],
-                  [1,1,0,1,1,1,1,1,1],
-                  [1,1,1,1,1,1,1,1,1],
-                  [1,1,1,1,1,1,1,1,1],
-                  [1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1],
+    class Button():
+        def __init__(self,x,y,image):
+            self.image = image
+            self.rect = self.image.get_rect()
+            self.rect.x = x
+            self.rect.y = y
+            self.clicked = False
+
+        def draw(self):
+            pos = pygame.mouse.get_pos()
+
+            action = False
+
+            if self.rect.collidepoint(pos):
+                if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                    action = True
+                    self.clicked = True
+                    print("clicked")
+
+            if pygame.mouse.get_pressed()[0] == 0:
+                self.clicked = False
+
+            screen.blit(self.image, self.rect)
+
+            return action
+            
+    
+
+    world_data = [[0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1],
                   [1,1,1,1,1,1,1,1,1],
                   [0,0,0,0,0,0,0,0,0],
                   [0,0,0,0,0,0,0,0,0],
@@ -153,6 +192,7 @@ def main():
     
     player = Player(100, SCREEN_HEIGTH - 130)
     enemies_group = pygame.sprite.Group()
+    resetButton = Button(0, 0, resetImage)
     world = World(world_data)
 
     def draw_grid():
@@ -170,7 +210,15 @@ def main():
         #screen.blit(BACKGROUND, (0,0))
         #draw_grid()
         world.draw()
-        enemies_group.update()
+
+        if GAME_OVER == False:
+            enemies_group.update()
+
+        if GAME_OVER == True:
+            if resetButton.draw():
+                player.reset(100, SCREEN_HEIGTH - 130)
+                GAME_OVER = False
+            
         enemies_group.draw(screen)
 
         pygame.display.flip()
