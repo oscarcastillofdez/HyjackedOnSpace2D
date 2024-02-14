@@ -1,5 +1,4 @@
 import pygame
-from math import floor
 from global_vars import *
 
 class Player():
@@ -11,47 +10,52 @@ class Player():
         
         def update(self, GAME_OVER, world, enemies_group):
 
+            # Si el juego esta en marcha
             if GAME_OVER == False:
                 dx = 0
                 dy = 0
 
+                # Se detectan las teclas pulsadas
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_a]:
-                    dx -= floor(7.5)
+                    dx -= 7
                 if keys[pygame.K_d]:
-                    dx += floor(7.5)
-                if keys[pygame.K_SPACE] and self.jumped == False and self.in_air == False:
-                    self.vel_y = -25
+                    dx += 7
+                if keys[pygame.K_SPACE] and self.jumped == False and self.inAir == False:
+                    self.velY = -25
                     self.jumped = True
                 if keys[pygame.K_SPACE] == False:
                     self.jumped = False
                 
+                # Se añade la gravedad al movimiento en y
+                self.velY += 1
+                if self.velY > 10:
+                    self.velY = 10
+                dy += self.velY
 
-                self.vel_y += 1
-                if self.vel_y > 10:
-                    self.vel_y = 10
-                dy += self.vel_y
+                self.inAir = True
 
-                self.in_air = True
-
+                # Se calculan las colisiones en ambos ejes
                 for tile in world.tile_list:
                     if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                         dx = 0
 
                     if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                        if self.vel_y < 0: #Saltando
+                        if self.velY < 0: #Saltando
                             dy = tile[1].bottom - self.rect.top
-                            self.vel_y = 0
-                        elif self.vel_y >= 0: #Callendo
+                            self.velY = 0
+                        elif self.velY >= 0: #Callendo
                             dy = tile[1].top - self.rect.bottom
-                            self.vel_y = 0
-                            self.in_air = False
+                            self.velY = 0
+                            self.inAir = False
 
+                    # Si toca un enemigo se acaba el juego
                     if pygame.sprite.spritecollide(self, enemies_group, False):
                         GAME_OVER = True
                         
                 self.globalVars.CAMERA_OFFSET_X = 0
 
+                # Si el jugador se mueve en los limites del scroll se mueve sin mas, si no se hace scroll
                 if self.rect.x > SCREEN_WIDTH / 6 and self.rect.x < SCREEN_WIDTH - (SCREEN_WIDTH / 6):
                     self.rect.x += dx 
                 elif self.rect.x + dx > SCREEN_WIDTH / 6 and self.rect.x + dx < SCREEN_WIDTH - (SCREEN_WIDTH / 6):
@@ -60,12 +64,15 @@ class Player():
                     self.globalVars.CAMERA_OFFSET_X = dx
                 self.rect.y += dy
 
+                # El borde inferior es un suelo
                 if self.rect.bottom > SCREEN_HEIGTH:
                     self.rect.bottom = SCREEN_HEIGTH
-                    self.in_air = False
+                    self.inAir = False
                     dy = 0
+
+            # Si se murio el jugador se cambia la imagen por la de muerte
             else:
-                self.standing = self.dead_image
+                self.standing = self.deadImage
                 
 
             self.screen.blit(self.standing, self.rect)
@@ -78,7 +85,7 @@ class Player():
             self.rect.y = y
             self.width = self.standing.get_width()
             self.height = self.standing.get_height()
-            self.vel_y = 0
+            self.velY = 0
             self.jumped = False
-            self.in_air = True
-            self.dead_image = pygame.transform.rotate(self.standing,90)
+            self.inAir = True
+            self.deadImage = pygame.transform.rotate(self.standing,90)

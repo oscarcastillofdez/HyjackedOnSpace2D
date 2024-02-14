@@ -7,7 +7,7 @@ SCREEN_WIDTH = 1280
 SCREEN_HEIGTH = 720
 TILE_SIZE = 45
 GAME_OVER = False
-world_data = [[0,0,0,0,0,0,0,0,0],
+world_data = [    [0,0,0,0,0,0,0,0,0],
                   [0,0,0,0,0,0,0,0,0],
                   [0,0,0,0,0,0,0,0,0],
                   [0,0,0,0,0,0,0,0,0],

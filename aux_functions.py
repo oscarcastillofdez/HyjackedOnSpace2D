@@ -10,6 +10,8 @@ def draw_grid(screen):
         pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH / 6, 0), (SCREEN_WIDTH / 6, SCREEN_HEIGTH))
         pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH - (SCREEN_WIDTH / 6), 0), (SCREEN_WIDTH - (SCREEN_WIDTH / 6), SCREEN_HEIGTH))
 
+
+# Calcula movimiento en el eje x en una direccion
 def move_horizontal(pressed, movement, deltaTime):
     if pressed:
         if movement < MAX_VELOCITY:

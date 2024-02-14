@@ -5,11 +5,15 @@ from enemy import *
 
 class World():
         def __init__(self,data,screen,enemies_group, globalVars):
+
+            # Se inician variables
             self.screen = screen
             self.globalVars = globalVars
             self.tile_list = []
             suelo = pygame.image.load('Assets/img/tile_1.png')
             
+
+            # Se dibuja las tiles en el mundo
             row_count = 0
             for row in data:
                 col_count = 0
@@ -28,6 +32,7 @@ class World():
                 row_count += 1
 
         def update(self):
+            # Se dibuja las tiles teniendo en cuenta el scroll
             for tile in self.tile_list:
                 tile[1].x -= self.globalVars.CAMERA_OFFSET_X
                 self.screen.blit(tile[0], tile[1])

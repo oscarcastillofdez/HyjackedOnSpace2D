@@ -10,6 +10,7 @@ class Button():
         self.screen = screen
         self.globalVars = globalVars
 
+    # Devuelve true si se pulso el boton y false si no
     def draw(self):
         pos = pygame.mouse.get_pos()
         action = False

@@ -13,6 +13,7 @@ class Enemy(pygame.sprite.Sprite):
         self.moved = 0
         self.globalVars = globalVars
 
+    # Se mueve el enemigo en una dirección hasta que llega al limite donde se cambia.
     def update(self):
 
         self.moved += 1
