@@ -1,13 +1,14 @@
 import pygame
 
 class Button():
-    def __init__(self,x,y,image,screen):
+    def __init__(self,x,y,image,screen, globalVars):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.clicked = False
         self.screen = screen
+        self.globalVars = globalVars
 
     def draw(self):
         pos = pygame.mouse.get_pos()

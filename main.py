@@ -1,6 +1,6 @@
 import pygame
 
-from global_vars import *
+from global_varsClass import Global_Vars
 from aux_functions import *
 
 from button import *
@@ -14,6 +14,7 @@ def main():
     pygame.init()
     pygame.display.set_caption("Hyjacked on Space")
     
+    globalVars = Global_Vars()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGTH))
     clock = pygame.time.Clock()
     running = True
@@ -21,10 +22,10 @@ def main():
 
     resetImage = pygame.transform.scale(pygame.image.load('Assets/img/reset.png'),(150,150))
     
-    player = Player(100, SCREEN_HEIGTH - 130, screen)
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGTH / 2 - 130, screen, globalVars)
     enemies_group = pygame.sprite.Group()
-    resetButton = Button(0, 0, resetImage, screen)
-    world = World(world_data,screen,enemies_group)
+    resetButton = Button(0, 0, resetImage, screen, globalVars)
+    world = World(world_data,screen,enemies_group, globalVars)
         
     while running:
         for event in pygame.event.get():
@@ -34,9 +35,11 @@ def main():
         screen.fill("gray")
         GAME_OVER = player.update(GAME_OVER,world, enemies_group)
         #screen.blit(BACKGROUND, (0,0))
-        #draw_grid(screen)
-        world.draw()
-
+        draw_grid(screen)
+        world.update()
+        enemies_group.draw(screen)
+        
+        
         if GAME_OVER == False:
             enemies_group.update()
 
@@ -44,8 +47,6 @@ def main():
             if resetButton.draw():
                 player.reset(100, SCREEN_HEIGTH - 130)
                 GAME_OVER = False
-            
-        enemies_group.draw(screen)
 
         pygame.display.flip()
 
