@@ -35,6 +35,7 @@ class World():
             # Se dibuja las tiles teniendo en cuenta el scroll
             for tile in self.tile_list:
                 tile[1].x -= self.globalVars.CAMERA_OFFSET_X
+                tile[1].y -= self.globalVars.CAMERA_OFFSET_Y
                 self.screen.blit(tile[0], tile[1])
 
     

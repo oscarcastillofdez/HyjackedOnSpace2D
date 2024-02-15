@@ -22,3 +22,4 @@ class Enemy(pygame.sprite.Sprite):
             self.moved = 0
 
         self.rect.x += self.move_dir - self.globalVars.CAMERA_OFFSET_X
+        self.rect.y -= self.globalVars.CAMERA_OFFSET_Y

@@ -21,3 +21,5 @@ class Global_Vars():
                           [0,0,0,0,0,0,0,0,0,0,0,2,0,0,2],
                           [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1]]
         self.CAMERA_OFFSET_X = 0
+        self.CAMERA_OFFSET_Y = 0
+        self.smoothnes = 0

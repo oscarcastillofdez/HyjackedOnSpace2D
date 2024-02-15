@@ -54,15 +54,23 @@ class Player():
                         GAME_OVER = True
                         
                 self.globalVars.CAMERA_OFFSET_X = 0
+                self.globalVars.CAMERA_OFFSET_Y = 0
 
                 # Si el jugador se mueve en los limites del scroll se mueve sin mas, si no se hace scroll
-                if self.rect.x > SCREEN_WIDTH / 6 and self.rect.x < SCREEN_WIDTH - (SCREEN_WIDTH / 6):
+                if self.rect.x > SCREEN_WIDTH / 3 and self.rect.x < SCREEN_WIDTH - (SCREEN_WIDTH / 3):
                     self.rect.x += dx 
-                elif self.rect.x + dx > SCREEN_WIDTH / 6 and self.rect.x + dx < SCREEN_WIDTH - (SCREEN_WIDTH / 6):
+                elif self.rect.x + dx > SCREEN_WIDTH / 3 and self.rect.x + dx < SCREEN_WIDTH - (SCREEN_WIDTH / 3):
                     self.rect.x += dx 
                 else:
                     self.globalVars.CAMERA_OFFSET_X = dx
-                self.rect.y += dy
+                if self.rect.y > (SCREEN_HEIGTH / 2) and self.rect.y < SCREEN_HEIGTH - (SCREEN_HEIGTH / 2):
+                    self.rect.y += dy
+                elif self.rect.y + dy >= (SCREEN_HEIGTH / 2) and self.rect.y + dy <= SCREEN_HEIGTH - (SCREEN_HEIGTH / 2):
+                    self.rect.y += dy
+                else:
+                    self.globalVars.CAMERA_OFFSET_Y = dy
+                    
+                print(self.rect.bottom)
 
                 # El borde inferior es un suelo
                 if self.rect.bottom > SCREEN_HEIGTH:

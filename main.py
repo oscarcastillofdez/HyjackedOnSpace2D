@@ -51,7 +51,7 @@ def main():
         #screen.blit(BACKGROUND, (0,0))
 
         # Dibujar el cuadrado en el que el personaje se mueve sin scroll
-        draw_grid(screen)
+        #draw_grid(screen)
         
         # Actualiza el mundo segun el scroll y los enemigos se dibujan
         world.update()

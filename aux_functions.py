@@ -7,8 +7,12 @@ def draw_grid2(screen):
             pygame.draw.line(screen, (255, 255, 255), (0, line * TILE_SIZE), (SCREEN_WIDTH, line * TILE_SIZE))
 
 def draw_grid(screen):
-        pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH / 6, 0), (SCREEN_WIDTH / 6, SCREEN_HEIGTH))
-        pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH - (SCREEN_WIDTH / 6), 0), (SCREEN_WIDTH - (SCREEN_WIDTH / 6), SCREEN_HEIGTH))
+        pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH / 3, 0), (SCREEN_WIDTH / 3, SCREEN_HEIGTH))
+        pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH - (SCREEN_WIDTH / 3), 0), (SCREEN_WIDTH - (SCREEN_WIDTH / 3), SCREEN_HEIGTH))
+        pygame.draw.line(screen, (255, 255, 255), (0, SCREEN_HEIGTH / 3), (SCREEN_WIDTH, SCREEN_HEIGTH / 3))
+        pygame.draw.line(screen, (255, 255, 255), (0, SCREEN_HEIGTH - (SCREEN_HEIGTH / 3)), (SCREEN_WIDTH, SCREEN_HEIGTH - (SCREEN_HEIGTH / 3)))
+
+
 
 
 # Calcula movimiento en el eje x en una direccion
