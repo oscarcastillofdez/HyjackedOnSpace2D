@@ -16,6 +16,7 @@ class Enemy(pygame.sprite.Sprite):
     # Se mueve el enemigo en una dirección hasta que llega al limite donde se cambia.
     def update(self):
 
+        print("CCCCCCCCCCCCCc")
         self.moved += 1
         if self.moved == 50:
             self.move_dir = -self.move_dir

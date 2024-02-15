@@ -4,13 +4,14 @@ from global_vars import *
 from enemy import *
 
 class World():
-        def __init__(self,data, *enemies):
+        def __init__(self, globalVars, enemies):
+            self.globalVars = globalVars
             self.tile_list = []
             suelo = pygame.image.load('Assets/img/tile_1.png')
             
             # Se dibuja las tiles en el mundo
             row_count = 0
-            for row in data:
+            for row in globalVars.world_data:
                 col_count = 0
                 for tile in row:
                     if tile == 1:
@@ -28,6 +29,7 @@ class World():
 
         def draw(self, screen, globalVars):
             # Se dibuja las tiles teniendo en cuenta el scroll
+
             for tile in self.tile_list:
                 tile[1].x -= globalVars.CAMERA_OFFSET_X
                 tile[1].y -= globalVars.CAMERA_OFFSET_Y

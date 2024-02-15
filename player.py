@@ -55,6 +55,7 @@ class Player():
                 self.rect.x += dx 
             else:
                 globalVars.CAMERA_OFFSET_X = dx
+
             if self.rect.y > (SCREEN_HEIGTH / 2) and self.rect.y < SCREEN_HEIGTH - (SCREEN_HEIGTH / 2):
                 self.rect.y += dy
             elif self.rect.y + dy >= (SCREEN_HEIGTH / 2) and self.rect.y + dy <= SCREEN_HEIGTH - (SCREEN_HEIGTH / 2):
@@ -63,7 +64,6 @@ class Player():
                 globalVars.CAMERA_OFFSET_Y = dy
                     
             #print(self.rect.bottom)
-
             # El borde inferior es un suelo
             if self.rect.bottom > SCREEN_HEIGTH:
                 self.rect.bottom = SCREEN_HEIGTH

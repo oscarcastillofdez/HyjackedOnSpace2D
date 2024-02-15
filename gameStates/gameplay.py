@@ -10,7 +10,7 @@ class Gameplay(State):
         self.next_state = "GAME_OVER"
         self.globalVars = gv
         self.enemies_group = pygame.sprite.Group()
-        self.world = World(self.enemies_group)
+        self.world = World(gv, self.enemies_group )
         self.player = Player(self.screen_rect.center[0] //2,self.screen_rect.center[1] //2 -130)
 
     def get_event(self, event):
@@ -20,6 +20,7 @@ class Gameplay(State):
     
     def update(self, dt):
         self.player.update(self.world, self.globalVars)
+        self.enemies_group.update()
         # Si toca un enemigo se acaba el juego
         if pygame.sprite.spritecollide(self.player, self.enemies_group, False):
             self.done = True
