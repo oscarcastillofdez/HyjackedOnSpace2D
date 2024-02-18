@@ -1,26 +1,57 @@
 import pygame
+from playerStates.idle import Idle
+from playerStates.run import Run
 from global_vars import *
 
 class Player():
         def __init__(self,x,y):
-            self.reset(x,y)
+            # Imagenes
+            self.states = {
+                "IDLE": Idle(False),
+                "RUNR": Run(False, False),
+                "RUNL": Run(False, True),
+                "RUNGL": Run(gun=True,left=True),
+                "RUNGR": Run(gun=True, left=False)
+            }
+            self.current_state = self.states["IDLE"]
+            self.anim = 0
+            self.standing = self.current_state.get_initial()
+            self.deadImage = pygame.transform.rotate(self.standing,90)
+
+            # Posicion
+            self.rect = self.standing.get_rect()
+            self.rect.x = x
+            self.rect.y = y
+            self.width = self.standing.get_width()
+            self.height = self.standing.get_height()
+            self.velY = 0
+            self.jumped = False
+            self.inAir = True
 
         def get_event(self, event):
             pass
 
         def update(self, world, globalVars):
+            if self.anim > 6:
+                self.standing = self.current_state.next_sprite()
+                self.anim = 0
+            self.anim += 1
             dx = 0
             dy = 0
 
             # Se detectan las teclas pulsadas
             keys = pygame.key.get_pressed()
             if keys[pygame.K_a]:
+                self.current_state = self.states["RUNL"]
                 dx -= 7
             if keys[pygame.K_d]:
+                self.current_state = self.states["RUNR"]
                 dx += 7
             if keys[pygame.K_SPACE] and self.jumped == False and self.inAir == False:
                 self.velY = -25
                 self.jumped = True
+            if keys[pygame.K_s]:
+                self.current_state = self.states["IDLE"]
             if keys[pygame.K_SPACE] == False:
                 self.jumped = False
             # Se añade la gravedad al movimiento en y
@@ -72,15 +103,3 @@ class Player():
         
         def draw(self, screen):
             screen.blit(self.standing, self.rect)
-
-        def reset(self,x,y):
-            self.standing = pygame.transform.scale(pygame.image.load("Assets/move1.png"), (100,100))
-            self.rect = self.standing.get_rect()
-            self.rect.x = x
-            self.rect.y = y
-            self.width = self.standing.get_width()
-            self.height = self.standing.get_height()
-            self.velY = 0
-            self.jumped = False
-            self.inAir = True
-            self.deadImage = pygame.transform.rotate(self.standing,90)
