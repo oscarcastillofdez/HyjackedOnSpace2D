@@ -7,6 +7,7 @@ class Menu(State):
         self.active_index = 0
         self.options = ["Play", "Options", "Quit"]
         self.next_state = "GAMEPLAY"
+        self.music = pygame.mixer.Sound('Assets/audio/MainMenu.mp3')
     
     # Funcion renderiza el texto del menu, pone azul la opcion que 
     # se esta seleccionando
@@ -40,9 +41,11 @@ class Menu(State):
                 print(self.active_index)
             elif event.key == pygame.K_RETURN:
                 self.handle_action()
+
     
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
+        #self.music.play()
         for index, option in enumerate(self.options):
             text_render = self.render_text(index)
             surface.blit(text_render, self.get_text_position(text_render, index))
