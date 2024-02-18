@@ -27,7 +27,8 @@ class Player():
             self.width = self.standing.get_width()
             self.height = self.standing.get_height()
             self.velY = 0
-            self.jumped = False
+
+            # Movimiento
             self.inAir = True
             self.moving_left = False
             self.moving_right = False
@@ -48,6 +49,11 @@ class Player():
 
 
         def update(self, world, globalVars, dt):
+
+            if self.anim > 6:
+                self.standing = self.current_state.next_sprite()
+                self.anim = 0
+            self.anim += 1
        
             # Calculo del movimiento horizontal
             (self.left_mov, left_movement) = move_horizontal(self.moving_left, self.left_mov, dt)
@@ -65,31 +71,14 @@ class Player():
                 self.velY = -MIN_JUMP_HEIGHT
                 self.pressed_jump += 1
 
-        def update(self, world, globalVars):
-            if self.anim > 6:
-                self.standing = self.current_state.next_sprite()
-                self.anim = 0
-            self.anim += 1
-            dx = 0
-            dy = 0
-
-            # Se detectan las teclas pulsadas
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_a]:
+            if horizontal_movement < 0:
                 self.current_state = self.states["RUNL"]
-                dx -= 7
-            if keys[pygame.K_d]:
+            if horizontal_movement > 0:
                 self.current_state = self.states["RUNR"]
-                dx += 7
-            if keys[pygame.K_SPACE] and self.jumped == False and self.inAir == False:
-                self.velY = -25
-                self.jumped = True
-            if keys[pygame.K_s]:
+            if horizontal_movement == 0: 
                 self.current_state = self.states["IDLE"]
-            if keys[pygame.K_SPACE] == False:
-                self.jumped = False
+
             # Se añade la gravedad al movimiento en y
-            print(GRAVITY)
             self.velY += GRAVITY
             if self.velY > MAX_FALL_VELOCITY:
                  self.velY = MAX_FALL_VELOCITY
