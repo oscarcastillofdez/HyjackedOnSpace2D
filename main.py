@@ -15,46 +15,30 @@ from gameStates.game_over import GameOver
 from game import Game
 
 def main():
-    # Iniciar el juego
-    global GAME_OVER
-    
+ 
     # Iniciar las variables globales
     globalVars = Global_Vars()
 
-    # Iniciar las variables del juego
+    # Iniciar la ventana del juego
     pygame.init()
     pygame.display.set_caption("Hyjacked on Space")
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGTH))
    
-    #clock = pygame.time.Clock()
-    #running = True
-    #deltaTime = 0
-    
-    """
-        codigo nuevo
-    """
+    # Iniciar los estados del juego
+
     states = {
         "MENU": Menu(),
         "SPLASH": Splash(),
         "GAMEPLAY": Gameplay(globalVars),
         "GAME_OVER": GameOver(),
     }
-    """
-        fin
-    """
-
-    """
-        codigo nuevo
-    """
+    
+    # Iniciar el juego
     game = Game(screen, states, "SPLASH")
     game.run()
 
     pygame.quit()
     sys.exit()
-    
-    """
-        fin
-    """
     
 if __name__=="__main__":
     main()

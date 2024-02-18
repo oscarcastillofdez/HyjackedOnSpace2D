@@ -1,5 +1,4 @@
 import pygame
-from math import floor
 from global_vars import *
 
 class Enemy(pygame.sprite.Sprite):

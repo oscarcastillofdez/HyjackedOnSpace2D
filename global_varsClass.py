@@ -3,6 +3,7 @@ class Global_Vars():
         self.INERTIA = 20
         self.MAX_VELOCITY = 500
         self.GRAVITY = 1
+        self.MAX_FALL_VELOCITY = 30
         self.MIN_JUMP_HEIGHT = 20
         self.MAX_JUMP_HEIGHT = 30
         self.SCREEN_WIDTH = 1280

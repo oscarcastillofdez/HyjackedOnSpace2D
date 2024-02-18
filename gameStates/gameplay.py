@@ -17,10 +17,18 @@ class Gameplay(State):
     def get_event(self, event):
         if event.type == pygame.QUIT:
                 self.quit = True
-        self.player.get_event(event)
-    
+        
+
+
     def update(self, dt):
-        self.player.update(self.world, self.globalVars)
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+                self.player.move_left()
+        if keys[pygame.K_d]:
+                self.player.move_right()
+        if keys[pygame.K_SPACE]:
+                self.player.jump()
+        self.player.update(self.world, self.globalVars, dt)
         self.enemies_group.update(self.world)
         # Si toca un enemigo se acaba el juego
         if pygame.sprite.spritecollide(self.player, self.enemies_group, False):

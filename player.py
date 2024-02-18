@@ -1,7 +1,9 @@
 import pygame
 from playerStates.idle import Idle
 from playerStates.run import Run
+from math import floor
 from global_vars import *
+from aux_functions import *
 
 class Player():
         def __init__(self,x,y):
@@ -27,9 +29,41 @@ class Player():
             self.velY = 0
             self.jumped = False
             self.inAir = True
+            self.moving_left = False
+            self.moving_right = False
+            self.left_mov = 0
+            self.right_mov = 0
+            self.jumping = False
+            self.hold_jump = False
+            self.pressed_jump = 0
 
-        def get_event(self, event):
-            pass
+        def move_left(self):
+            self.moving_left = True
+
+        def move_right(self):
+            self.moving_right = True
+
+        def jump(self):
+            self.jumping = True
+
+
+        def update(self, world, globalVars, dt):
+       
+            # Calculo del movimiento horizontal
+            (self.left_mov, left_movement) = move_horizontal(self.moving_left, self.left_mov, dt)
+            (self.right_mov, right_movement) = move_horizontal(self.moving_right, self.right_mov, dt)
+            horizontal_movement = floor(right_movement - left_movement)
+
+            # Calculo del movimiento vertical
+            if self.jumping and self.inAir == False:
+                self.velY = -MIN_JUMP_HEIGHT
+                self.hold_jump = True
+                self.pressed_jump = 0
+            elif self.jumping == False or self.pressed_jump > MAX_JUMP_HEIGHT:
+                self.hold_jump = False
+            elif self.jumping and self.inAir and self.hold_jump:
+                self.velY = -MIN_JUMP_HEIGHT
+                self.pressed_jump += 1
 
         def update(self, world, globalVars):
             if self.anim > 6:
@@ -55,10 +89,12 @@ class Player():
             if keys[pygame.K_SPACE] == False:
                 self.jumped = False
             # Se añade la gravedad al movimiento en y
-            self.velY += 1
-            if self.velY > 10:
-                 self.velY = 10
-            dy += self.velY
+            print(GRAVITY)
+            self.velY += GRAVITY
+            if self.velY > MAX_FALL_VELOCITY:
+                 self.velY = MAX_FALL_VELOCITY
+            dy = self.velY
+            dx = horizontal_movement
 
             self.inAir = True
 
@@ -93,13 +129,12 @@ class Player():
                 self.rect.y += dy
             else:
                 globalVars.CAMERA_OFFSET_Y = dy
+
+            # Se reinician las variables de movimiento
+            self.moving_left = False
+            self.moving_right = False
+            self.jumping = False
                     
-            #print(self.rect.bottom)
-            # El borde inferior es un suelo
-            if self.rect.bottom > SCREEN_HEIGTH:
-                self.rect.bottom = SCREEN_HEIGTH
-                self.inAir = False
-                dy = 0
-        
+          
         def draw(self, screen):
             screen.blit(self.standing, self.rect)
