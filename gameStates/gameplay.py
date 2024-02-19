@@ -2,7 +2,7 @@ import pygame
 from .base import State
 from player import Player
 from world import World
-from collisions import Collisions
+from ui import Ui
 
 class Gameplay(State):
     def __init__(self, gv):
@@ -12,7 +12,7 @@ class Gameplay(State):
         self.enemies_group = pygame.sprite.Group()
         self.world = World(gv, self.enemies_group )
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1])
-        self.collisions = Collisions()
+        self.ui = Ui()
 
     def get_event(self, event):
         if event.type == pygame.QUIT:
@@ -32,10 +32,18 @@ class Gameplay(State):
         self.enemies_group.update(self.world)
         # Si toca un enemigo se acaba el juego
         if pygame.sprite.spritecollide(self.player, self.enemies_group, False):
-            self.done = True
+            if self.player.checkHit() == True:
+                self.done = True
+            self.ui.updateHealthHearts(self.player)
+            
+            print(self.player.healthPoints)
+        
+        
+        
     
     def draw(self, surface):
-         surface.fill("gray")
-         self.player.draw(surface)
-         self.world.draw(surface, self.globalVars)
-         self.enemies_group.draw(surface)
+        surface.fill("gray")
+        self.player.draw(surface)
+        self.world.draw(surface, self.globalVars)
+        self.enemies_group.draw(surface)
+        self.ui.draw(surface)

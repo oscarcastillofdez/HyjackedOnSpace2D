@@ -19,6 +19,7 @@ class Player():
             self.anim = 0
             self.standing = self.current_state.get_initial()
             self.deadImage = pygame.transform.rotate(self.standing,90)
+            self.hitImage = pygame.transform.rotate(self.standing,90)
 
             # Posicion
             self.rect = self.standing.get_rect()
@@ -38,6 +39,9 @@ class Player():
             self.hold_jump = False
             self.pressed_jump = 0
 
+            self.healthPoints = 3
+            self.hitCooldown = 60
+
         def move_left(self):
             self.moving_left = True
 
@@ -47,14 +51,27 @@ class Player():
         def jump(self):
             self.jumping = True
 
+        def getHp(self):
+            return self.healthPoints
+        
+        def checkHit(self):
 
+            if self.hitCooldown < 0:
+                self.standing = self.hitImage 
+                self.healthPoints -= 1
+                self.hitCooldown = 60
+
+            if self.healthPoints == 0:
+                return True
+            
         def update(self, world, globalVars, dt):
-
+            self.hitCooldown -= 1
+            
             if self.anim > 6:
                 self.standing = self.current_state.next_sprite()
                 self.anim = 0
             self.anim += 1
-       
+
             # Calculo del movimiento horizontal
             (self.left_mov, left_movement) = move_horizontal(self.moving_left, self.left_mov, dt)
             (self.right_mov, right_movement) = move_horizontal(self.moving_right, self.right_mov, dt)
@@ -123,6 +140,7 @@ class Player():
             self.moving_left = False
             self.moving_right = False
             self.jumping = False
+
                     
           
         def draw(self, screen):
