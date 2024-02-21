@@ -39,7 +39,6 @@ class Enemy(pygame.sprite.Sprite):
             if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
                     if self.velY < 0: #Saltando
                         dy = tile[1].bottom - self.rect.top
-                        print(dy)
                         self.velY = 0
                     elif self.velY >= 0: #Cayendo
                         dy = tile[1].top - self.rect.bottom

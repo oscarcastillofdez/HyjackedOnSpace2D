@@ -5,7 +5,6 @@ class Spritesheet():
         self.file = filename
         self.scale = scale
         self.sprite_sheet = pygame.image.load(filename).convert_alpha()
-        print(self.sprite_sheet)
 
     def get_sprite(self, x,y,w,h):
         sprite = pygame.Surface((w,h))

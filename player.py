@@ -4,43 +4,11 @@ from playerStates.run import Run
 from math import floor
 from global_vars import *
 from aux_functions import *
+from playerAbstract import PlayerAbstract
 
-class Player():
-        def __init__(self,x,y):
-            # Imagenes
-            self.states = {
-                "IDLE": Idle(False),
-                "RUNR": Run(False, False),
-                "RUNL": Run(False, True),
-                "RUNGL": Run(gun=True,left=True),
-                "RUNGR": Run(gun=True, left=False)
-            }
-            self.current_state = self.states["IDLE"]
-            self.anim = 0
-            self.standing = self.current_state.get_initial()
-            self.deadImage = pygame.transform.rotate(self.standing,90)
-            self.hitImage = pygame.transform.rotate(self.standing,90)
-
-            # Posicion
-            self.rect = self.standing.get_rect()
-            self.rect.x = x
-            self.rect.y = y
-            self.width = self.standing.get_width()
-            self.height = self.standing.get_height()
-            self.velY = 0
-
-            # Movimiento
-            self.inAir = True
-            self.moving_left = False
-            self.moving_right = False
-            self.left_mov = 0
-            self.right_mov = 0
-            self.jumping = False
-            self.hold_jump = False
-            self.pressed_jump = 0
-
-            self.healthPoints = 3
-            self.hitCooldown = 60
+class Player(PlayerAbstract):
+        def __init__(self, x, y):
+            super().__init__(x, y)
 
         def move_left(self):
             self.moving_left = True
@@ -54,15 +22,15 @@ class Player():
         def getHp(self):
             return self.healthPoints
         
-        def checkHit(self):
+        def checkHit(self, enemies_group):
+            if pygame.sprite.spritecollide(self, enemies_group, False):
+                if self.hitCooldown < 0:
+                    self.standing = self.hitImage 
+                    self.healthPoints -= 1
+                    self.hitCooldown = 60
 
-            if self.hitCooldown < 0:
-                self.standing = self.hitImage 
-                self.healthPoints -= 1
-                self.hitCooldown = 60
-
-            if self.healthPoints == 0:
-                return True
+                if self.healthPoints == 0:
+                    return True
             
         def update(self, world, globalVars, dt):
             self.hitCooldown -= 1
@@ -117,7 +85,7 @@ class Player():
                         dy = tile[1].top - self.rect.bottom
                         self.velY = 0
                         self.inAir = False
-                        
+            
             globalVars.CAMERA_OFFSET_X = 0
             globalVars.CAMERA_OFFSET_Y = 0
 
@@ -141,7 +109,17 @@ class Player():
             self.moving_right = False
             self.jumping = False
 
-                    
-          
+        def checkGunPick(self, world):
+            i = 0
+            for gun in world.gun_list:
+                if gun[1].colliderect(self.rect.x, self.rect.y, self.width, self.height):
+                    del world.gun_list[i] # Se elimina la pistola de la lista de objetos
+                    del gun # Se elimina el objeto pistola
+                    return True # Devolver gun en vez de True para tener mas armas?
+                i += 1
+            
+        def shoot(self, direction, gv):
+            print("No tengo arma")
+
         def draw(self, screen):
             screen.blit(self.standing, self.rect)
