@@ -4,6 +4,7 @@ from player import Player
 from world import World
 from ui import Ui
 from pistol import Pistol
+# El gameplay seria buena idea hacerlo observador de player? 
 
 class Gameplay(State):
     def __init__(self, gv):
@@ -15,7 +16,9 @@ class Gameplay(State):
         self.world = World(gv, self.enemies_group)
         
 
-        self.ui = Ui()
+        self.ui = Ui(self.player)
+
+        self.player.addObserver(self.ui)
 
     def get_event(self, event):
         if event.type == pygame.QUIT:
@@ -38,13 +41,12 @@ class Gameplay(State):
         if keys[pygame.K_DOWN]:
             self.player.shoot("down", self.globalVars)
                 
-        self.player.update(self.world, self.globalVars, dt)
+        self.player.update(self.world, self.globalVars, dt, self.enemies_group)
         self.enemies_group.update(self.world)
         
-        # Si toca un enemigo se acaba el juego
-        if self.player.checkHit(self.enemies_group):
+        # Si se queda sin vidas acaba el juego
+        if self.player.getHp() <= 0: 
             self.done = True
-            self.ui.updateHealthHearts(self.player)
         
         #self.player.disparar()
         if self.player.checkGunPick(self.world):

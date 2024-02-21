@@ -28,11 +28,11 @@ class Player(PlayerAbstract):
                     self.standing = self.hitImage 
                     self.healthPoints -= 1
                     self.hitCooldown = 60
-
-                if self.healthPoints == 0:
+                    
+                    self.notify()
                     return True
-            
-        def update(self, world, globalVars, dt):
+                
+        def update(self, world, globalVars, dt, enemies_group):
             self.hitCooldown -= 1
             
             if self.anim > 6:
@@ -104,6 +104,8 @@ class Player(PlayerAbstract):
             else:
                 globalVars.CAMERA_OFFSET_Y = dy
 
+            self.checkHit(enemies_group)
+
             # Se reinician las variables de movimiento
             self.moving_left = False
             self.moving_right = False
@@ -123,3 +125,13 @@ class Player(PlayerAbstract):
 
         def draw(self, screen):
             screen.blit(self.standing, self.rect)
+
+        def addObserver(self, observer):
+            self.uiElementsList.append(observer)
+    
+        def delObserver(self, observer):
+            self.uiElementsList.remove(observer)
+
+        def notify(self):
+            for observer in self.uiElementsList:
+                observer.update()

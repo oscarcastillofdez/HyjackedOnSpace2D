@@ -4,9 +4,9 @@ class Bullet():
     def __init__(self, disparoImg, direction, x, y, gv) -> None:
         self.global_vars = gv
         
-        self.disparoHitBox = disparoImg.get_rect()
-        self.disparoHitBox.x = x
-        self.disparoHitBox.y = y
+        self.rect = disparoImg.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
         self.velocidadX = 10
         self.velocidadY = 10
@@ -14,6 +14,7 @@ class Bullet():
         self.damage = 5
 
         self.disparoImg = disparoImg
+        self.despawnTime = 120
 
         if direction == "left":
             self.disparoImg = pygame.transform.rotate(pygame.transform.scale(self.disparoImg, (100, 100)), 180)
@@ -31,9 +32,20 @@ class Bullet():
             self.velocidadY = -self.velocidadY
 
     def update(self):
-        
-        self.disparoHitBox.x -= self.velocidadX + self.global_vars.CAMERA_OFFSET_X
-        self.disparoHitBox.y -= self.velocidadY + self.global_vars.CAMERA_OFFSET_Y
+        self.rect.x -= self.velocidadX + self.global_vars.CAMERA_OFFSET_X
+        self.rect.y -= self.velocidadY + self.global_vars.CAMERA_OFFSET_Y
+
+    def checkBulletCollision(self, enemies_group):
+        objetoColision = pygame.sprite.spritecollide(self, enemies_group, False)
+
+        for objeto in objetoColision:
+            enemies_group.remove(objeto)
+            return True
+    
+    def checkDespawnTime(self):
+        self.despawnTime -= 1
+        if self.despawnTime <= 0:
+            return True
     
     def draw(self, screen):
-        screen.blit(self.disparoImg, self.disparoHitBox)
+        screen.blit(self.disparoImg, self.rect)

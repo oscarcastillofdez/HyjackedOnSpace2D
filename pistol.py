@@ -21,17 +21,22 @@ class Pistol(PlayerAbstract):
         self.player.jump()
     
     def getHp(self):
-        self.player.getHp()
+        return self.player.getHp()
     
     def checkHit(self, enemies_group):
-        self.player.checkHit(enemies_group)
+        return self.player.checkHit(enemies_group)
     
-    def update(self, world, globalVars, dt):
-        self.player.update(world, globalVars, dt)
+    def update(self, world, globalVars, dt, enemies_group):
+        self.player.update(world, globalVars, dt, enemies_group)
         self.coolDown -= 1
-
+        print(len(self.disparosList))
+        
         for disparo in self.disparosList:
             disparo.update()
+            if disparo.checkBulletCollision(enemies_group) or disparo.checkDespawnTime():
+                self.disparosList.remove(disparo)
+                del disparo
+            
 
     def shoot(self, direction, gv):
         if self.coolDown <= 0:

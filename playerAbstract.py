@@ -40,6 +40,9 @@ class PlayerAbstract():
         self.hitCooldown = 60            #Armas
         self.arma = None
 
+        self.uiElementsList = []
+
+
     def move_left(self):
         pass
     
@@ -65,4 +68,13 @@ class PlayerAbstract():
         pass
 
     def checkGunPick(self, world):
+        pass
+    
+    def addObserver():
+        pass
+    
+    def delObserver():
+        pass
+    
+    def notify():
         pass
