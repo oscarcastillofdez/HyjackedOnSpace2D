@@ -33,7 +33,7 @@ class Pistol(PlayerAbstract):
         
         for disparo in self.disparosList:
             disparo.update()
-            if disparo.checkBulletCollision(enemies_group) or disparo.checkDespawnTime():
+            if disparo.checkBulletCollision(world, enemies_group) or disparo.checkDespawnTime():
                 self.disparosList.remove(disparo)
                 del disparo
             
