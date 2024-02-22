@@ -111,17 +111,6 @@ class Player(PlayerAbstract):
             self.moving_right = False
             self.jumping = False
 
-        def checkGunPick(self, world):
-            i = 0
-            for gun in world.gun_list:
-                if gun[1].colliderect(self.rect.x, self.rect.y, self.width, self.height):
-                    del world.gun_list[i] # Se elimina la pistola de la lista de objetos
-                    del gun # Se elimina el objeto pistola
-                    return True # Devolver gun en vez de True para tener mas armas?
-                i += 1
-            
-        def shoot(self, direction, gv):
-            print("No tengo arma")
 
         def draw(self, screen):
             screen.blit(self.standing, self.rect)
