@@ -1,12 +1,12 @@
 import pygame
 from .base import State
-from player import Player
+from Player.player import Player
 from world import World
-from ui import Ui
-from pistol import Pistol
-from randomEnemyFactory import RandomEnemyFactory
-from uiText import UIText
-from uiHearts import UIHearts
+from UI.ui import Ui
+from Player.pistol import Pistol
+from Enemies.randomEnemyFactory import RandomEnemyFactory
+from UI.uiText import UIText
+from UI.uiHearts import UIHearts
 # El gameplay seria buena idea hacerlo observador de player? 
 
 class Gameplay(State):

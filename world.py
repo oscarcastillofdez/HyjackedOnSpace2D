@@ -1,9 +1,9 @@
 import pygame
 from math import floor
 from global_vars import *
-from enemy import *
-from pistol import *
-from computer import Computer
+from Enemies.enemy import *
+from Player.pistol import *
+from Interactuables.computer import Computer
 
 class World():
         def __init__(self, globalVars, enemies, enemyFactory, interactuable):
