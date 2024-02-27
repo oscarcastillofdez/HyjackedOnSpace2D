@@ -22,17 +22,33 @@ class Player(PlayerAbstract):
         def getHp(self):
             return self.healthPoints
         
-        def checkHit(self, enemies_group):
-            if pygame.sprite.spritecollide(self, enemies_group, False):
-                if self.hitCooldown < 0:
-                    self.standing = self.hitImage 
-                    self.healthPoints -= 1
-                    self.hitCooldown = 60
-                    
+        def hit(self):
+            if self.hitCooldown < 0:
+                self.standing = self.hitImage 
+                self.healthPoints -= 1
+                self.hitCooldown = 60
+                self.notify()
+
+        # La clase checkGunClollide deberia de eliminarse
+        # Interact deberia de valer para todo objeto interactuable (Ordenador, puertas, luces, armas, vidas, mejoras...)
+        # En world meter armas como un interactuable pygame.sprite.interacutableGroup
+        def interact(self, interactuableGroup):
+            interactsWith = pygame.sprite.spritecollideany(self, interactuableGroup)
+            if interactsWith:
+                newText = interactsWith.interact()
+                if newText != self.interactuableText:
+                    self.interactuableText = newText
                     self.notify()
-                    return True
+            elif self.interactuableText != "":
+                self.interactuableText = ""
+                self.notify()
+            
+        def getInteractuableText(self):
+            return self.interactuableText
                 
-        def update(self, world, globalVars, dt, enemies_group):
+
+        def update(self, world, globalVars, dt, enemies_group, interactuableGroup):
+            self.interact(interactuableGroup)
             self.hitCooldown -= 1
             
             if self.anim > 6:
@@ -73,16 +89,16 @@ class Player(PlayerAbstract):
             self.inAir = True
 
             # Se calculan las colisiones en ambos ejes
-            for tile in world.tile_list:
-                if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+            for tile in world.terrainHitBoxList:
+                if tile.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                     dx = 0
 
-                if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                if tile.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
                     if self.velY < 0: #Saltando
-                        dy = tile[1].bottom - self.rect.top
+                        dy = tile.bottom - self.rect.top
                         self.velY = 0
                     elif self.velY >= 0: #Cayendo
-                        dy = tile[1].top - self.rect.bottom
+                        dy = tile.top - self.rect.bottom
                         self.velY = 0
                         self.inAir = False
             
@@ -103,8 +119,6 @@ class Player(PlayerAbstract):
                 self.rect.y += dy
             else:
                 globalVars.CAMERA_OFFSET_Y = dy
-
-            self.checkHit(enemies_group)
 
             # Se reinician las variables de movimiento
             self.moving_left = False
@@ -134,4 +148,7 @@ class Player(PlayerAbstract):
 
         def notify(self):
             for observer in self.uiElementsList:
-                observer.update()
+                observer.update(self)
+
+        def position(self):
+            return self.rect

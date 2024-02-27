@@ -8,6 +8,7 @@ class Pistol(PlayerAbstract):
         self.player = player
         self.disparosList = []
         self.coolDown = 30
+        self.velocidadBala = 10
         
         self.disparoImg = pygame.image.load('Assets/img/lazer_1.png')
 
@@ -23,13 +24,9 @@ class Pistol(PlayerAbstract):
     def getHp(self):
         return self.player.getHp()
     
-    def checkHit(self, enemies_group):
-        return self.player.checkHit(enemies_group)
-    
-    def update(self, world, globalVars, dt, enemies_group):
+    def update(self, world, globalVars, dt, enemies_group, interactuableGroup):
         self.player.update(world, globalVars, dt, enemies_group)
         self.coolDown -= 1
-        print(len(self.disparosList))
         
         for disparo in self.disparosList:
             disparo.update()
@@ -42,7 +39,7 @@ class Pistol(PlayerAbstract):
         if self.coolDown <= 0:
             self.coolDown = 30
 
-            disparo = Bullet(self.disparoImg, direction, self.player.rect.x, self.player.rect.y, gv)
+            disparo = Bullet(self.disparoImg, direction, self.velocidadBala, self.player.rect.x, self.player.rect.y, gv)
             self.disparosList.append(disparo)
 
     def draw(self, screen):
@@ -53,3 +50,9 @@ class Pistol(PlayerAbstract):
 
     def checkGunPick(self, world):
         return self.player.checkGunPick(world)
+    
+    def position(self):
+        return self.player.position()
+    
+    def hit(self):
+        return self.player.hit()

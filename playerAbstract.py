@@ -42,6 +42,7 @@ class PlayerAbstract():
 
         self.uiElementsList = []
 
+        self.interactuableText = ""
 
     def move_left(self):
         pass
@@ -77,4 +78,7 @@ class PlayerAbstract():
         pass
     
     def notify():
+        pass
+    
+    def position():
         pass

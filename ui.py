@@ -1,15 +1,20 @@
 import pygame
+from global_varsClass import Global_Vars
 
 class Ui():
-    def __init__(self, playerObservable):
+    def __init__(self, playerObservable, uiText, uiHearts):
         self.playerObservable = playerObservable
-        self.hearts = pygame.transform.scale(pygame.image.load('Assets/img/hearts_3.png').convert_alpha(), (180,100))
-        self.rect = self.hearts.get_rect()
-        self.rect.x = 30
-        self.rect.y = 30
+        
+        self.pickUpText = ""
+        self.gv = Global_Vars()
+        self.uiText = uiText
+        self.uiHearts = uiHearts
     
-    def update(self):
-        self.hearts = pygame.transform.scale(pygame.image.load('Assets/img/hearts_'+ str(self.playerObservable.getHp()) +'.png').convert_alpha(), (180,100))
+    # def update(self):
+        # self.hearts = pygame.transform.scale(pygame.image.load('Assets/img/hearts_'+ str(self.playerObservable.getHp()) +'.png').convert_alpha(), (180,100))
+        # self.text.setInteractualeText(self.playerObservable.getInteractuableText(), "black")
 
     def draw(self, screen):
-        screen.blit(self.hearts, self.rect)
+        
+        self.uiHearts.draw(screen)
+        self.uiText.draw(screen)

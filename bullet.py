@@ -1,31 +1,23 @@
 import pygame
+import math
 
 class Bullet():
-    def __init__(self, disparoImg, direction, x, y, gv) -> None:
+    def __init__(self, disparoImg, direction, velocidad, x, y, gv) -> None:
         self.global_vars = gv
+        
+        self.velocidad = velocidad
 
-        self.velocidadX = 10
-        self.velocidadY = 10
+        radians = math.radians(direction)
+
+        self.velocidadX = -math.cos(radians) * self.velocidad
+        self.velocidadY = math.sin(radians) * self.velocidad
 
         self.damage = 5
 
         self.disparoImg = disparoImg
         self.despawnTime = 120
-
-        if direction == "left":
-            self.disparoImg = pygame.transform.rotate(pygame.transform.scale(self.disparoImg, (100, 100)), 180)
-            self.velocidadY = 0
-        elif direction == "right":
-            self.disparoImg = pygame.transform.scale(self.disparoImg, (100, 100))
-            self.velocidadX = -self.velocidadX
-            self.velocidadY = 0
-        elif direction == "up":
-            self.disparoImg = pygame.transform.rotate(pygame.transform.scale(self.disparoImg, (100, 100)), 90)
-            self.velocidadX = 0
-        elif direction == "down":
-            self.disparoImg = pygame.transform.rotate(pygame.transform.scale(self.disparoImg, (100, 100)), -90)
-            self.velocidadX = 0
-            self.velocidadY = -self.velocidadY
+        
+        self.disparoImg = pygame.transform.rotate(pygame.transform.scale(self.disparoImg, (100, 100)), direction)
 
         self.rect = disparoImg.get_rect(center=(100, 10000))
         self.rect.x = x
@@ -45,8 +37,8 @@ class Bullet():
             enemies_group.remove(objeto)
             return True
         
-        for tile in world.tile_list:
-            if tile[1].colliderect(self.rect.x, self.rect.y, self.rect.width, self.rect.height):
+        for tile in world.terrainHitBoxList:
+            if tile.colliderect(self.rect.x, self.rect.y, self.rect.width, self.rect.height):
                 return True
 
     
@@ -58,5 +50,10 @@ class Bullet():
     def draw(self, screen):
         offsetX = self.rect.x - 40
         offsetY = self.rect.y - 40
+        
+        # Poner self.rect.centerx y self.rect.centery?? Evitaria calcular offset pero no se si funcionara bien
         screen.blit(self.disparoImg, (offsetX, offsetY, self.rect.width, self.rect.height))
         #pygame.draw.rect(screen, (255,255,255), self.rect)
+
+    def bulletPosition(self):
+        return self.rect
