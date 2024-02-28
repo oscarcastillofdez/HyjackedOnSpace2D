@@ -13,7 +13,6 @@ from gameStates.splash import Splash
 from gameStates.gameplay import Gameplay
 from gameStates.game_over import GameOver
 from game import Game
-import cv2
 
 def main():
     # Iniciar las variables globales
