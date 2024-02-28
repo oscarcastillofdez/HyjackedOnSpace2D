@@ -5,8 +5,8 @@ from global_varsClass import Global_Vars
 from aux_functions import *
 
 from button import *
-from enemy import *
-from player import *
+from Enemies.enemy import *
+from Player.player import *
 from world import *
 from gameStates.menu import Menu
 from gameStates.splash import Splash

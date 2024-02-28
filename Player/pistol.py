@@ -1,6 +1,6 @@
 import pygame
-from player import Player
-from playerAbstract import PlayerAbstract
+from Player.player import Player
+from Player.playerAbstract import PlayerAbstract
 from bullet import Bullet
 
 class Pistol(PlayerAbstract):
@@ -25,7 +25,7 @@ class Pistol(PlayerAbstract):
         return self.player.getHp()
     
     def update(self, world, globalVars, dt, enemies_group, interactuableGroup):
-        self.player.update(world, globalVars, dt, enemies_group)
+        self.player.update(world, globalVars, dt, enemies_group, interactuableGroup)
         self.coolDown -= 1
         
         for disparo in self.disparosList:

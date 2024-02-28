@@ -1,6 +1,6 @@
 import pygame
 from global_vars import *
-from entity import Entity
+from Enemies.entity import Entity
 import math
 
 class Enemy(pygame.sprite.Sprite, Entity):
