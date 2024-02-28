@@ -85,7 +85,9 @@ class Player(PlayerAbstract):
                 self.pressed_jump += 1
 
             if horizontal_movement == 0: 
-                self.current_state = self.states["IDLE"]
+                self.iddle += 1
+                if self.iddle > 10:
+                    self.current_state = self.states["IDLE"]
 
             # Se añade la gravedad al movimiento en y
             self.velY += GRAVITY

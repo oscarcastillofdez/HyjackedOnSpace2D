@@ -10,7 +10,7 @@ class Spritesheet():
         sprite = pygame.Surface((w,h))
         #sprite.set_colorkey((0,0,0))
         sprite.blit(self.sprite_sheet, (0,0),(x,y,w,h))
-        sprite = pygame.transform.scale(sprite, (100,100))
+        sprite = pygame.transform.scale(sprite, (96,96))
         return sprite
 
     def get_animation(self, x,y,w,h,n):
@@ -20,6 +20,6 @@ class Spritesheet():
             sprite.set_colorkey((255,0,0))
             """sprite = pygame.Surface((w,h))
             sprite.blit(self.sprite_sheet, (0,0),(x,y+64*n,w,h))"""
-            sprite = pygame.transform.scale(sprite,(100,100))
+            sprite = pygame.transform.scale(sprite,(96,96))
             anim.append(sprite)
         return anim
