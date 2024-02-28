@@ -13,13 +13,13 @@ from gameStates.splash import Splash
 from gameStates.gameplay import Gameplay
 from gameStates.game_over import GameOver
 from game import Game
+import cv2
 
 def main():
- 
     # Iniciar las variables globales
     globalVars = Global_Vars()
 
-    # Iniciar la ventana del juego
+    # Iniciar la dventana del juego
     pygame.init()
     pygame.display.set_caption("Hyjacked on Space")
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGTH))

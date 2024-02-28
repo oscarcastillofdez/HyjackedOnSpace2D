@@ -1,6 +1,7 @@
 import pygame
 from playerStates.idle import Idle
 from playerStates.run import Run
+from playerStates.jump import Jump
 from math import floor
 from global_vars import *
 from aux_functions import *
@@ -9,14 +10,30 @@ from playerAbstract import PlayerAbstract
 class Player(PlayerAbstract):
         def __init__(self, x, y):
             super().__init__(x, y)
+            # Imagenes
+            self.states = {
+                "IDLE": Idle(False),
+                "RUNR": Run(False, False),
+                "RUNL": Run(False, True),
+                "JUMP": Jump(),
+            }
+            # Imagenes
+            self.anim = 0 
+            self.current_state = self.states["IDLE"]
+            self.standing = self.current_state.get_initial()
+            self.deadImage = pygame.transform.rotate(self.standing,90)
+            self.hitImage = pygame.transform.rotate(self.standing,90)
 
         def move_left(self):
+            self.current_state = self.states["RUNL"]
             self.moving_left = True
 
         def move_right(self):
+            self.current_state = self.states["RUNR"]
             self.moving_right = True
 
         def jump(self):
+            self.current_state = self.states["JUMP"]
             self.jumping = True
 
         def getHp(self):
@@ -50,11 +67,6 @@ class Player(PlayerAbstract):
         def update(self, world, globalVars, dt, enemies_group, interactuableGroup):
             self.interact(interactuableGroup)
             self.hitCooldown -= 1
-            
-            if self.anim > 6:
-                self.standing = self.current_state.next_sprite()
-                self.anim = 0
-            self.anim += 1
 
             # Calculo del movimiento horizontal
             (self.left_mov, left_movement) = move_horizontal(self.moving_left, self.left_mov, dt)
@@ -72,10 +84,6 @@ class Player(PlayerAbstract):
                 self.velY = -MIN_JUMP_HEIGHT
                 self.pressed_jump += 1
 
-            if horizontal_movement < 0:
-                self.current_state = self.states["RUNL"]
-            if horizontal_movement > 0:
-                self.current_state = self.states["RUNR"]
             if horizontal_movement == 0: 
                 self.current_state = self.states["IDLE"]
 
@@ -125,9 +133,28 @@ class Player(PlayerAbstract):
             self.moving_right = False
             self.jumping = False
 
+        def checkGunPick(self, world):
+            i = 0
+            for gun in world.gun_list:
+                if gun[1].colliderect(self.rect.x, self.rect.y, self.width, self.height):
+                    del world.gun_list[i] # Se elimina la pistola de la lista de objetos
+                    del gun # Se elimina el objeto pistola
+                    return True # Devolver gun en vez de True para tener mas armas?
+                i += 1
+            
+        def shoot(self, direction, gv):
+            print("No tengo arma")
 
         def draw(self, screen):
-            screen.blit(self.standing, self.rect)
+            if self.inAir:
+                self.current_state = self.states["JUMP"]
+            if self.anim > 6:
+                self.standing = self.current_state.next_sprite()
+                self.anim = 0
+            self.anim += 1
+
+            screen.blit(self.standing, (self.rect.x-20,self.rect.y,self.rect.width,self.rect.height))
+            #pygame.draw.rect(screen, (255,255,255), self.rect)
 
         def addObserver(self, observer):
             self.uiElementsList.append(observer)

@@ -1,11 +1,33 @@
 import pygame
-from player import Player
+from playerStates.idle import Idle
+from playerStates.run import Run
+from playerStates.jump import Jump
+from playerStates.shoot import Shoot
 from playerAbstract import PlayerAbstract
+from player import Player
 from bullet import Bullet
 
 class Pistol(PlayerAbstract):
     def __init__(self, player):
-        self.player = player
+        # Imagenes
+        self.states = {
+            "IDLE": Idle(False),
+            "RUNR": Run(True, False),
+            "RUNL": Run(True, True),
+            "JUMP": Jump(),
+            "shoot-left": Shoot("left"),
+            "shoot-up": Shoot("up"),
+            "shoot-right": Shoot("right"),
+            "shoot-down": Shoot("down"),
+        }
+        self.anim = 0
+        self.current_state = self.states["IDLE"]
+        self.standing = self.current_state.get_initial()
+        self.deadImage = pygame.transform.rotate(self.standing,90)
+        self.hitImage = pygame.transform.rotate(self.standing,90)    
+
+        self.player = player # Clase base player
+
         self.disparosList = []
         self.coolDown = 30
         self.velocidadBala = 10
@@ -13,12 +35,15 @@ class Pistol(PlayerAbstract):
         self.disparoImg = pygame.image.load('Assets/img/lazer_1.png')
 
     def move_left(self):
-        self.player.move_left()
+        self.current_state = self.states["RUNL"]
+        self.player.moving_left = True
     
     def move_right(self):
-        self.player.move_right()
+        self.current_state = self.states["RUNR"]
+        self.player.moving_right = True
     
     def jump(self):
+        self.current_state = self.states["JUMP"]
         self.player.jump()
     
     def getHp(self):
@@ -36,6 +61,7 @@ class Pistol(PlayerAbstract):
             
 
     def shoot(self, direction, gv):
+        self.current_state = self.states[f"shoot-{direction}"]
         if self.coolDown <= 0:
             self.coolDown = 30
 
@@ -43,10 +69,15 @@ class Pistol(PlayerAbstract):
             self.disparosList.append(disparo)
 
     def draw(self, screen):
-        self.player.draw(screen)
-
+        """if self.player.inAir:
+            self.current_state = self.states["JUMP"]"""
+        if self.anim > 6:
+                self.standing = self.current_state.next_sprite()
+                self.anim = 0
+        self.anim += 1
         for disparo in self.disparosList:
             disparo.draw(screen)
+        screen.blit(self.standing, (self.player.rect.x-20,self.player.rect.y,self.player.rect.width,self.player.rect.height))
 
     def checkGunPick(self, world):
         return self.player.checkGunPick(world)
