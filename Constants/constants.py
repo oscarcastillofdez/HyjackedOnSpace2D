@@ -13,6 +13,6 @@ SCREEN_HEIGTH = 736
 
 
 # Constantes de cargar niveleles
-LVLS_PATH = "Assets/world/"
+LVLS_PATH = "Assets/Images/World/"
 
 
