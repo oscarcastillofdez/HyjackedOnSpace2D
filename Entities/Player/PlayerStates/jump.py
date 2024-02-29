@@ -1,5 +1,5 @@
 import pygame
-from spritesheet import Spritesheet
+from Game.spritesheet import Spritesheet
 from .base import pState
 
 class Jump(pState):

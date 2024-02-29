@@ -2,9 +2,9 @@ import pygame
 import json
 from math import floor
 from Constants.global_vars import *
-from Enemies.enemy import *
-from Player.pistol import *
-from Interactuables.computer import Computer
+from Entities.Enemies.enemy import *
+from Entities.Player.pistol import *
+from Interactives.computer import Computer
 from Constants.constants import *
 
 class World():

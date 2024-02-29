@@ -2,7 +2,7 @@ import pygame
 from Enemies.entity import Entity
 import math
 
-from bullet import Bullet
+from Entities.bullet import Bullet
 class FlyingEnemy(pygame.sprite.Sprite, Entity):
     def __init__(self,x,y,globalVars) -> None:
         pygame.sprite.Sprite.__init__(self)

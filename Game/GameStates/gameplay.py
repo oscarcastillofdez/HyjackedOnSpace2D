@@ -1,19 +1,19 @@
 import pygame
-from .base import State
-from Player.player import Player
-from world import World
+from base import State
+from Entities.Player.player import Player
+from Game.world import World
 from UI.ui import Ui
-from Player.pistol import Pistol
-from Enemies.randomEnemyFactory import RandomEnemyFactory
+from Entities.Player.pistol import Pistol
+from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts
 # El gameplay seria buena idea hacerlo observador de player? 
 
 class Gameplay(State):
-    def __init__(self, gv):
+    def __init__(self):
         super(Gameplay, self).__init__()
         self.next_state = "GAME_OVER"
-        self.globalVars = gv
+        self.cameraOffset = (0,0)
         
         self.randomEnemyFactory = RandomEnemyFactory()
         self.enemies_group = pygame.sprite.Group()
@@ -21,7 +21,7 @@ class Gameplay(State):
 
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1])
         
-        self.world = World(gv, self.enemies_group, self.randomEnemyFactory, self.interactuableGroup)
+        self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactuableGroup, self.cameraOffset)
         
         self.uiText = UIText(self.globalVars)
         self.uiHearts = UIHearts()

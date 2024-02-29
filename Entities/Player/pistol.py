@@ -5,7 +5,7 @@ from PlayerStates.run import Run
 from PlayerStates.jump import Jump
 from PlayerStates.shoot import Shoot
 from Player.playerAbstract import PlayerAbstract
-from bullet import Bullet
+from Entities.bullet import Bullet
 
 class Pistol(PlayerAbstract):
     def __init__(self, player):

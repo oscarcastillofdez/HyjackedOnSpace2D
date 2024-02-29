@@ -1,21 +1,17 @@
 import pygame
 import sys
 
-from Constants.global_varsClass import Global_Vars
+from Constants import constants
 from MovementAndCollisions.aux_functions import *
 
-from Enemies.enemy import *
-from Player.player import *
-from world import *
-from GameStates.menu import Menu
-from GameStates.splash import Splash
-from GameStates.gameplay import Gameplay
-from GameStates.game_over import GameOver
-from game import Game
+from Game.world import *
+from Game.GameStates.menu import Menu
+from Game.GameStates.splash import Splash
+from Game.GameStates.gameplay import Gameplay
+from Game.GameStates.game_over import GameOver
+from Game.game import Game
 
 def main():
-    # Iniciar las variables globales
-    globalVars = Global_Vars()
 
     # Iniciar la dventana del juego
     pygame.init()
@@ -27,7 +23,7 @@ def main():
     states = {
         "MENU": Menu(),
         "SPLASH": Splash(),
-        "GAMEPLAY": Gameplay(globalVars),
+        "GAMEPLAY": Gameplay(),
         "GAME_OVER": GameOver(),
     }
     

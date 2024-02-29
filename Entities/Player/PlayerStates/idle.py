@@ -1,6 +1,6 @@
 import pygame
 from .base import pState
-from spritesheet import Spritesheet
+from Game.spritesheet import Spritesheet
 
 class Idle(pState):
     def __init__(self, gun):
