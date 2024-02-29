@@ -1,14 +1,27 @@
 import pygame
-from playerStates.idle import Idle
-from playerStates.run import Run
+from PlayerStates.idle import Idle
+from PlayerStates.run import Run
+from PlayerStates.jump import Jump
 from math import floor
-from global_vars import *
-from aux_functions import *
+from Constants.global_vars import *
+from MovementAndCollisions.aux_functions import *
 from Player.playerAbstract import PlayerAbstract
 
 class Player(PlayerAbstract):
         def __init__(self, x, y):
             super().__init__(x, y)
+            # Imagenes
+            self.states = {
+                "IDLE": Idle(False),
+                "RUNR": Run(False, False),
+                "RUNL": Run(False, True),
+            }
+            # Imagenes
+            self.anim = 0 
+            self.current_state = self.states["IDLE"]
+            self.standing = self.current_state.get_initial()
+            self.deadImage = pygame.transform.rotate(self.standing,90)
+            self.hitImage = pygame.transform.rotate(self.standing,90)
 
         def move_left(self):
             self.moving_left = True
@@ -50,6 +63,10 @@ class Player(PlayerAbstract):
         def update(self, world, globalVars, dt, enemies_group, interactuableGroup):
             self.interact(interactuableGroup)
             self.hitCooldown -= 1
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_w]:
+                self.velY = -10
             
             if self.anim > 6:
                 self.standing = self.current_state.next_sprite()
@@ -62,15 +79,18 @@ class Player(PlayerAbstract):
             horizontal_movement = floor(right_movement - left_movement)
 
             # Calculo del movimiento vertical
-            if self.jumping and self.inAir == False:
+            if self.jumping and self.inAir == False and self.pressed_jump == 0:
                 self.velY = -MIN_JUMP_HEIGHT
                 self.hold_jump = True
-                self.pressed_jump = 0
             elif self.jumping == False or self.pressed_jump > MAX_JUMP_HEIGHT:
                 self.hold_jump = False
             elif self.jumping and self.inAir and self.hold_jump:
                 self.velY = -MIN_JUMP_HEIGHT
                 self.pressed_jump += 1
+
+            # Para que al mantener el espacio solo salte una vez
+            if self.jumping == False:
+                self.pressed_jump = 0
 
             if horizontal_movement < 0:
                 self.current_state = self.states["RUNL"]

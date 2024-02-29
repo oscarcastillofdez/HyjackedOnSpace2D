@@ -1,17 +1,16 @@
 import pygame
 import sys
 
-from global_varsClass import Global_Vars
-from aux_functions import *
+from Constants.global_varsClass import Global_Vars
+from MovementAndCollisions.aux_functions import *
 
-from button import *
 from Enemies.enemy import *
 from Player.player import *
 from world import *
-from gameStates.menu import Menu
-from gameStates.splash import Splash
-from gameStates.gameplay import Gameplay
-from gameStates.game_over import GameOver
+from GameStates.menu import Menu
+from GameStates.splash import Splash
+from GameStates.gameplay import Gameplay
+from GameStates.game_over import GameOver
 from game import Game
 
 def main():

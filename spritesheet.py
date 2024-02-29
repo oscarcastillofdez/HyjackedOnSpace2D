@@ -16,7 +16,7 @@ class Spritesheet():
     def get_animation(self, x,y,w,h,n):
         anim = []
         for i in range(n):
-            sprite = self.get_sprite(x+64*i,y,w,h)
+            sprite = self.get_sprite(x+w*i,y,w,h)
             sprite.set_colorkey((255,0,0))
             """sprite = pygame.Surface((w,h))
             sprite.blit(self.sprite_sheet, (0,0),(x,y+64*n,w,h))"""

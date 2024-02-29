@@ -1,11 +1,11 @@
 import pygame
 import json
 from math import floor
-from global_vars import *
+from Constants.global_vars import *
 from Enemies.enemy import *
 from Player.pistol import *
 from Interactuables.computer import Computer
-from constants import *
+from Constants.constants import *
 
 class World():
         def __init__(self, globalVars, enemies, enemyFactory, interactuable):
@@ -20,15 +20,8 @@ class World():
             pistola2 = pygame.image.load('Assets/img/pistol2.png')
             pistola3 = pygame.image.load('Assets/img/pistol3.png')
             ordenador = pygame.image.load('Assets/img/ibm5150.png')
-            
-            # Se dibuja las tiles en el mundo
-            img = pygame.transform.scale(suelo, (TILE_SIZE, TILE_SIZE))
-            img_rect = img.get_rect()
-
-            previousTile = (img, img_rect)
-            previousTileId = 0
-
-            row_count = 0
+        
+            '''row_count = 0
             for row in globalVars.world_data:
                 col_count = 0
                 previousTileId = -1
@@ -91,8 +84,8 @@ class World():
                         interactuable.add(ordenador)
                         previousTileId = 4
                     col_count += 1
-                row_count += 1
-                self.cargarNivel("lvl1")
+                row_count += 1'''
+            self.cargarNivel("lvl1")
 
             print("Numero de tiles en el terreno antes: ")
             print(len(self.tile_list))
@@ -125,7 +118,7 @@ class World():
 
         def seleccionarTextura(self, fila, columna, maxColumna, altura, anchura, imagen):
             if columna >= maxColumna:
-                return self.seleccionarTextura(fila+1, columna-9, maxColumna, altura, anchura, imagen)
+                return self.seleccionarTextura(fila+1, columna-10, maxColumna, altura, anchura, imagen)
             else:
                 return imagen.subsurface((columna*anchura, fila*altura, anchura, altura))
             
@@ -158,21 +151,36 @@ class World():
             # Iniciar la posicion del mapa
             mapaX = 0
             mapaY = 0
+            previousTileId = 0
 
             # Se recorre el nivel tile por tile
             for tile in nivel1Grid:
                 # Si un tile
                 if tile > 0:
                     # Se recupera la textura que representa el tile y se añade una hitbox
-                    textura = self.seleccionarTextura(0, tile+compresion, columnas, tileHeight, tileWidth, imagen)
-                    img_rect = textura.get_rect()
-                    img_rect.x = mapaX * tileWidth
-                    img_rect.y = mapaY * tileHeight
-                    tile = (textura, img_rect)
-                    self.tile_list.append(tile) 
+                    texture = self.seleccionarTextura(0, tile+compresion, columnas, tileHeight, tileWidth, imagen)
+                    textureRect = texture.get_rect()
+                    textureRect.x = mapaX * tileWidth
+                    textureRect.y = mapaY * tileHeight
+                    tileTuple = (texture, textureRect)
+                    self.tile_list.append(tileTuple) 
+
+                    if previousTileId == 1:
+                        self.terrainHitBoxList.pop()
+                        joinedHitBox = previousTile.union(textureRect)
+                        previousTile = joinedHitBox
+                        self.terrainHitBoxList.append(joinedHitBox)
+                    else:
+                        self.terrainHitBoxList.append(textureRect)
+                        previousTile = textureRect
+
+                    previousTileId = 1
                 
+                else: 
+                    previousTileId = 0
+                    
                 # Se actualiza la posicion del mapa
                 mapaX += 1
-                if mapaX > anchuraMapa:
+                if mapaX >= anchuraMapa:
                     mapaX = 0
                     mapaY += 1

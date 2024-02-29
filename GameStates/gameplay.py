@@ -20,6 +20,7 @@ class Gameplay(State):
         self.interactuableGroup = pygame.sprite.Group()
 
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1])
+        
         self.world = World(gv, self.enemies_group, self.randomEnemyFactory, self.interactuableGroup)
         
         self.uiText = UIText(self.globalVars)
@@ -28,6 +29,7 @@ class Gameplay(State):
 
         self.player.addObserver(self.uiText)
         self.player.addObserver(self.uiHearts)
+        self.player = Pistol(self.player)
 
 
     def get_event(self, event):

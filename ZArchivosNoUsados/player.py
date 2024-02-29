@@ -1,11 +1,11 @@
 import pygame
-from playerStates.idle import Idle
-from playerStates.run import Run
-from playerStates.jump import Jump
+from PlayerStates.idle import Idle
+from PlayerStates.run import Run
+from PlayerStates.jump import Jump
 from math import floor
-from global_vars import *
-from aux_functions import *
-from playerAbstract import PlayerAbstract
+from Constants.global_vars import *
+from MovementAndCollisions.aux_functions import *
+from Player.playerAbstract import PlayerAbstract
 
 class Player(PlayerAbstract):
         def __init__(self, x, y):

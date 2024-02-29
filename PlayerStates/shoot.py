@@ -1,4 +1,4 @@
-from playerStates.base import pState
+from PlayerStates.base import pState
 from spritesheet import Spritesheet
 
 class Shoot(pState):

@@ -1,10 +1,10 @@
 import pygame
-from playerStates.idle import Idle
-from playerStates.run import Run
-from playerStates.jump import Jump
-from playerStates.shoot import Shoot
-from playerAbstract import PlayerAbstract
-from player import Player
+from PlayerStates.idle import Idle
+from PlayerStates.run import Run
+from PlayerStates.jump import Jump
+from PlayerStates.shoot import Shoot
+from Player.playerAbstract import PlayerAbstract
+from ZArchivosNoUsados.player import Player
 from bullet import Bullet
 
 class Pistol(PlayerAbstract):

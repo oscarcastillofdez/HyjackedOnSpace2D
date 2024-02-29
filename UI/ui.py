@@ -1,5 +1,5 @@
 import pygame
-from global_varsClass import Global_Vars
+from Constants.global_varsClass import Global_Vars
 
 class Ui():
     def __init__(self, playerObservable, uiText, uiHearts):
