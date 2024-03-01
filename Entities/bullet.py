@@ -2,8 +2,7 @@ import pygame
 import math
 
 class Bullet():
-    def __init__(self, disparoImg, direction, velocidad, x, y, gv) -> None:
-        self.global_vars = gv
+    def __init__(self, disparoImg, direction, velocidad, x, y) -> None:
         
         self.velocidad = velocidad
 
@@ -26,9 +25,11 @@ class Bullet():
         self.rect.height = disparoImg.get_width() / 8
         self.rect
 
-    def update(self):
-        self.rect.x -= self.velocidadX + self.global_vars.CAMERA_OFFSET_X
-        self.rect.y -= self.velocidadY + self.global_vars.CAMERA_OFFSET_Y
+    def update(self, cameraOffset):
+
+        cameraOffsetX,cameraOffsetY = cameraOffset
+        self.rect.x -= self.velocidadX + cameraOffsetX
+        self.rect.y -= self.velocidadY + cameraOffsetY
 
     def checkBulletCollision(self, world, enemies_group):
         objetoColision = pygame.sprite.spritecollide(self, enemies_group, False)

@@ -1,11 +1,12 @@
 import pygame
 from Game.spritesheet import Spritesheet
 from .base import pState
+from Constants.constants import *
 
 class Jump(pState):
     def __init__(self):
         super(Jump, self).__init__()
-        self.spritesheet = Spritesheet('Assets/player/jump-player.png',(100,100))
+        self.spritesheet = Spritesheet(PLAYER_SPRITES_PATH + 'jump-player.png',(100,100))
         
         self.animation = self.spritesheet.get_animation(0,0,64,64,7)
         self.current = self.animation[0]

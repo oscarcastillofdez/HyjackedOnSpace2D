@@ -49,7 +49,7 @@ class PlayerAbstract():
     def checkHit(self, enemies_group):
         pass
     
-    def update(self, world, globalVars, dt):
+    def update(self, world, dt) -> tuple:
         pass
     
     def shoot(self, direction, gv):

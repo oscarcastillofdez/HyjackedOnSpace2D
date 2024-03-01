@@ -3,7 +3,7 @@ from .PlayerStates.idle import Idle
 from .PlayerStates.run import Run
 from .PlayerStates.jump import Jump
 from math import floor
-from Constants.global_vars import *
+from Constants.constants import *
 from MovementAndCollisions.aux_functions import *
 from .playerAbstract import PlayerAbstract
 
@@ -60,7 +60,10 @@ class Player(PlayerAbstract):
             return self.interactuableText
                 
 
-        def update(self, world, globalVars, dt, enemies_group, interactuableGroup):
+        def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
+
+            cameraOffsetX, cameraOffsetY = cameraOffset
+
             self.interact(interactuableGroup)
             self.hitCooldown -= 1
 
@@ -122,8 +125,8 @@ class Player(PlayerAbstract):
                         self.velY = 0
                         self.inAir = False
             
-            globalVars.CAMERA_OFFSET_X = 0
-            globalVars.CAMERA_OFFSET_Y = 0
+            cameraOffsetX = 0
+            cameraOffsetY = 0
 
             # Si el jugador se mueve en los limites del scroll se mueve sin mas, si no se hace scroll
             if self.rect.x > SCREEN_WIDTH / 3 and self.rect.x < SCREEN_WIDTH - (SCREEN_WIDTH / 3):
@@ -131,19 +134,23 @@ class Player(PlayerAbstract):
             elif self.rect.x + dx > SCREEN_WIDTH / 3 and self.rect.x + dx < SCREEN_WIDTH - (SCREEN_WIDTH / 3):
                 self.rect.x += dx 
             else:
-                globalVars.CAMERA_OFFSET_X = dx
+                cameraOffsetX = dx
 
             if self.rect.y > (SCREEN_HEIGTH / 2) and self.rect.y < SCREEN_HEIGTH - (SCREEN_HEIGTH / 2):
                 self.rect.y += dy
             elif self.rect.y + dy >= (SCREEN_HEIGTH / 2) and self.rect.y + dy <= SCREEN_HEIGTH - (SCREEN_HEIGTH / 2):
                 self.rect.y += dy
             else:
-                globalVars.CAMERA_OFFSET_Y = dy
+                cameraOffsetY = dy
 
             # Se reinician las variables de movimiento
             self.moving_left = False
             self.moving_right = False
             self.jumping = False
+
+            
+
+            return (cameraOffsetX, cameraOffsetY)
 
         def checkGunPick(self, world):
             i = 0

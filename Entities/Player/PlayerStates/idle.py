@@ -1,11 +1,12 @@
 import pygame
 from .base import pState
+from Constants.constants import *
 from Game.spritesheet import Spritesheet
 
 class Idle(pState):
     def __init__(self, gun):
         super(Idle, self).__init__()
-        self.withoutgun = Spritesheet('Assets/Images/Entities/Player/idle-player.png',(100,100))
+        self.withoutgun = Spritesheet(PLAYER_SPRITES_PATH + 'idle-player.png',(100,100))
         self.animations = {
             "NOGUN": self.withoutgun.get_animation(0,0,64,64,7) 
         }

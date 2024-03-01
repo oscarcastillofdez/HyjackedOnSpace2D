@@ -6,6 +6,7 @@ from .PlayerStates.jump import Jump
 from .PlayerStates.shoot import Shoot
 from .playerAbstract import PlayerAbstract
 from Entities.bullet import Bullet
+from Constants.constants import *
 
 class Pistol(PlayerAbstract):
     def __init__(self, player):
@@ -15,7 +16,7 @@ class Pistol(PlayerAbstract):
         self.disparosList = []
         self.coolDown = 30
         self.velocidadBala = 10
-        self.disparoImg = pygame.image.load('Assets/img/lazer_1.png')
+        self.disparoImg = pygame.image.load(PLAYER_PATH + 'lazer_1.png')
 
         # Imagenes
         self.states = {
@@ -42,22 +43,24 @@ class Pistol(PlayerAbstract):
     def getHp(self):
         return self.player.getHp()
     
-    def update(self, world, globalVars, dt, enemies_group, interactuableGroup):
-        self.player.update(world, globalVars, dt, enemies_group, interactuableGroup)
+    def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset):
+        cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, cameraOffset)
         self.coolDown -= 1
         
         for disparo in self.disparosList:
-            disparo.update()
+            disparo.update(cameraOffset)
             if disparo.checkBulletCollision(world, enemies_group) or disparo.checkDespawnTime():
                 self.disparosList.remove(disparo)
                 del disparo
+        
+        return cameraOffset
             
 
-    def shoot(self, direction, gv):
+    def shoot(self, direction):
         if self.coolDown <= 0:
             self.coolDown = 30
 
-            disparo = Bullet(self.disparoImg, direction, self.velocidadBala, self.player.rect.x, self.player.rect.y, gv)
+            disparo = Bullet(self.disparoImg, direction, self.velocidadBala, self.player.rect.x, self.player.rect.y)
             self.disparosList.append(disparo)
 
     def draw(self, screen):

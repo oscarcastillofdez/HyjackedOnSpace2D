@@ -8,18 +8,17 @@ from Interactives.computer import Computer
 from Constants.constants import *
 
 class World():
-        def __init__(self, globalVars, enemies, enemyFactory, interactuable):
-            self.globalVars = globalVars
+        def __init__(self, enemies, enemyFactory, interactives, cameraOffset):
             self.tile_list = []
             self.gun_list = []
             self.terrainHitBoxList = []
             self.interactuableList = []
 
             self.enemyFactory = enemyFactory
-            pistola = pygame.image.load('Assets/img/pistol.png')
-            pistola2 = pygame.image.load('Assets/img/pistol2.png')
-            pistola3 = pygame.image.load('Assets/img/pistol3.png')
-            ordenador = pygame.image.load('Assets/img/ibm5150.png')
+            pistola = pygame.image.load(PLAYER_PATH + '/pistol.png')
+            pistola2 = pygame.image.load(PLAYER_PATH + '/pistol2.png')
+            pistola3 = pygame.image.load(PLAYER_PATH + '/pistol3.png')
+            ordenador = pygame.image.load(INTERACTIVES_PATH + '/ibm5150.png')
         
             '''row_count = 0
             for row in globalVars.world_data:
@@ -85,9 +84,9 @@ class World():
                         previousTileId = 4
                     col_count += 1
                 row_count += 1'''
-            self.cargarNivel("lvl1")
+            self.cargarNivel("Lvl1")
 
-            print("Numero de tiles en el terreno antes: ")
+            '''print("Numero de tiles en el terreno antes: ")
             print(len(self.tile_list))
             print("Numero de tiles en el terreno ahora: ")
             print(len(self.terrainHitBoxList))
@@ -96,24 +95,26 @@ class World():
             print("Numero de tiles en el terreno antes: ")
             print(len(self.tile_list))
             print("Numero de tiles en el terreno ahora: ")
-            print(len(self.terrainHitBoxList))
+            print(len(self.terrainHitBoxList))'''
 
-        def draw(self, screen, globalVars):
+        def draw(self, screen, cameraOffset):
             # Se dibuja las tiles teniendo en cuenta el scroll
 
+            (cameraOffsetX,cameraOffsetY) = cameraOffset
+
             for tile in self.tile_list:
-                tile[1].x -= globalVars.CAMERA_OFFSET_X
-                tile[1].y -= globalVars.CAMERA_OFFSET_Y
+                tile[1].x -= cameraOffsetX
+                tile[1].y -= cameraOffsetY
                 screen.blit(tile[0], tile[1])
 
             for gun in self.gun_list:
-                gun[1].x -= globalVars.CAMERA_OFFSET_X
-                gun[1].y -= globalVars.CAMERA_OFFSET_Y
+                gun[1].x -= cameraOffsetX
+                gun[1].y -= cameraOffsetY
                 screen.blit(gun[0], gun[1])
 
             for hitbox in self.terrainHitBoxList:
-                hitbox.x -= globalVars.CAMERA_OFFSET_X
-                hitbox.y -= globalVars.CAMERA_OFFSET_Y
+                hitbox.x -= cameraOffsetX
+                hitbox.y -= cameraOffsetY
 
 
         def seleccionarTextura(self, fila, columna, maxColumna, altura, anchura, imagen):
@@ -137,7 +138,7 @@ class World():
             # Cargar el json con los datos de las texturas
 
             pathTextura = nivelData['tilesets'][0]['source']
-            with open(LVLS_PATH + "lvl1/" + pathTextura, 'r') as file:
+            with open(LVLS_PATH + nivel + "/" + pathTextura, 'r') as file:
                 texturasNivel = file.read()
             texturasNivel = json.loads(texturasNivel)
             columnas = texturasNivel['columns']

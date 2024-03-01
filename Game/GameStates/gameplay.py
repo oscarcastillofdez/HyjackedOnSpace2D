@@ -17,13 +17,13 @@ class Gameplay(State):
         
         self.randomEnemyFactory = RandomEnemyFactory()
         self.enemies_group = pygame.sprite.Group()
-        self.interactuableGroup = pygame.sprite.Group()
+        self.interactiveGroup = pygame.sprite.Group()
 
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1])
         
-        self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactuableGroup, self.cameraOffset)
+        self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset)
         
-        self.uiText = UIText(self.globalVars)
+        self.uiText = UIText()
         self.uiHearts = UIHearts()
         self.ui = Ui(self.player, self.uiText, self.uiHearts)
 
@@ -45,17 +45,19 @@ class Gameplay(State):
         if keys[pygame.K_SPACE]:
             self.player.jump()
         if keys[pygame.K_LEFT]:
-            self.player.shoot(180, self.globalVars)
+            self.player.shoot(180)
         if keys[pygame.K_RIGHT]:
-            self.player.shoot(0, self.globalVars)
+            self.player.shoot(0)
         if keys[pygame.K_UP]:
-            self.player.shoot(90, self.globalVars)
+            self.player.shoot(90)
         if keys[pygame.K_DOWN]:
-            self.player.shoot(270, self.globalVars)
+            self.player.shoot(270)
+
                 
-        self.player.update(self.world, self.globalVars, dt, self.enemies_group, self.interactuableGroup)
+        
+        self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)
         self.enemies_group.update(self.world, self.player)
-        self.interactuableGroup.update(self.player)
+        self.interactiveGroup.update(self.player)
         
         # Si se queda sin vidas acaba el juego
         if self.player.getHp() <= 0: 
@@ -70,10 +72,10 @@ class Gameplay(State):
     def draw(self, surface):
         surface.fill("gray")
         self.player.draw(surface)
-        self.world.draw(surface, self.globalVars)
+        self.world.draw(surface, self.cameraOffset)
         self.enemies_group.draw(surface)
         self.ui.draw(surface)
-        self.interactuableGroup.draw(surface)
+        self.interactiveGroup.draw(surface)
         #self.text.draw(surface)
         
         for enemy in self.enemies_group:
