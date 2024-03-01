@@ -7,7 +7,7 @@ class Menu(State):
         self.active_index = 0
         self.options = ["Play", "Options", "Quit"]
         self.next_state = "GAMEPLAY"
-        self.music = pygame.mixer.Sound('Assets/audio/MainMenu.mp3')
+        self.music = pygame.mixer.Sound('Assets/Audio/MainMenu.mp3')
     
     # Funcion renderiza el texto del menu, pone azul la opcion que 
     # se esta seleccionando

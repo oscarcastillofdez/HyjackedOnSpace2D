@@ -1,10 +1,8 @@
 import pygame
 import sys
 
-from Constants import constants
 from MovementAndCollisions.aux_functions import *
 
-from Game.world import *
 from Game.GameStates.menu import Menu
 from Game.GameStates.splash import Splash
 from Game.GameStates.gameplay import Gameplay

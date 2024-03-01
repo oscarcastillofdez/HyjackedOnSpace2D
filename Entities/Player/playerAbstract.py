@@ -1,6 +1,6 @@
 import pygame
-from PlayerStates.idle import Idle
-from PlayerStates.run import Run
+from .PlayerStates.idle import Idle
+from .PlayerStates.run import Run
 from math import floor
 from Constants.global_vars import *
 from MovementAndCollisions.aux_functions import *

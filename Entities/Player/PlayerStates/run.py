@@ -10,19 +10,19 @@ class Run(pState):
         if gun:
             if left:
                 # Spritesheet runLeftGun-player
-                self.spritesheet = Spritesheet('Assets/player/RunGunLeft-player.png',(100,100))
+                self.spritesheet = Spritesheet('Assets/Images/Entities/Player/RunGunLeft-player.png',(100,100))
             else:
                 # Spritesheet runGun-player
-                self.spritesheet = Spritesheet('Assets/player/RunGunRight-player.png',(100,100))
+                self.spritesheet = Spritesheet('Assets/Images/Entities/Player/RunGunRight-player.png',(100,100))
                 pass
         else:
             if left:
                 # Spritesheet runLeft-player
-                self.spritesheet = Spritesheet('Assets/player/RunLeft-player.png',(100,100))
+                self.spritesheet = Spritesheet('Assets/Images/Entities/Player/RunLeft-player.png',(100,100))
                 pass
             else:
                 #Spritesheet run-player
-                self.spritesheet = Spritesheet('Assets/player/RunRight-player.png',(100,100))
+                self.spritesheet = Spritesheet('Assets/Images/Entities/Player/RunRight-player.png',(100,100))
         self.animation = self.spritesheet.get_animation(0,0,64,64,6)
     
     def initial(self):

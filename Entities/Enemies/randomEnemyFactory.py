@@ -1,6 +1,6 @@
-from Enemies.enemyFactory import EnemyFactory
-from Enemies.flyingEnemy import FlyingEnemy
-from Enemies.enemy import Enemy
+from .enemyFactory import EnemyFactory
+from .flyingEnemy import FlyingEnemy
+from .enemy import Enemy
 
 class RandomEnemyFactory(EnemyFactory):
     def __init__(self) -> None:

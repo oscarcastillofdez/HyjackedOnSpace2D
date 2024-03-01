@@ -1,5 +1,5 @@
 import pygame
-from Enemies.entity import Entity
+from .entity import Entity
 import math
 
 from Entities.bullet import Bullet

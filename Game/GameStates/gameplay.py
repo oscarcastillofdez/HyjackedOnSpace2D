@@ -1,5 +1,5 @@
 import pygame
-from base import State
+from Game.GameStates.base import State
 from Entities.Player.player import Player
 from Game.world import World
 from UI.ui import Ui
