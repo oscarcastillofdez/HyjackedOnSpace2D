@@ -1,5 +1,5 @@
 import pygame
-from Constants.global_vars import *
+from Constants.constants import *
 
 def draw_grid2(screen):
         for line in range(0,10):

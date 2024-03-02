@@ -1,7 +1,5 @@
 import pygame
 import json
-from math import floor
-from Constants.global_vars import *
 from Entities.Enemies.enemy import *
 from Entities.Player.pistol import *
 from Interactives.computer import Computer
@@ -105,7 +103,9 @@ class World():
             for tile in self.tile_list:
                 tile[1].x -= cameraOffsetX
                 tile[1].y -= cameraOffsetY
-                screen.blit(tile[0], tile[1])
+
+                if tile[1].x > cameraOffsetX - 320 and tile[1].x < cameraOffsetX + SCREEN_WIDTH + 320 and tile[1].y > cameraOffsetY - 320 and tile[1].y < cameraOffsetY + SCREEN_HEIGTH + 320:
+                    screen.blit(tile[0], tile[1])
 
             for gun in self.gun_list:
                 gun[1].x -= cameraOffsetX
@@ -131,6 +131,7 @@ class World():
                 nivelData = file.read()
             nivelData = json.loads(nivelData)
             mapaNivel1 = nivelData['layers'][0]
+            mapaFondo = nivelData['layers'][2]['data']
             nivel1Grid = mapaNivel1['data']
             anchuraMapa = mapaNivel1['width']
             compresion = nivelData['compressionlevel']
@@ -147,6 +148,28 @@ class World():
 
             # Cargar la imagen con las texturas de los tiles
             imagen = pygame.image.load(LVLS_PATH + nivel + '/texturas.png') 
+
+
+            mapaX = 0
+            mapaY = 0
+
+            '''# Se recorre el nivel tile por tile
+            for tile in mapaFondo:
+                # Si un tile
+                if tile > 0:
+                    # Se recupera la textura que representa el tile y se añade una hitbox
+                    texture = self.seleccionarTextura(0, tile+compresion, columnas, tileHeight, tileWidth, imagen)
+                    textureRect = texture.get_rect()
+                    textureRect.x = mapaX * tileWidth
+                    textureRect.y = mapaY * tileHeight
+                    tileTuple = (texture, textureRect)
+                    self.tile_list.append(tileTuple) 
+                    
+                # Se actualiza la posicion del mapa
+                mapaX += 1
+                if mapaX >= anchuraMapa:
+                    mapaX = 0
+                    mapaY += 1'''
 
 
             # Iniciar la posicion del mapa
@@ -185,3 +208,5 @@ class World():
                 if mapaX >= anchuraMapa:
                     mapaX = 0
                     mapaY += 1
+
+            

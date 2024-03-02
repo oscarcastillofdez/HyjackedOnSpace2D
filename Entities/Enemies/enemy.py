@@ -1,5 +1,5 @@
 import pygame
-from Constants.global_vars import *
+from Constants.constants import *
 from .entity import Entity
 import math
 

@@ -7,13 +7,14 @@
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "datosNivel.json": {
             "scale": 0.125,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 4724,
-                "y": 1076
+                "x": 4772,
+                "y": 1388
             }
         },
         "datosTexturas.json": {
@@ -28,8 +29,8 @@
     ],
     "project": "Nivel1.tiled-project",
     "recentFiles": [
-        "datosNivel.json",
-        "datosTexturas.json"
+        "datosTexturas.json",
+        "datosNivel.json"
     ],
     "tileset.lastUsedFormat": "json"
 }

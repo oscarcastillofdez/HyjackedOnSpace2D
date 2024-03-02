@@ -1,12 +1,11 @@
 import pygame
-from Constants.global_varsClass import Global_Vars
+from Constants.constants import *
 
 class Ui():
     def __init__(self, playerObservable, uiText, uiHearts):
         self.playerObservable = playerObservable
         
         self.pickUpText = ""
-        self.gv = Global_Vars()
         self.uiText = uiText
         self.uiHearts = uiHearts
     

@@ -71,8 +71,8 @@ class Gameplay(State):
             
     def draw(self, surface):
         surface.fill("gray")
-        self.player.draw(surface)
         self.world.draw(surface, self.cameraOffset)
+        self.player.draw(surface)
         self.enemies_group.draw(surface)
         self.ui.draw(surface)
         self.interactiveGroup.draw(surface)
