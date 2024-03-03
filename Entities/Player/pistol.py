@@ -55,13 +55,15 @@ class Pistol(PlayerAbstract):
         
         return cameraOffset
             
+    def deflect(self, direction, bulletImage, velocidadBala):
+        self.player.deflect(direction,bulletImage,velocidadBala)
 
     def shoot(self, direction):
         if self.coolDown <= 0:
             self.coolDown = 30
-
-            disparo = Bullet(self.disparoImg, direction, self.velocidadBala, self.player.rect.x, self.player.rect.y)
+            disparo = Bullet(self.disparoImg, direction, self.velocidadBala, self.player.position().x, self.player.position().y)
             self.disparosList.append(disparo)
+            
 
     def draw(self, screen):
         self.player.draw(screen)
@@ -77,3 +79,6 @@ class Pistol(PlayerAbstract):
     
     def hit(self):
         return self.player.hit()
+    
+    def cover(self):
+        self.player.cover()

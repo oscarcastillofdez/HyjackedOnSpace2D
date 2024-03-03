@@ -7,6 +7,7 @@ from Entities.Player.pistol import Pistol
 from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts
+from Entities.Player.playerWithShield import PlayerWithShield
 # El gameplay seria buena idea hacerlo observador de player? 
 
 class Gameplay(State):
@@ -29,7 +30,6 @@ class Gameplay(State):
 
         self.player.addObserver(self.uiText)
         self.player.addObserver(self.uiHearts)
-        self.player = Pistol(self.player)
 
 
     def get_event(self, event):
@@ -44,27 +44,41 @@ class Gameplay(State):
             self.player.move_right()
         if keys[pygame.K_SPACE]:
             self.player.jump()
-        if keys[pygame.K_LEFT]:
-            self.player.shoot(180)
+        if keys[pygame.K_RIGHT] and keys[pygame.K_UP]:
+            self.player.shoot(45)
+        if keys[pygame.K_LEFT] and keys[pygame.K_UP]:
+            self.player.shoot(135)
+        if keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
+            self.player.shoot(315)
+        if keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
+            self.player.shoot(225)
         if keys[pygame.K_RIGHT]:
             self.player.shoot(0)
+        if keys[pygame.K_LEFT]:
+            self.player.shoot(180)
         if keys[pygame.K_UP]:
             self.player.shoot(90)
         if keys[pygame.K_DOWN]:
             self.player.shoot(270)
-
-                
+        if keys[pygame.K_1]:
+            self.player.cover()
         
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)
-        self.enemies_group.update(self.world, self.player)
+        self.enemies_group.update(self.world, self.player, self.cameraOffset)
         self.interactiveGroup.update(self.player)
         
         # Si se queda sin vidas acaba el juego
         if self.player.getHp() <= 0: 
             self.done = True
         
-        if self.player.checkGunPick(self.world):
-            self.player = Pistol(self.player)
+        item = self.player.checkGunPick(self.world)
+        if item:
+            if item[1] == "pistol1":
+                self.player = Pistol(self.player)
+            elif item[1] == "shield":
+                self.player = PlayerWithShield(self.player)
+            del item
+            
         
         #if self.player.checkInteractuable(self.world):
             #self.text.showInteractuableText("Presiona E para interactuar.", "white")

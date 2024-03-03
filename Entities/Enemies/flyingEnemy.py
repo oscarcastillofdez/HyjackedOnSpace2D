@@ -1,19 +1,19 @@
 import pygame
 from .entity import Entity
 import math
+from Constants.constants import *
 
 from Entities.bullet import Bullet
 class FlyingEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y,globalVars) -> None:
+    def __init__(self,x,y) -> None:
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(pygame.image.load('Assets/img/pj.png'), (120, 120))
+        self.image = pygame.transform.scale(pygame.image.load('Assets/Images/Desorden/pj.png'), (120, 120))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y - 100
         self.patrollingchasingSpeed = 1
-        self.image_orig = pygame.transform.scale(pygame.image.load('Assets/img/pj.png'), (120, 120))
+        self.image_orig = pygame.transform.scale(pygame.image.load('Assets/Images/Desorden/pj.png'), (120, 120))
         self.moved = 0
-        self.globalVars = globalVars
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.inAir = True
@@ -26,7 +26,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.distanciaAlJugador = 0
 
         self.shootCooldown = 60
-        self.disparoImg = pygame.image.load('Assets/img/lazer_24.png')
+        self.disparoImg = pygame.image.load('Assets/Images/Entities/Player/lazer_24.png')
         self.disparosList = []
         self.angle = 0
         self.velocidadBala = 10
@@ -48,24 +48,27 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
 
     def checkBulletCollision2(self, world, player, disparo):
         if disparo.bulletPosition().colliderect(player.position()):
-            player.hit()
-            return True
+            if player.hit():
+                return True
+            else:
+                player.deflect(self.angle + 180, self.disparoImg, self.velocidadBala)
+                return False
         
         for tile in world.terrainHitBoxList:
             if tile.colliderect(disparo.bulletPosition()):
                 return True
                 
-    def update(self, world, player):
+    def update(self, world, player, cameraOffset):
         for disparo in self.disparosList:
-            disparo.update()
+            disparo.update(cameraOffset)
             if self.checkBulletCollision2(world, player, disparo) or disparo.checkDespawnTime():
                 self.disparosList.remove(disparo)
                 del disparo
 
-        self.states[self.current_state](world, player)
+        self.states[self.current_state](world, player, cameraOffset)
         self.player_in_sight(world, player)
 
-    def patrol(self, world, player):
+    def patrol(self, world, player, cameraOffset):
         # Comportamiento cuando está patrullando
         dy = 0
 
@@ -92,11 +95,11 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
                         self.velY = 0
                         self.inAir = False
 
-        self.rect.x += self.patrollingchasingSpeed - self.globalVars.CAMERA_OFFSET_X
-        self.rect.y += dy - self.globalVars.CAMERA_OFFSET_Y
+        self.rect.x += self.patrollingchasingSpeed - cameraOffset[0]
+        self.rect.y += dy - cameraOffset[1]
 
     
-    def chase(self, world, player):
+    def chase(self, world, player,cameraOffset):
         self.chaseTime -= 1
 
         if self.chaseTime <= 0:
@@ -116,8 +119,8 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             if tile.colliderect(self.rect.x - self.moved, self.rect.y, self.width, self.height):
                 self.moved = 0
 
-        self.rect.x -= self.globalVars.CAMERA_OFFSET_X
-        self.rect.y -= self.globalVars.CAMERA_OFFSET_Y
+        self.rect.x -= cameraOffset[0]
+        self.rect.y -= cameraOffset[1]
         
         self.rect.x -= self.moved
 
@@ -128,7 +131,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             self.change_state("attacking")
 
     
-    def attack(self, world, player):
+    def attack(self, world, player,cameraOffset):
         # Disparar cada x segundos
         
 
@@ -136,11 +139,11 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         if self.shootCooldown <= 0:
             self.shootCooldown = 30
             print(self.angle)
-            disparo = Bullet(self.disparoImg, self.angle, self.velocidadBala, self.rect.x, self.rect.y, world.globalVars)
+            disparo = Bullet(self.disparoImg, self.angle, self.velocidadBala, self.rect.x, self.rect.y)
             self.disparosList.append(disparo)
 
-        self.rect.x -= self.globalVars.CAMERA_OFFSET_X
-        self.rect.y -= self.globalVars.CAMERA_OFFSET_Y
+        self.rect.x -= cameraOffset[0]
+        self.rect.y -= cameraOffset[1]
 
         if self.distanciaAlJugador > self.minAtackDistance:
             self.change_state("chasing")
@@ -177,4 +180,3 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         if self.current_state == "patrolling":
             self.chaseTime = 120
             self.change_state("chasing")
-        

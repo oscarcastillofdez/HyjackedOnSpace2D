@@ -11,12 +11,16 @@ class World():
             self.gun_list = []
             self.terrainHitBoxList = []
             self.interactuableList = []
+            self.enemies = enemies
 
             self.enemyFactory = enemyFactory
-            pistola = pygame.image.load(PLAYER_PATH + '/pistol.png')
+            self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
             pistola2 = pygame.image.load(PLAYER_PATH + '/pistol2.png')
             pistola3 = pygame.image.load(PLAYER_PATH + '/pistol3.png')
             ordenador = pygame.image.load(INTERACTIVES_PATH + '/ibm5150.png')
+
+            self.shieldImage = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/plasma_shield.png'), (45,45))
+
         
             '''row_count = 0
             for row in globalVars.world_data:
@@ -108,9 +112,9 @@ class World():
                     screen.blit(tile[0], tile[1])
 
             for gun in self.gun_list:
-                gun[1].x -= cameraOffsetX
-                gun[1].y -= cameraOffsetY
-                screen.blit(gun[0], gun[1])
+                gun[0][1].x -= cameraOffsetX
+                gun[0][1].y -= cameraOffsetY
+                screen.blit(gun[0][0], gun[0][1])
 
             for hitbox in self.terrainHitBoxList:
                 hitbox.x -= cameraOffsetX
@@ -135,6 +139,8 @@ class World():
             nivel1Grid = mapaNivel1['data']
             anchuraMapa = mapaNivel1['width']
             compresion = nivelData['compressionlevel']
+
+            
 
             # Cargar el json con los datos de las texturas
 
@@ -177,6 +183,8 @@ class World():
             mapaY = 0
             previousTileId = 0
 
+            
+
             # Se recorre el nivel tile por tile
             for tile in nivel1Grid:
                 # Si un tile
@@ -202,7 +210,28 @@ class World():
                 
                 else: 
                     previousTileId = 0
-                    
+
+                if mapaX == 14 and mapaY == 31:
+                    texture = self.pistola
+                    textureRect = texture.get_rect()
+                    textureRect.x = mapaX * tileWidth
+                    textureRect.y = mapaY * tileHeight
+                    tileTuple = (texture, textureRect)
+                    tileTupleId = (tileTuple, "pistol1")
+                    self.gun_list.append(tileTupleId)
+                
+                if mapaX == 20 and mapaY == 31:
+                    texture = self.shieldImage
+                    textureRect = texture.get_rect()
+                    textureRect.x = mapaX * tileWidth
+                    textureRect.y = mapaY * tileHeight
+                    tileTuple = (texture, textureRect)
+                    tileTupleId = (tileTuple, "shield")
+                    self.gun_list.append(tileTupleId)
+
+                if mapaX == 30 and mapaY == 31:
+                    en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
+                    self.enemies.add(en)
                 # Se actualiza la posicion del mapa
                 mapaX += 1
                 if mapaX >= anchuraMapa:

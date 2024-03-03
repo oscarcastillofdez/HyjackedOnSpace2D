@@ -6,6 +6,7 @@ from math import floor
 from Constants.constants import *
 from MovementAndCollisions.aux_functions import *
 from .playerAbstract import PlayerAbstract
+from Entities.shield import Shield
 
 class Player(PlayerAbstract):
         def __init__(self, x, y):
@@ -41,6 +42,7 @@ class Player(PlayerAbstract):
                 self.healthPoints -= 1
                 self.hitCooldown = 60
                 self.notify()
+            return True
 
         # La clase checkGunClollide deberia de eliminarse
         # Interact deberia de valer para todo objeto interactuable (Ordenador, puertas, luces, armas, vidas, mejoras...)
@@ -148,25 +150,23 @@ class Player(PlayerAbstract):
             self.moving_right = False
             self.jumping = False
 
-            
 
             return (cameraOffsetX, cameraOffsetY)
 
         def checkGunPick(self, world):
             i = 0
             for gun in world.gun_list:
-                if gun[1].colliderect(self.rect.x, self.rect.y, self.width, self.height):
+                if gun[0][1].colliderect(self.rect.x, self.rect.y, self.width, self.height):
                     del world.gun_list[i] # Se elimina la pistola de la lista de objetos
-                    del gun # Se elimina el objeto pistola
-                    return True # Devolver gun en vez de True para tener mas armas?
+                    return gun # Devolver gun en vez de True para tener mas armas?
                 i += 1
             
-        def shoot(self, direction, gv):
+        def shoot(self, direction):
             print("No tengo arma")
 
         def draw(self, screen):
             screen.blit(self.standing, self.rect)
-
+                
         def addObserver(self, observer):
             self.uiElementsList.append(observer)
     
@@ -179,3 +179,14 @@ class Player(PlayerAbstract):
 
         def position(self):
             return self.rect
+        
+        def cover(self):
+            print("No tengo escudo.")
+        
+        def deflect(self, direction, bulletImage, velocidadBala):
+            print("No se puede dar este caso")
+
+            
+
+
+            

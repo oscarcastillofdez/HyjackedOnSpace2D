@@ -12,7 +12,7 @@ from Constants.constants import *
 
 def main():
 
-    # Iniciar la dventana del juego
+    # Iniciar la ventana del juego
     pygame.init()
     pygame.display.set_caption("Hyjacked on Space")
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGTH))
