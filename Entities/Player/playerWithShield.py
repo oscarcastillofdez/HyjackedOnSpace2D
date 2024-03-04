@@ -19,8 +19,8 @@ class PlayerWithShield(PlayerAbstract):
             # Imagenes
             self.states = {
                 "IDLE": Idle(False),
-                "RUNR": RunRight(False, False),
-                "RUNL": RunLeft(False, True),
+                "RUNR": RunRight(True),
+                "RUNL": RunLeft(True),
             }
             # Imagenes
             self.anim = 0 

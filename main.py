@@ -10,7 +10,6 @@ from Game.GameStates.game_over import GameOver
 from Game.game import Game
 from Constants.constants import *
 
-
 def main():
     
     # Iniciar la ventana del juego
