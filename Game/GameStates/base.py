@@ -14,7 +14,7 @@ class State(object):
         # Fuente a usar durante el juego
         # Si se quieren diferentes fuentes para diferentes
         # Estados, se pueden declarar en cada estado
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font("Assets/Fonts/Airstrip_Four.ttf", 36)
     
     def startup(self, persistent):
         self.persist = persistent

@@ -1,6 +1,4 @@
 import pygame
-from .PlayerStates.idle import Idle
-from .PlayerStates.run import Run
 from math import floor
 from Constants.constants import *
 from MovementAndCollisions.aux_functions import *
@@ -33,6 +31,9 @@ class PlayerAbstract():
         self.arma = None
         self.uiElementsList = []
         self.interactuableText = ""
+    
+    def change_state(self):
+        pass
 
     def move_left(self):
         pass

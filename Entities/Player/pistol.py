@@ -1,7 +1,7 @@
 import pygame
 from .player import Player
 from .PlayerStates.idle import Idle
-from .PlayerStates.run import Run
+from .PlayerStates.run import RunRight, RunLeft
 from .PlayerStates.jump import Jump
 from .PlayerStates.shoot import Shoot
 from .playerAbstract import PlayerAbstract
@@ -21,8 +21,8 @@ class Pistol(PlayerAbstract):
         # Imagenes
         self.states = {
             "IDLE": Idle(False),
-            "RUNR": Run(False, False),
-            "RUNL": Run(False, True),
+            "RUNR": RunRight(True),
+            "RUNL": RunLeft(True),
         }
 
         self.anim = 0

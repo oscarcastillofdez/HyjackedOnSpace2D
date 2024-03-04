@@ -1,6 +1,6 @@
 import pygame
 from .PlayerStates.idle import Idle
-from .PlayerStates.run import Run
+from .PlayerStates.run import RunRight, RunLeft
 from .PlayerStates.jump import Jump
 from math import floor
 from Constants.constants import *
@@ -11,27 +11,43 @@ from Entities.shield import Shield
 class Player(PlayerAbstract):
         def __init__(self, x, y):
             super().__init__(x, y)
-            # Imagenes
+            # Imagenes - patron estado
             self.states = {
                 "IDLE": Idle(False),
-                "RUNR": Run(False, False),
-                "RUNL": Run(False, True),
+                "RUNR": RunRight(False),
+                "RUNL": RunLeft(False),
+                "JUMP": Jump(False)
             }
-            # Imagenes
-            self.anim = 0 
-            self.current_state = self.states["IDLE"]
-            self.standing = self.current_state.get_initial()
+            self.anim = 0
+            self.state_name = "IDLE"
+            self.state = self.states[self.state_name]
+            self.standing = self.state.get_initial()
             self.deadImage = pygame.transform.rotate(self.standing,90)
             self.hitImage = pygame.transform.rotate(self.standing,90)
 
+        def change_state(self):
+            self.state.done = False
+            self.state_name = self.state.next_state
+
+            persistent = self.state.persist
+            self.state = self.states[self.state_name]
+                # Por ahora esto esta vacio
+            self.state.startup(persistent)
+
         def move_left(self):
             self.moving_left = True
+            self.state.done = True
+            self.state.next_state = "RUNL"
 
         def move_right(self):
             self.moving_right = True
+            self.state.done = True
+            self.state.next_state = "RUNR"
 
         def jump(self):
             self.jumping = True
+            self.state.done = True
+            self.state.next_state = "JUMP"
 
         def getHp(self):
             return self.healthPoints
@@ -63,7 +79,13 @@ class Player(PlayerAbstract):
                 
 
         def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
+            if self.anim > 6:
+                self.standing = self.state.next_sprite()
+                self.anim = 0
+            self.anim += 1
 
+            if self.state.done:
+                self.change_state()
             cameraOffsetX, cameraOffsetY = cameraOffset
 
             self.interact(interactuableGroup)
@@ -72,11 +94,6 @@ class Player(PlayerAbstract):
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
                 self.velY = -10
-            
-            if self.anim > 6:
-                self.standing = self.current_state.next_sprite()
-                self.anim = 0
-            self.anim += 1
 
             # Calculo del movimiento horizontal
             (self.left_mov, left_movement) = move_horizontal(self.moving_left, self.left_mov, dt)
@@ -97,12 +114,12 @@ class Player(PlayerAbstract):
             if self.jumping == False:
                 self.pressed_jump = 0
 
-            if horizontal_movement < 0:
+            """if horizontal_movement < 0:
                 self.current_state = self.states["RUNL"]
             if horizontal_movement > 0:
                 self.current_state = self.states["RUNR"]
             if horizontal_movement == 0: 
-                self.current_state = self.states["IDLE"]
+                self.current_state = self.states["IDLE"]"""
 
             # Se añade la gravedad al movimiento en y
             self.velY += GRAVITY
@@ -149,7 +166,8 @@ class Player(PlayerAbstract):
             self.moving_left = False
             self.moving_right = False
             self.jumping = False
-
+            if self.state.done:
+                self.change_state(self.state.next_state)
 
             return (cameraOffsetX, cameraOffsetY)
 

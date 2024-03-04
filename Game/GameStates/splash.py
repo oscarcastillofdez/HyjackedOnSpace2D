@@ -13,10 +13,11 @@ class Splash(State):
         self.title_rect = self.title.get_rect(center = self.screen_rect.center)
         self.next_state = "MENU"
         self.time_active = 0
+        self.font = pygame.font.Font("Assets/Fonts/Cyberverse Oblique.ttf", 42)
     
     def update(self, dt):
         self.time_active += dt
-        if self.time_active >= 0:
+        if self.time_active >= 1000:
             self.done = True
     
     def draw(self, surface):
