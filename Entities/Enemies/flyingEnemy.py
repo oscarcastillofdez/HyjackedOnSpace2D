@@ -21,8 +21,8 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.chasingSpeed = 4
         self.viewDirection = 1
         self.chaseTime = 120
-        self.maxViewDistance = 600
-        self.minAtackDistance = 300
+        self.maxViewDistance = 600 # Distancia directa hacia el jugador (diagonal)
+        self.minAtackDistance = 300 # Distancia directa hacia el jugador (diagonal)
         self.distanciaAlJugador = 0
 
         self.shootCooldown = 60
@@ -51,8 +51,8 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             if player.hit():
                 return True
             else:
-                player.deflect(self.angle + 180, self.disparoImg, self.velocidadBala)
-                return False
+                #player.deflect(self.angle + 180, self.disparoImg, self.velocidadBala)
+                return True
         
         for tile in world.terrainHitBoxList:
             if tile.colliderect(disparo.bulletPosition()):
@@ -124,21 +124,16 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         
         self.rect.x -= self.moved
 
-        print("DISTANCIA AL JUGADOR: " + str(self.distanciaAlJugador))
-        print("DISTANCIA MINIMA DE ATAQUE: " + str(self.minAtackDistance))
-
         if self.distanciaAlJugador < self.minAtackDistance:
             self.change_state("attacking")
 
     
     def attack(self, world, player,cameraOffset):
         # Disparar cada x segundos
-        
 
         self.shootCooldown -= 1
         if self.shootCooldown <= 0:
             self.shootCooldown = 30
-            print(self.angle)
             disparo = Bullet(self.disparoImg, self.angle, self.velocidadBala, self.rect.x, self.rect.y)
             self.disparosList.append(disparo)
 

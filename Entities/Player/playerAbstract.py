@@ -62,14 +62,19 @@ class PlayerAbstract():
     def checkGunPick(self, world):
         pass
     
-    def addObserver():
-        pass
-    
-    def delObserver():
-        pass
-    
-    def notify():
-        pass
+    def addObserver(self, observer):
+        self.uiElementsList.append(observer)
+
+    def delObserver(self, observer):
+        self.uiElementsList.remove(observer)
+    def notify(self):
+        print("NOTIFYYYYYYYYYYYYYYYYYYYYYYYYY")
+        print(self.uiElementsList)
+        for observer in self.uiElementsList:
+            observer.update(self)
     
     def position():
+        pass
+    
+    def getShieldHp(self):
         pass

@@ -12,6 +12,8 @@ from Entities.bullet import Bullet
 
 class PlayerWithShield(PlayerAbstract):
         def __init__(self, player):
+            print("BBBBBBBBBBBBB")
+            super().__init__(player.position().x, player.position().y)
             self.player = player
 
             # Imagenes
@@ -51,11 +53,15 @@ class PlayerWithShield(PlayerAbstract):
         
         def hit(self):
             if not self.applyShield:
-                    return self.player.hit()
+                return self.player.hit()
             else:
                 self.shield.deflect(self.shieldHitImage)
+                self.notify()
                 return False
-
+            
+        def getShieldHp(self):
+            return self.shield.getShieldHp()
+        
         # La clase checkGunClollide deberia de eliminarse
         # Interact deberia de valer para todo objeto interactuable (Ordenador, puertas, luces, armas, vidas, mejoras...)
         # En world meter armas como un interactuable pygame.sprite.interacutableGroup
@@ -97,18 +103,8 @@ class PlayerWithShield(PlayerAbstract):
             if self.applyShield:
                 self.shield.draw(screen)
                 self.applyShield = False
-            
             for disparo in self.deflectedShotsList:
                 disparo.draw(screen)
-
-        def addObserver(self, observer):
-            self.player.addObserver(observer)
-    
-        def delObserver(self, observer):
-            self.player.delObserver(observer)
-            
-        def notify(self):
-            self.player.notify()
 
         def position(self):
             return self.player.position()

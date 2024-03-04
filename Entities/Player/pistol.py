@@ -10,6 +10,7 @@ from Constants.constants import *
 
 class Pistol(PlayerAbstract):
     def __init__(self, player):
+        super().__init__(player.position().x, player.position().y)
         self.player = player
 
         # Shoot - Variables disparo

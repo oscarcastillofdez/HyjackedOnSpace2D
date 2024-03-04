@@ -7,7 +7,7 @@ from Constants.constants import *
 from MovementAndCollisions.aux_functions import *
 from .playerAbstract import PlayerAbstract
 from Entities.shield import Shield
-
+import random
 class Player(PlayerAbstract):
         def __init__(self, x, y):
             super().__init__(x, y)
@@ -24,6 +24,16 @@ class Player(PlayerAbstract):
             self.standing = self.state.get_initial()
             self.deadImage = pygame.transform.rotate(self.standing,90)
             self.hitImage = pygame.transform.rotate(self.standing,90)
+            self.shaking = -1
+
+        def change_state(self):
+            self.state.done = False
+            self.state_name = self.state.next_state
+
+            persistent = self.state.persist
+            self.state = self.states[self.state_name]
+                # Por ahora esto esta vacio
+            self.state.startup(persistent)
 
         def change_state(self):
             self.state.done = False
@@ -76,7 +86,8 @@ class Player(PlayerAbstract):
             
         def getInteractuableText(self):
             return self.interactuableText
-                
+        
+        
 
         def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
             if self.anim > 6:
@@ -165,11 +176,24 @@ class Player(PlayerAbstract):
             # Se reinician las variables de movimiento
             self.moving_left = False
             self.moving_right = False
+
+            shakingX = 0
+            shakingY = 0
+
+            if self.jumping or self.shaking:
+                self.shaking = 30
+
+            if self.shaking:
+                self.shaking -= 1
+                
+                #shakingX = random.randint(0, 8) - 4
+                #shakingY = random.randint(0,8) - 4
+
             self.jumping = False
             if self.state.done:
                 self.change_state(self.state.next_state)
-
-            return (cameraOffsetX, cameraOffsetY)
+            
+            return (cameraOffsetX + shakingX, cameraOffsetY + shakingY)
 
         def checkGunPick(self, world):
             i = 0
@@ -185,16 +209,6 @@ class Player(PlayerAbstract):
         def draw(self, screen):
             screen.blit(self.standing, self.rect)
                 
-        def addObserver(self, observer):
-            self.uiElementsList.append(observer)
-    
-        def delObserver(self, observer):
-            self.uiElementsList.remove(observer)
-
-        def notify(self):
-            for observer in self.uiElementsList:
-                observer.update(self)
-
         def position(self):
             return self.rect
         

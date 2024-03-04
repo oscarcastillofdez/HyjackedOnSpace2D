@@ -23,3 +23,25 @@ class Spritesheet():
             sprite = pygame.transform.scale(sprite,self.scale)
             anim.append(sprite)
         return anim
+    
+    def cargar_sprites(self,spritesheet_path, sprite_ancho, sprite_alto):
+        # Carga el spritesheet
+        spritesheet = pygame.image.load(spritesheet_path).convert_alpha()
+
+        # Obtiene las dimensiones del spritesheet
+        spritesheet_ancho, spritesheet_alto = spritesheet.get_size()
+
+        # Calcula el número de columnas y filas en el spritesheet
+        num_columnas = spritesheet_ancho // sprite_ancho
+        num_filas = spritesheet_alto // sprite_alto
+
+        # Divide el spritesheet en sprites individuales
+        sprites = []
+        for fila in range(num_filas):
+            for columna in range(num_columnas):
+                x = columna * sprite_ancho
+                y = fila * sprite_alto
+                sprite = spritesheet.subsurface(pygame.Rect(x, y, sprite_ancho, sprite_alto))
+                sprites.append(sprite)
+
+        return sprites
