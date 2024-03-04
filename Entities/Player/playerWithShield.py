@@ -1,6 +1,6 @@
 import pygame
 from .PlayerStates.idle import Idle
-from .PlayerStates.run import Run
+from .PlayerStates.run import RunRight, RunLeft
 from .PlayerStates.jump import Jump
 from math import floor
 from Constants.constants import *
@@ -17,8 +17,8 @@ class PlayerWithShield(PlayerAbstract):
             # Imagenes
             self.states = {
                 "IDLE": Idle(False),
-                "RUNR": Run(False, False),
-                "RUNL": Run(False, True),
+                "RUNR": RunRight(False, False),
+                "RUNL": RunLeft(False, True),
             }
             # Imagenes
             self.anim = 0 
