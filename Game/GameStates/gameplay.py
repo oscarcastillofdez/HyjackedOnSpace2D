@@ -7,6 +7,7 @@ from Entities.Player.pistol import Pistol
 from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts
+from UI.uiEnergy import UIEnergy
 from Entities.Player.playerWithShield import PlayerWithShield
 # El gameplay seria buena idea hacerlo observador de player? 
 
@@ -26,10 +27,13 @@ class Gameplay(State):
         
         self.uiText = UIText()
         self.uiHearts = UIHearts()
-        self.ui = Ui(self.player, self.uiText, self.uiHearts)
+        self.uiEnergy = UIEnergy()
+        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy)
 
         self.player.addObserver(self.uiText)
         self.player.addObserver(self.uiHearts)
+        
+
 
 
     def get_event(self, event):
@@ -77,9 +81,10 @@ class Gameplay(State):
                 self.player = Pistol(self.player)
             elif item[1] == "shield":
                 self.player = PlayerWithShield(self.player)
+                self.player.addObserver(self.uiEnergy)
+                self.uiEnergy.show()
             del item
             
-        
         #if self.player.checkInteractuable(self.world):
             #self.text.showInteractuableText("Presiona E para interactuar.", "white")
             

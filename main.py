@@ -12,7 +12,7 @@ from Constants.constants import *
 
 
 def main():
-
+    
     # Iniciar la ventana del juego
     pygame.init()
     pygame.display.set_caption("Hyjacked on Space")
