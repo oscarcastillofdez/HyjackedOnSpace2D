@@ -6,7 +6,7 @@ class Shield():
         self.originalImage = image
         self.shieldImage = image
         self.shieldRect = image.get_rect()
-        self.health = 10
+        self.energy = 10
         
         self.minTimeWithoutHits = 120
         self.timeWithoutHits = self.minTimeWithoutHits
@@ -19,7 +19,7 @@ class Shield():
         self.shieldRect.x = player.position().x - 30
         self.shieldRect.y = player.position().y - 37
 
-        if self.health < 11:
+        if self.energy < 11:
             self.timeWithoutHits -= 1
             self.chargeDelay -= 1
 
@@ -35,17 +35,17 @@ class Shield():
     def deflect(self, hitImage):
         self.shieldImage = hitImage
         self.iniciar_proceso_de_cambio_de_imagen()
-        if not self.health == 0:
-            self.health -= 1
+        if not self.energy == 0:
+            self.energy -= 1
         self.timeWithoutHits = self.minTimeWithoutHits
         
 
     def charge(self):
-        self.health += 1
+        self.energy += 1
 
 
     def getShieldHp(self):
-        return self.health
+        return self.energy
 
     def cambiar_imagen_despues_de_retraso(self):
         time.sleep(0.2)  # Espera 3 segundos
@@ -54,6 +54,3 @@ class Shield():
     def iniciar_proceso_de_cambio_de_imagen(self):
         thread = threading.Thread(target=self.cambiar_imagen_despues_de_retraso)
         thread.start()
-        # Quitarle vida al escudo
-        # Cambiar color del escudo a rojo momentaneamente para mostrar que fue golpeado
-        # Si se destruye animacion

@@ -52,7 +52,7 @@ class PlayerWithShield(PlayerAbstract):
             return self.player.getHp()
         
         def hit(self):
-            if not self.applyShield:
+            if not self.applyShield or self.shield.getShieldHp() <= 0:
                 return self.player.hit()
             else:
                 self.shield.deflect(self.shieldHitImage)
