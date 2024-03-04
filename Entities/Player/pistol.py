@@ -83,3 +83,6 @@ class Pistol(PlayerAbstract):
     
     def cover(self):
         self.player.cover()
+
+    def heal(self):
+        self.player.heal()

@@ -9,6 +9,7 @@ from UI.uiText import UIText
 from UI.uiHearts import UIHearts
 from UI.uiEnergy import UIEnergy
 from Entities.Player.playerWithShield import PlayerWithShield
+# Importar Shield y Pistola
 # El gameplay seria buena idea hacerlo observador de player? 
 
 class Gameplay(State):
@@ -20,10 +21,11 @@ class Gameplay(State):
         self.randomEnemyFactory = RandomEnemyFactory()
         self.enemies_group = pygame.sprite.Group()
         self.interactiveGroup = pygame.sprite.Group()
+        self.healthPickUps = pygame.sprite.Group()
 
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1])
         
-        self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset)
+        self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps)
         
         self.uiText = UIText()
         self.uiHearts = UIHearts()
@@ -70,7 +72,8 @@ class Gameplay(State):
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)
         self.enemies_group.update(self.world, self.player, self.cameraOffset)
         self.interactiveGroup.update(self.player)
-        
+        self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
+
         # Si se queda sin vidas acaba el juego
         if self.player.getHp() <= 0: 
             self.done = True
@@ -95,6 +98,7 @@ class Gameplay(State):
         self.enemies_group.draw(surface)
         self.ui.draw(surface)
         self.interactiveGroup.draw(surface)
+        self.healthPickUps.draw(surface)
         #self.text.draw(surface)
         
         for enemy in self.enemies_group:

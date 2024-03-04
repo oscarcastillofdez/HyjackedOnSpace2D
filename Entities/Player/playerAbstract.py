@@ -24,7 +24,8 @@ class PlayerAbstract():
         self.pressed_jump = 0
         
         #Vida
-        self.healthPoints = 3
+        self.maxHealthPoints = 3
+        self.healthPoints = self.maxHealthPoints
         self.hitCooldown = 60
         
         #Armas
@@ -68,8 +69,6 @@ class PlayerAbstract():
     def delObserver(self, observer):
         self.uiElementsList.remove(observer)
     def notify(self):
-        print("NOTIFYYYYYYYYYYYYYYYYYYYYYYYYY")
-        print(self.uiElementsList)
         for observer in self.uiElementsList:
             observer.update(self)
     
@@ -77,4 +76,7 @@ class PlayerAbstract():
         pass
     
     def getShieldHp(self):
+        pass
+    
+    def heal(self):
         pass

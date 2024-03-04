@@ -4,14 +4,16 @@ from Entities.Enemies.enemy import *
 from Entities.Player.pistol import *
 from Interactives.computer import Computer
 from Constants.constants import *
+from Entities.health import Health
 
 class World():
-        def __init__(self, enemies, enemyFactory, interactives, cameraOffset):
+        def __init__(self, enemies, enemyFactory, interactives, cameraOffset, healthPickUps):
             self.tile_list = []
             self.gun_list = []
             self.terrainHitBoxList = []
             self.interactuableList = []
             self.enemies = enemies
+            self.healthPickUps = healthPickUps
 
             self.enemyFactory = enemyFactory
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
@@ -20,7 +22,7 @@ class World():
             ordenador = pygame.image.load(INTERACTIVES_PATH + '/ibm5150.png')
 
             self.shieldImage = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/plasma_shield.png'), (45,45))
-
+            
         
             '''row_count = 0
             for row in globalVars.world_data:
@@ -211,6 +213,9 @@ class World():
                 else: 
                     previousTileId = 0
 
+                # TODO: Hacer pistola y shield un objeto propio, 
+                # facilitara el saber si se recogio una cosa u otra 
+                # y se le quitaria trabajo a la clase update() del player (actualmente comprueba colision con todos los pickups)
                 if mapaX == 14 and mapaY == 31:
                     texture = self.pistola
                     textureRect = texture.get_rect()
@@ -228,6 +233,10 @@ class World():
                     tileTuple = (texture, textureRect)
                     tileTupleId = (tileTuple, "shield")
                     self.gun_list.append(tileTupleId)
+
+                if mapaX == 50 and mapaY == 31:
+                    health = Health(mapaX * tileWidth, mapaY * tileHeight)
+                    self.healthPickUps.add(health)
 
                 if mapaX == 30 and mapaY == 31:
                     en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)

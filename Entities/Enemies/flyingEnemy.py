@@ -51,7 +51,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             if player.hit():
                 return True
             else:
-                #player.deflect(self.angle + 180, self.disparoImg, self.velocidadBala)
+                player.deflect(self.angle + 180, self.disparoImg, self.velocidadBala)
                 return True
         
         for tile in world.terrainHitBoxList:

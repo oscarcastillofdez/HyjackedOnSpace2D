@@ -25,6 +25,7 @@ class Player(PlayerAbstract):
             self.deadImage = pygame.transform.rotate(self.standing,90)
             self.hitImage = pygame.transform.rotate(self.standing,90)
             self.shaking = -1
+            
 
         def change_state(self):
             self.state.done = False
@@ -218,6 +219,12 @@ class Player(PlayerAbstract):
         def deflect(self, direction, bulletImage, velocidadBala):
             print("No se puede dar este caso")
 
+        def heal(self):
+            if self.healthPoints < self.maxHealthPoints:
+                self.healthPoints += 1
+                self.notify()
+            
+                
             
 
 

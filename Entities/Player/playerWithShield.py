@@ -112,6 +112,9 @@ class PlayerWithShield(PlayerAbstract):
         def cover(self):
             self.applyShield = True
 
+        def heal(self):
+            self.player.heal()
+            
             
 
 
