@@ -1,4 +1,3 @@
-import pygame
 from Game.spritesheet import Spritesheet
 from .base import pState
 from Constants.constants import *
@@ -13,9 +12,6 @@ class RunRight(pState):
             #Spritesheet run-player
             self.spritesheet = Spritesheet(PLAYER_SPRITES_PATH + 'RunRight-player.png',(100,100))
         self.animation = self.spritesheet.get_animation(0,0,64,64,6)
-    
-    def initial(self):
-        return self.animation[0]
     
     def next_sprite(self):
         self.sprite_index += 1

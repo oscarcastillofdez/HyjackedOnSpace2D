@@ -1,11 +1,8 @@
-import pygame
-
 class pState(object):
     def __init__(self):
         self.animation = None
         self.next_state = None
         self.done =  False
-        self.possible_nexts = {}
         self.sprite_index = 0
         self.persist = {}
     

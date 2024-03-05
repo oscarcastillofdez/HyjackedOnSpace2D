@@ -1,13 +1,18 @@
 import pygame
 from .entity import Entity
 import math
+from Game.spritesheet import Spritesheet
 from Constants.constants import *
 
 from Entities.bullet import Bullet
 class FlyingEnemy(pygame.sprite.Sprite, Entity):
     def __init__(self,x,y) -> None:
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(pygame.image.load('Assets/Images/Desorden/pj.png'), (120, 120))
+        self.time = 0
+        self.sprites = Spritesheet('Assets/Images/Entities/32bitsspritesheet.png',(120,120)).cargar_sprites(223,223)
+        self.image = self.sprites[0]
+        self.index = 0
+
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y - 100
@@ -58,7 +63,15 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             if tile.colliderect(disparo.bulletPosition()):
                 return True
                 
-    def update(self, world, player, cameraOffset):
+    def update(self, dt, world, player, cameraOffset):
+        self.time += 1
+        if self.time > 6:
+            self.time = 0
+            self.index += 1
+            if self.index >= len(self.sprites):
+                self.index=0
+            self.image = self.sprites[self.index]
+
         for disparo in self.disparosList:
             disparo.update(cameraOffset)
             if self.checkBulletCollision2(world, player, disparo) or disparo.checkDespawnTime():

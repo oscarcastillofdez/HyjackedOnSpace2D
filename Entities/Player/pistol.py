@@ -2,6 +2,7 @@ import pygame
 from .player import Player
 from .PlayerStates.idle import Idle
 from .PlayerStates.run import RunRight, RunLeft
+from .PlayerStates.run_shooting import RunShootingRight, RunShootingLeft
 from .PlayerStates.jump import Jump
 from .PlayerStates.shoot import Shoot
 from .playerAbstract import PlayerAbstract
@@ -24,11 +25,13 @@ class Pistol(PlayerAbstract):
             "IDLE": Idle(False),
             "RUNR": RunRight(True),
             "RUNL": RunLeft(True),
+            "RUNSHOOTR": RunShootingRight(),
+            "RUNSHOOTL": RunShootingLeft()
         }
-
         self.anim = 0
-        self.current_state = self.states["IDLE"]
-        self.standing = self.current_state.get_initial()
+        self.state_name = "IDLE"
+        self.state = self.states[self.state_name]
+        self.standing = self.state.get_initial()
         self.deadImage = pygame.transform.rotate(self.standing,90)
         self.hitImage = pygame.transform.rotate(self.standing,90)
 
@@ -60,6 +63,8 @@ class Pistol(PlayerAbstract):
         self.player.deflect(direction,bulletImage,velocidadBala)
 
     def shoot(self, direction):
+        self.state.done = True
+        self.state.next_state = "RUNSHOOTR"
         if self.coolDown <= 0:
             self.coolDown = 30
             disparo = Bullet(self.disparoImg, direction, self.velocidadBala, self.player.position().x, self.player.position().y)

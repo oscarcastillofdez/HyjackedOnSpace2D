@@ -9,7 +9,7 @@ class UIEnergy():
         self.spritesheet = Spritesheet(UI_PATH + 'shield_energy.png', (100,100))
         
         # Cargar sprites
-        self.spriteList = self.spritesheet.cargar_sprites(UI_PATH + 'shield_energy.png', 64, 96)
+        self.spriteList = self.spritesheet.cargar_sprites(64, 96)
         self.currentEnergy = self.spriteList[13]
 
         self.rect = self.currentEnergy.get_rect()

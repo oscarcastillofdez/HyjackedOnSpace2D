@@ -34,8 +34,6 @@ class Gameplay(State):
 
         self.player.addObserver(self.uiText)
         self.player.addObserver(self.uiHearts)
-        
-
 
 
     def get_event(self, event):
@@ -70,7 +68,7 @@ class Gameplay(State):
             self.player.cover()
         
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)
-        self.enemies_group.update(self.world, self.player, self.cameraOffset)
+        self.enemies_group.update(dt, self.world, self.player, self.cameraOffset)
         self.interactiveGroup.update(self.player)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
 

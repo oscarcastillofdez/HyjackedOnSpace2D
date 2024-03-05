@@ -1,12 +1,17 @@
 import pygame
 from Constants.constants import *
 from .entity import Entity
+from Game.spritesheet import Spritesheet
 import math
 
 class Enemy(pygame.sprite.Sprite, Entity):
     def __init__(self,x,y,globalVars):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(pygame.image.load('Assets/img/pj.png'), (120, 120))
+        self.time = 0
+        self.sprites = Spritesheet('Assets/Images/Entities/enemy trooper_walk.png',(120,120)).cargar_sprites(512,64)
+        self.image = self.sprites[0]
+        self.index = 0
+
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y - 100
@@ -33,9 +38,15 @@ class Enemy(pygame.sprite.Sprite, Entity):
         self.current_state = "patrolling"
         self.visionLine = pygame.Rect(self.rect.centerx, self.rect.y, 500, 50) 
     
-    def update(self, world, player):
+    def update(self, dt, world, player):
+        self.time += dt
+        if self.time > 100:
+            self.index += 1
+            if self.index >= len(self.sprites):
+                self.index=0
+            self.image = self.sprites[self.index]
+
         # Llama a la función correspondiente al estado actual
-        
         self.states[self.current_state](world, player)
         self.player_in_sight(world, player)
 

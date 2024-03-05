@@ -9,7 +9,7 @@ class Health(pygame.sprite.Sprite):
         self.spritesheet = Spritesheet(INTERACTIVES_PATH + 'healing_pickup.png', (100,100))
         
         # Cargar sprites
-        self.spriteList = self.spritesheet.cargar_sprites(INTERACTIVES_PATH + 'healing_pickup.png', 64, 64)
+        self.spriteList = self.spritesheet.cargar_sprites(64, 64)
         self.image = self.spriteList[0]
 
         self.rect = self.image.get_rect()
