@@ -13,11 +13,11 @@ class Spritesheet():
         sprite = pygame.transform.scale(sprite, self.scale)
         return sprite
 
-    def get_animation(self, x,y,w,h,n):
+    def get_animation(self, x,y,w,h,n, color=(0,0,0)):
         anim = []
         for i in range(n):
             sprite = self.get_sprite(x+w*i,y,w,h)
-            sprite.set_colorkey((255,0,0))
+            sprite.set_colorkey(color)
             """sprite = pygame.Surface((w,h))
             sprite.blit(self.sprite_sheet, (0,0),(x,y+64*n,w,h))"""
             sprite = pygame.transform.scale(sprite,self.scale)

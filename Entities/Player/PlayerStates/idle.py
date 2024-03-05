@@ -7,7 +7,7 @@ class Idle(pState):
         super(Idle, self).__init__()
         self.withoutgun = Spritesheet(PLAYER_SPRITES_PATH + 'idle-player.png',(100,100))
         self.animations = {
-            "NOGUN": self.withoutgun.get_animation(0,0,64,64,7) 
+            "NOGUN": self.withoutgun.get_animation(0,0,64,64,7,(255,0,0)) 
         }
         #self.withgun = Spritesheet()
         if gun:

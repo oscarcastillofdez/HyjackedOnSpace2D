@@ -9,7 +9,7 @@ class Jump(pState):
         self.spritesheet = Spritesheet(PLAYER_SPRITES_PATH + 'run-player.png',(96,96))
         
         self.gun = gun
-        self.animation = self.spritesheet.get_animation(0,0,64,64,7)
+        self.animation = self.spritesheet.get_animation(0,0,64,64,7,(255,0,0))
         self.current = self.animation[0]
         self.count = 1
     

@@ -5,11 +5,13 @@ from Game.spritesheet import Spritesheet
 from Constants.constants import *
 
 from Entities.bullet import Bullet
+
+
 class FlyingEnemy(pygame.sprite.Sprite, Entity):
     def __init__(self,x,y) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.time = 0
-        self.sprites = Spritesheet('Assets/Images/Entities/32bitsspritesheet.png',(120,120)).cargar_sprites(223,223)
+        self.sprites = Spritesheet('Assets/Images/Entities/32bitsspritesheet.png',(120,120)).get_animation(0,0,223,223,30)
         self.image = self.sprites[0]
         self.index = 0
 
@@ -17,7 +19,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.rect.x = x
         self.rect.y = y - 100
         self.patrollingchasingSpeed = 1
-        self.image_orig = pygame.transform.scale(pygame.image.load('Assets/Images/Desorden/pj.png'), (120, 120))
+        #self.image_orig = pygame.transform.scale(pygame.image.load('Assets/Images/Desorden/pj.png'), (120, 120))
         self.moved = 0
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -143,7 +145,6 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
     
     def attack(self, world, player,cameraOffset):
         # Disparar cada x segundos
-
         self.shootCooldown -= 1
         if self.shootCooldown <= 0:
             self.shootCooldown = 30
