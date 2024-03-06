@@ -18,4 +18,4 @@ PLAYER_SPRITES_PATH = PLAYER_PATH + "PlayerSprites/"
 INTERACTIVES_PATH = "Assets/Images/Interactives/"
 ENEMIES_PATH = "Assets/Images/Entities/Enemies/"
 UI_PATH = "Assets/Images/Ui/"
-
+ANIMATIONS_PATH = "Assets/Images/Animations/"

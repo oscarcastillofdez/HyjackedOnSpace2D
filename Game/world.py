@@ -1,23 +1,35 @@
 import pygame
 import json
 from Entities.Enemies.enemy import *
-from Entities.Player.pistol import *
+from Entities.Player.playerWithPistol import *
+from Entities.shieldPickup import ShieldPickup
 from Interactives.computer import Computer
 from Constants.constants import *
+from Entities.health import Health
+from Entities.grenadeLauncher import GrenadeLauncher
+from Entities.pistol import Pistol
 
 class World():
-        def __init__(self, enemies, enemyFactory, interactives, cameraOffset):
+        def __init__(self, enemies, enemyFactory, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups):
             self.tile_list = []
             self.gun_list = []
             self.terrainHitBoxList = []
             self.platformsHitBoxList = []
             self.interactuableList = []
+            self.enemies = enemies
+            self.healthPickUps = healthPickUps
+            self.destructibles_group = destructibles_group
+            self.gunPickups = gunPickups
+            self.interactiveGroup = interactives
 
             self.enemyFactory = enemyFactory
-            pistola = pygame.image.load(PLAYER_PATH + '/pistol.png')
+            self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
             pistola2 = pygame.image.load(PLAYER_PATH + '/pistol2.png')
             pistola3 = pygame.image.load(PLAYER_PATH + '/pistol3.png')
             ordenador = pygame.image.load(INTERACTIVES_PATH + '/ibm5150.png')
+
+            self.shieldImage = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/plasma_shield.png'), (45,45))
+            
         
             '''row_count = 0
             for row in globalVars.world_data:
@@ -130,9 +142,9 @@ class World():
                 screen.blit(tile[0], tile[1])
 
             for gun in self.gun_list:
-                gun[1].x -= cameraOffsetX
-                gun[1].y -= cameraOffsetY
-                screen.blit(gun[0], gun[1])
+                gun[0][1].x -= cameraOffsetX
+                gun[0][1].y -= cameraOffsetY
+                screen.blit(gun[0][0], gun[0][1])
 
             for hitbox in self.terrainHitBoxList:
                 hitbox.x -= cameraOffsetX
@@ -220,7 +232,51 @@ class World():
                 
                 else: 
                     previousTileId = 0
-                    
+
+        def loadEntities(map):
+
+            mapaX = 0
+            mapaY = 0
+            
+            for tile in map:
+                
+
+                # TODO: Hacer pistola y shield un objeto propio, 
+                # facilitara el saber si se recogio una cosa u otra 
+                # y se le quitaria trabajo a la clase update() del player (actualmente comprueba colision con todos los pickups)
+                if mapaX == 14 and mapaY == 31:
+                    pistol = Pistol(mapaX * tileWidth, mapaY * tileHeight)
+                    self.gunPickups.add(pistol)
+                
+                if mapaX == 20 and mapaY == 31:
+                    shieldPickup = ShieldPickup(mapaX * tileWidth, mapaY * tileHeight)
+                    self.gunPickups.add(shieldPickup)
+
+                if mapaX == 26 and mapaY == 31:
+                    grenadeLauncher = GrenadeLauncher(mapaX * tileWidth, mapaY * tileHeight)
+                    self.gunPickups.add(grenadeLauncher)
+
+                if mapaX == 50 and mapaY == 31:
+                    health = Health(mapaX * tileWidth, mapaY * tileHeight)
+                    self.healthPickUps.add(health)
+
+                if mapaX == 30 and mapaY == 31:
+                    en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
+                    self.enemies.add(en)
+                    print("A")
+
+                if mapaX == 30 and mapaY == 31:
+                    computer = Computer(mapaX * tileWidth, mapaY * tileHeight)
+                    self.interactiveGroup.add(computer)
+                    print("A")
+
+                if mapaX == 30 and mapaY == 31:
+                    textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth,tileHeight)
+                    self.terrainHitBoxList.append(textureRect)
+
+                    en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight, textureRect)
+                    self.destructibles_group.add(en)
+
                 # Se actualiza la posicion del mapa
                 mapaX += 1
                 if mapaX >= mapWidth:

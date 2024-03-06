@@ -1,6 +1,4 @@
 import pygame
-from .PlayerStates.idle import Idle
-from .PlayerStates.run import Run
 from math import floor
 from Constants.constants import *
 from MovementAndCollisions.aux_functions import *
@@ -26,13 +24,17 @@ class PlayerAbstract():
         self.pressed_jump = 0
         
         #Vida
-        self.healthPoints = 3
+        self.maxHealthPoints = 3
+        self.healthPoints = self.maxHealthPoints
         self.hitCooldown = 60
         
         #Armas
         self.arma = None
         self.uiElementsList = []
         self.interactuableText = ""
+    
+    def change_state(self):
+        pass
 
     def move_left(self):
         pass
@@ -58,17 +60,21 @@ class PlayerAbstract():
     def draw(self, screen):
         pass
 
-    def checkGunPick(self, world):
-        pass
-    
-    def addObserver():
-        pass
-    
-    def delObserver():
-        pass
-    
-    def notify():
-        pass
+    def addObserver(self, observer):
+        self.uiElementsList.append(observer)
+
+    def delObserver(self, observer):
+        self.uiElementsList.remove(observer)
+        
+    def notify(self):
+        for observer in self.uiElementsList:
+            observer.update(self)
     
     def position():
+        pass
+    
+    def getShieldHp(self):
+        pass
+    
+    def heal(self):
         pass

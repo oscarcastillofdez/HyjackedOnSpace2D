@@ -1,36 +1,67 @@
 import pygame
 from .PlayerStates.idle import Idle
-from .PlayerStates.run import Run
+from .PlayerStates.run import RunRight, RunLeft
 from .PlayerStates.jump import Jump
 from math import floor
 from Constants.constants import *
 from MovementAndCollisions.aux_functions import *
 from .playerAbstract import PlayerAbstract
-
+from Entities.shield import Shield
+import random
 class Player(PlayerAbstract):
-        def __init__(self, x, y):
+        def __init__(self, x, y,uiHearts, uiText):
             super().__init__(x, y)
-            # Imagenes
+            # Imagenes - patron estado
             self.states = {
                 "IDLE": Idle(False),
-                "RUNR": Run(False, False),
-                "RUNL": Run(False, True),
+                "RUNR": RunRight(False),
+                "RUNL": RunLeft(False),
+                "JUMP": Jump(False)
             }
-            # Imagenes
-            self.anim = 0 
-            self.current_state = self.states["IDLE"]
-            self.standing = self.current_state.get_initial()
+            self.anim = 0
+            self.state_name = "IDLE"
+            self.state = self.states[self.state_name]
+            self.standing = self.state.get_initial()
             self.deadImage = pygame.transform.rotate(self.standing,90)
             self.hitImage = pygame.transform.rotate(self.standing,90)
+            self.shaking = -1
+            self.currentVelocity = 0
+            self.addObserver(uiText)
+            self.addObserver(uiHearts)
+
+
+        def change_state(self):
+            self.state.done = False
+            self.state_name = self.state.next_state
+
+            persistent = self.state.persist
+            self.state = self.states[self.state_name]
+                # Por ahora esto esta vacio
+            self.state.startup(persistent)
+
+        def change_state(self):
+            self.state.done = False
+            self.state_name = self.state.next_state
+
+            persistent = self.state.persist
+            self.state = self.states[self.state_name]
+                # Por ahora esto esta vacio
+            self.state.startup(persistent)
 
         def move_left(self):
             self.moving_left = True
+            self.state.done = True
+            self.state.next_state = "RUNL"
 
         def move_right(self):
             self.moving_right = True
+            self.state.done = True
+            self.state.next_state = "RUNR"
 
         def jump(self):
             self.jumping = True
+            self.state.done = True
+            self.state.next_state = "JUMP"
 
         def getHp(self):
             return self.healthPoints
@@ -41,6 +72,7 @@ class Player(PlayerAbstract):
                 self.healthPoints -= 1
                 self.hitCooldown = 60
                 self.notify()
+            return True
 
         # La clase checkGunClollide deberia de eliminarse
         # Interact deberia de valer para todo objeto interactuable (Ordenador, puertas, luces, armas, vidas, mejoras...)
@@ -58,10 +90,17 @@ class Player(PlayerAbstract):
             
         def getInteractuableText(self):
             return self.interactuableText
-                
+        
+        
 
         def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
+            if self.anim > 6:
+                self.standing = self.state.next_sprite()
+                self.anim = 0
+            self.anim += 1
 
+            if self.state.done:
+                self.change_state()
             cameraOffsetX, cameraOffsetY = cameraOffset
 
             self.interact(interactuableGroup)
@@ -70,17 +109,13 @@ class Player(PlayerAbstract):
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
                 self.velY = -10
-            
-            if self.anim > 6:
-                self.standing = self.current_state.next_sprite()
-                self.anim = 0
-            self.anim += 1
 
             # Calculo del movimiento horizontal
             (self.left_mov, left_movement) = move_horizontal(self.moving_left, self.left_mov, dt)
             (self.right_mov, right_movement) = move_horizontal(self.moving_right, self.right_mov, dt)
             horizontal_movement = floor(right_movement - left_movement)
 
+            self.currentVelocity = horizontal_movement
             # Calculo del movimiento vertical
             if self.jumping and self.inAir == False and self.pressed_jump == 0:
                 self.velY = -MIN_JUMP_HEIGHT
@@ -95,12 +130,12 @@ class Player(PlayerAbstract):
             if self.jumping == False:
                 self.pressed_jump = 0
 
-            if horizontal_movement < 0:
+            """if horizontal_movement < 0:
                 self.current_state = self.states["RUNL"]
             if horizontal_movement > 0:
                 self.current_state = self.states["RUNR"]
             if horizontal_movement == 0: 
-                self.current_state = self.states["IDLE"]
+                self.current_state = self.states["IDLE"]"""
 
             # Se añade la gravedad al movimiento en y
             self.velY += floor(GRAVITY * dt/1000)
@@ -157,22 +192,26 @@ class Player(PlayerAbstract):
             # Se reinician las variables de movimiento
             self.moving_left = False
             self.moving_right = False
+
+            shakingX = 0
+            shakingY = 0
+
+            if self.jumping or self.shaking:
+                self.shaking = 30
+
+            if self.shaking:
+                self.shaking -= 1
+                
+                #shakingX = random.randint(0, 8) - 4
+                #shakingY = random.randint(0,8) - 4
+
             self.jumping = False
-
+            if self.state.done:
+                self.change_state(self.state.next_state)
             
+            return (cameraOffsetX + shakingX, cameraOffsetY + shakingY)
 
-            return (cameraOffsetX, cameraOffsetY)
-
-        def checkGunPick(self, world):
-            i = 0
-            for gun in world.gun_list:
-                if gun[1].colliderect(self.rect.x, self.rect.y, self.width, self.height):
-                    del world.gun_list[i] # Se elimina la pistola de la lista de objetos
-                    del gun # Se elimina el objeto pistola
-                    return True # Devolver gun en vez de True para tener mas armas?
-                i += 1
-            
-        def shoot(self, direction, gv):
+        def shoot(self, direction):
             print("No tengo arma")
 
         def draw(self, screen):
@@ -193,3 +232,28 @@ class Player(PlayerAbstract):
 
         def position(self):
             return self.rect
+        
+        def cover(self):
+            print("No tengo escudo.")
+        
+        def deflect(self, direction, bulletImage, velocidadBala):
+            print("No se puede dar este caso")
+
+        def heal(self):
+            if self.healthPoints < self.maxHealthPoints:
+                self.healthPoints += 1
+                self.notify()
+                
+        def launchGrenade(self, direction,grenades_group):
+            print("No tengo lanza grandas")
+                
+        def getCurrentVelocity(self):
+            print(self.currentVelocity)
+            return self.currentVelocity
+        
+        def getShieldHp(self):
+            return 0
+
+
+
+            

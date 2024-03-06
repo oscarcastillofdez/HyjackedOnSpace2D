@@ -58,3 +58,4 @@ class Bullet():
 
     def bulletPosition(self):
         return self.rect
+    
