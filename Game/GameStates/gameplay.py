@@ -41,7 +41,7 @@ class Gameplay(State):
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset)
-        self.interactiveGroup.update(self.player, self.cameraOffset)
+        self.interactiveGroup.update(self.cameraOffset)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
         self.destructibles_group.update(self.cameraOffset)

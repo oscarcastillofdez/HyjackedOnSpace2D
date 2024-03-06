@@ -191,7 +191,7 @@ class World():
                     print("A")
 
                 elif tile == 6:
-                    computer = Computer(mapaX * tileWidth, mapaY * tileHeight)
+                    computer = Computer(mapaX * tileWidth, mapaY * tileHeight, self.enemies)
                     self.interactiveGroup.add(computer)
                     print("A")
 
