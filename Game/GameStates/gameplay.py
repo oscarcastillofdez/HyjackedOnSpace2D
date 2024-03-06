@@ -18,7 +18,7 @@ class Gameplay(State):
     def __init__(self):
         super(Gameplay, self).__init__()
         self.next_state = "GAME_OVER"
-        self.cameraOffset = (1000,0)
+        self.cameraOffset = (2600,220)
         
         self.randomEnemyFactory = RandomEnemyFactory()
         self.enemies_group = pygame.sprite.Group()
@@ -34,6 +34,7 @@ class Gameplay(State):
 
         self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups)
         self.world.inicialOffset((2600,220))
+        
 
         self.uiText = UIText()
         self.uiHearts = UIHearts()
@@ -42,6 +43,12 @@ class Gameplay(State):
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText)
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy)
         
+        self.enemies_group.update(1, self.world, self.player, self.cameraOffset)
+        self.interactiveGroup.update(self.player, self.cameraOffset)
+        self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
+        self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
+        self.destructibles_group.update(self.cameraOffset)
+        self.gunPickups.update(self.cameraOffset)
         
 
 

@@ -162,50 +162,55 @@ class World():
                     mapaX = 0
                     mapaY += 1
 
-        def loadEntities(map):
+        def loadEntities(self, map, compression, columns, tileHeight, tileWidth, mapWidth):
 
             mapaX = 0
             mapaY = 0
             
             for tile in map:
-                
+                # Si un tile               
 
                 # TODO: Hacer pistola y shield un objeto propio, 
                 # facilitara el saber si se recogio una cosa u otra 
                 # y se le quitaria trabajo a la clase update() del player (actualmente comprueba colision con todos los pickups)
-                if mapaX == 14 and mapaY == 31:
+                if tile == 1:
                     pistol = Pistol(mapaX * tileWidth, mapaY * tileHeight)
                     self.gunPickups.add(pistol)
                 
-                if mapaX == 20 and mapaY == 31:
+                elif tile == 2:
                     shieldPickup = ShieldPickup(mapaX * tileWidth, mapaY * tileHeight)
                     self.gunPickups.add(shieldPickup)
 
-                if mapaX == 26 and mapaY == 31:
+                elif tile == 3:
                     grenadeLauncher = GrenadeLauncher(mapaX * tileWidth, mapaY * tileHeight)
                     self.gunPickups.add(grenadeLauncher)
 
-                if mapaX == 50 and mapaY == 31:
+                elif tile == 4:
                     health = Health(mapaX * tileWidth, mapaY * tileHeight)
                     self.healthPickUps.add(health)
 
-                if mapaX == 30 and mapaY == 31:
+                elif tile == 5:
                     en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
                     self.enemies.add(en)
                     print("A")
 
-                if mapaX == 30 and mapaY == 31:
+                elif tile == 6:
                     computer = Computer(mapaX * tileWidth, mapaY * tileHeight)
                     self.interactiveGroup.add(computer)
                     print("A")
 
-                if mapaX == 30 and mapaY == 31:
+                elif tile == 7:
                     textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth,tileHeight)
                     self.terrainHitBoxList.append(textureRect)
 
                     en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight, textureRect)
                     self.destructibles_group.add(en)
 
+                # Se actualiza la posicion del mapa
+                mapaX += 1
+                if mapaX >= mapWidth:
+                    mapaX = 0
+                    mapaY += 1
                 
 
         def getPlatforms(self):
@@ -242,6 +247,7 @@ class World():
             nivelData = json.loads(nivelData)
             mapaNivel1 = nivelData['layers'][1]
             platforms = nivelData['layers'][2]['data']
+            entities = nivelData['layers'][3]['data']
             map = mapaNivel1['data']
             mapWidth = mapaNivel1['width']
             compression = nivelData['compressionlevel']
@@ -265,6 +271,7 @@ class World():
             self.tile_list.append((background, backgroundRect)) 
             self.loadMap(map, compression, columns, tileHeight, tileWidth, textures, mapWidth)
             self.loadPlatforms(platforms, compression, columns, tileHeight, tileWidth, textures, mapWidth)
+            self.loadEntities(entities, compression, columns, tileHeight, tileWidth, mapWidth)
             
 
 
