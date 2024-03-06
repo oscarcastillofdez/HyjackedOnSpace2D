@@ -12,16 +12,16 @@ from Entities.pistol import Pistol
 class World():
         def __init__(self, enemies, enemyFactory, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups):
             self.tile_list = []
+            self.platform_list = []
+            self.background_list = []
+            self.destructibleTile_list = []
             self.gun_list = []
-            self.terrainHitBoxList = []
-            self.platformsHitBoxList = []
             self.interactuableList = []
             self.enemies = enemies
             self.healthPickUps = healthPickUps
             self.destructibles_group = destructibles_group
             self.gunPickups = gunPickups
             self.interactiveGroup = interactives
-
             self.enemyFactory = enemyFactory
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
             pistola2 = pygame.image.load(PLAYER_PATH + '/pistol2.png')
@@ -35,19 +35,22 @@ class World():
         def inicialOffset(self, cameraOffset):
 
             (cameraOffsetX,cameraOffsetY) = cameraOffset
+
+            for background in self.background_list:
+                background[1].x -= cameraOffsetX
+                background[1].y -= cameraOffsetY
             
             for tile in self.tile_list:
                 tile[1].x -= cameraOffsetX
                 tile[1].y -= cameraOffsetY
 
-            for hitbox in self.terrainHitBoxList:
-                hitbox.x -= cameraOffsetX
-                hitbox.y -= cameraOffsetY
-
-            for hitbox in self.platformsHitBoxList:
-                hitbox.x -= cameraOffsetX
-                hitbox.y -= cameraOffsetY
-
+            for platform in self.platform_list:
+                platform[1].x -= cameraOffsetX
+                platform[1].y -= cameraOffsetY
+            
+            for destructible in self.destructibleTile_list:
+                destructible.x -= cameraOffsetX
+                destructible.y -= cameraOffsetY
 
 
         def draw(self, screen, cameraOffset):
@@ -55,24 +58,24 @@ class World():
 
             (cameraOffsetX,cameraOffsetY) = cameraOffset
 
+            for background in self.background_list:
+                background[1].x -= cameraOffsetX
+                background[1].y -= cameraOffsetY
+                screen.blit(background[0], background[1])
+
             for tile in self.tile_list:
                 tile[1].x -= cameraOffsetX
                 tile[1].y -= cameraOffsetY
                 screen.blit(tile[0], tile[1])
-
-            for gun in self.gun_list:
-                gun[0][1].x -= cameraOffsetX
-                gun[0][1].y -= cameraOffsetY
-                screen.blit(gun[0][0], gun[0][1])
-
-            for hitbox in self.terrainHitBoxList:
-                hitbox.x -= cameraOffsetX
-                hitbox.y -= cameraOffsetY
             
-            for hitbox in self.platformsHitBoxList:
-                hitbox.x -= cameraOffsetX
-                hitbox.y -= cameraOffsetY
+            for platform in self.platform_list:
+                platform[1].x -= cameraOffsetX
+                platform[1].y -= cameraOffsetY
+                screen.blit(platform[0], platform[1])
 
+            for destructible in self.destructibleTile_list:
+                destructible.x -= cameraOffsetX
+                destructible.y -= cameraOffsetY
 
         def seleccionarTextura(self, fila, columna, maxColumna, altura, anchura, imagen):
             if columna >= maxColumna:
@@ -85,33 +88,19 @@ class World():
              # Iniciar la posicion del mapa
             mapaX = 0
             mapaY = 0
-            previousTileId = 0
 
             # Se recorre el nivel tile por tile
             for tile in map:
                 # Si un tile
                 if tile > 0:
-                    # Se recupera la textura que representa el tile y se añade una hitbox
+                # Se recupera la textura que representa el tile y se añade una hitbox
                     texture = self.seleccionarTextura(0, tile+compression, columns, tileHeight, tileWidth, textures)
                     textureRect = texture.get_rect()
                     textureRect.x = mapaX * tileWidth
                     textureRect.y = mapaY * tileHeight
+
                     tileTuple = (texture, textureRect)
                     self.tile_list.append(tileTuple)
-
-                    if previousTileId == 1:
-                        self.terrainHitBoxList.pop()
-                        joinedHitBox = previousTile.union(textureRect)
-                        previousTile = joinedHitBox
-                        self.terrainHitBoxList.append(joinedHitBox)
-                    else:
-                        self.terrainHitBoxList.append(texture.get_rect())
-                        previousTile = textureRect
-
-                    previousTileId = 1
-                
-                else: 
-                    previousTileId = 0
                     
                 # Se actualiza la posicion del mapa
                 mapaX += 1
@@ -124,7 +113,6 @@ class World():
              # Iniciar la posicion del mapa
             mapaX = 0
             mapaY = 0
-            previousTileId = 0
 
             # Se recorre el nivel tile por tile
             for tile in map:
@@ -136,21 +124,7 @@ class World():
                     textureRect.x = mapaX * tileWidth
                     textureRect.y = mapaY * tileHeight
                     tileTuple = (texture, textureRect)
-                    self.tile_list.append(tileTuple)
-
-                    if previousTileId == 1:
-                        self.platformsHitBoxList.pop()
-                        joinedHitBox = previousTile.union(textureRect)
-                        previousTile = joinedHitBox
-                        self.platformsHitBoxList.append(joinedHitBox)
-                    else:
-                        self.platformsHitBoxList.append(texture.get_rect())
-                        previousTile = textureRect
-
-                    previousTileId = 1
-                
-                else: 
-                    previousTileId = 0
+                    self.platform_list.append(tileTuple)
 
                 # Se actualiza la posicion del mapa
                 mapaX += 1
@@ -188,7 +162,6 @@ class World():
                 elif tile == 5:
                     en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
                     self.enemies.add(en)
-                    print("A")
 
                 elif tile == 6:
                     computer = Computer(mapaX * tileWidth, mapaY * tileHeight, self.enemies)
@@ -197,7 +170,7 @@ class World():
 
                 elif tile == 7:
                     textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth,tileHeight)
-                    self.terrainHitBoxList.append(textureRect)
+                    self.destructibleTile_list.append(textureRect)
 
                     en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight, textureRect)
                     self.destructibles_group.add(en)
@@ -208,10 +181,22 @@ class World():
                     mapaX = 0
                     mapaY += 1
                 
-
-        def getPlatforms(self):
-            return self.platformsHitBoxList
-
+        def getPlatformsList(self):
+            pList = []
+            for platform in self.platform_list:
+                pList.append(platform[1])
+            return pList
+        
+        def getTilesList(self):
+            tList = []
+            for tile in self.tile_list:
+                tList.append(tile[1])
+            return tList
+        
+        def getDestructiblesList(self):
+            return self.destructibleTile_list
+        
+        
         def loadBackground(self, background, compression, columns, tileHeight, tileWidth, textures, mapWidth):
             mapaX = 0
             mapaY = 0
@@ -226,7 +211,7 @@ class World():
                     textureRect.x = mapaX * tileWidth
                     textureRect.y = mapaY * tileHeight
                     tileTuple = (texture, textureRect)
-                    self.tile_list.append(tileTuple) 
+                    self.background_list.append(tileTuple) 
                     
                 # Se actualiza la posicion del mapa
                 mapaX += 1
@@ -264,18 +249,10 @@ class World():
             background = pygame.image.load(LVLS_PATH + nivel + '/background.png')
 
             backgroundRect = background.get_rect()
-            self.tile_list.append((background, backgroundRect)) 
+            #self.background_list.append((background, backgroundRect))
             self.loadMap(map, compression, columns, tileHeight, tileWidth, textures, mapWidth)
             self.loadPlatforms(platforms, compression, columns, tileHeight, tileWidth, textures, mapWidth)
             self.loadEntities(entities, compression, columns, tileHeight, tileWidth, mapWidth)
-            
-
-
-            
-
-
-           
-
         
         def initSecuence(self,enemyFactory,enemies):
             en = enemyFactory.createEnemy()

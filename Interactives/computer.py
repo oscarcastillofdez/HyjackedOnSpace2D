@@ -41,6 +41,5 @@ class Computer(pygame.sprite.Sprite):
         return "Presiona E para interactuar."
     
     def draw2(self,screen):
-        print("AA")
         pygame.draw.rect(screen, (255,255,255), self.randomEnemyFactorySecuence.spawnArea)
         

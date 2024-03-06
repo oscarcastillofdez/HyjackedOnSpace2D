@@ -23,10 +23,8 @@ class Bullet():
         self.rect.y = y + 30
         self.rect.width = disparoImg.get_width() / 8
         self.rect.height = disparoImg.get_width() / 8
-        self.rect
 
     def update(self, cameraOffset):
-
         cameraOffsetX,cameraOffsetY = cameraOffset
         self.rect.x -= self.velocidadX + cameraOffsetX
         self.rect.y -= self.velocidadY + cameraOffsetY
@@ -38,9 +36,10 @@ class Bullet():
             enemies_group.remove(objeto)
             return True
         
-        for tile in world.terrainHitBoxList:
-            if tile.colliderect(self.rect.x, self.rect.y, self.rect.width, self.rect.height):
-                return True
+        tileList = world.getTilesList()
+        
+        if self.rect.collidelist(tileList) >= 0:
+            return True
 
     
     def checkDespawnTime(self):

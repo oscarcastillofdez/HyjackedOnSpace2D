@@ -13,16 +13,16 @@
             "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 4799,
-                "y": 2399
+                "x": 4797,
+                "y": 2397
             }
         },
         "datosNivelB.json": {
-            "scale": 1.0614,
-            "selectedLayer": 1,
+            "scale": 0.3273,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 3011.5884680610516,
-                "y": 623.2334652345959
+                "x": 1813.321112129545,
+                "y": 918.1179346165599
             }
         },
         "datosTexturas.json": {

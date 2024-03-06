@@ -9,7 +9,7 @@ class RandomEnemyFactory(EnemyFactory):
         pass
     
     def createEnemy(self, columna, fila):
-        return FlyingEnemy(columna, fila)
+        return FlyingEnemy(columna, fila, False)
     
     def createEnemy2(self, columna, fila, hitBox):
         return WallDestructible(columna, fila, hitBox)

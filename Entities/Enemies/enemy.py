@@ -5,8 +5,9 @@ from Game.spritesheet import Spritesheet
 import math
 
 class Enemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y):
+    def __init__(self,x,y, onlyChase):
         pygame.sprite.Sprite.__init__(self)
+        self.onlyChase = onlyChase
         self.time = 0
         self.sprites = Spritesheet('Assets/Images/Entities/enemy trooper_walk.png',(120,120)).cargar_sprites(512,64)
         self.image = self.sprites[0]
@@ -29,12 +30,17 @@ class Enemy(pygame.sprite.Sprite, Entity):
         self.chaseTime = 120
         
         # Define los estados posibles
-        self.states = {"patrolling": self.patrol,
-                       "chasing": self.chase,
-                       "attacking": self.attack}
+        self.states = {"patrolling": self.patrol2,
+                       "chasing": self.chase2,
+                       "attacking": self.attack2}
         
         # Inicializa el estado actual
+        #self.current_state = self.states["patrolling"]
         self.current_state = "patrolling"
+
+        if onlyChase:
+            self.current_state = "chasing"
+            
         self.visionLine = pygame.Rect(self.rect.centerx, self.rect.y, 500, 50) 
     
     def update(self, dt, world, player,cameraOffset):
@@ -49,7 +55,7 @@ class Enemy(pygame.sprite.Sprite, Entity):
         self.states[self.current_state](world, player,cameraOffset)
         self.player_in_sight(world, player)
 
-    def patrol(self, world, player,cameraOffset):
+    def patrol2(self, world, player,cameraOffset):
         # Comportamiento cuando está patrullando
         dy = 0
 
@@ -64,31 +70,60 @@ class Enemy(pygame.sprite.Sprite, Entity):
         if self.velY > 10:
              self.velY = 10
         dy += self.velY
+
+        tileHitBoxList = world.getTilesList()
+        platformHitBoxList = world.getPlatformsList()
+        destructibleHitBoxList = world.getDestructiblesList()
+
+        auxRect = pygame.Rect(self.rect.x + self.patrollingchasingSpeed, self.rect.y, self.width, self.height)
+        auxRect2 = pygame.Rect(self.rect.x, self.rect.y + dy, self.width, self.height)
         
-        # Se calculan las colisiones en ambos ejes
-        for tile in world.terrainHitBoxList:
-            if tile.colliderect(self.rect.x + self.patrollingchasingSpeed, self.rect.y, self.width, self.height):
-                self.patrollingchasingSpeed = -self.patrollingchasingSpeed
-                self.viewDirection = -self.viewDirection
-            
-            if tile.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                    if self.velY < 0: #Saltando
-                        dy = tile.bottom - self.rect.top
-                        self.velY = 0
-                    elif self.velY >= 0: #Cayendo
-                        dy = tile.top - self.rect.bottom
-                        self.velY = 0
-                        self.inAir = False
+        tileIndex = auxRect.collidelist(tileHitBoxList)
+        tileIndex2 = auxRect2.collidelist(tileHitBoxList)
+
+        platformIndex = auxRect.collidelist(platformHitBoxList)
+
+        destructibleIndex = auxRect.collidelist(destructibleHitBoxList)
+        destructibleIndex2 = auxRect2.collidelist(destructibleHitBoxList)
+
+        if tileIndex >= 0 or destructibleIndex >= 0:
+            self.patrollingchasingSpeed = -self.patrollingchasingSpeed
+            self.viewDirection = -self.viewDirection
+
+        if tileIndex2 >= 0:
+            if self.velY < 0: #Saltando
+                dy = tileHitBoxList[tileIndex2].bottom - self.rect.top
+                self.velY = 0
+            elif self.velY >= 0: #Cayendo
+                dy = tileHitBoxList[tileIndex2].top - self.rect.bottom
+                self.velY = 0
+                self.inAir = False
+
+        if destructibleIndex2 >= 0:
+            if self.velY < 0: #Saltando
+                dy = destructibleHitBoxList[destructibleIndex2].bottom - self.rect.top
+                self.velY = 0
+            elif self.velY >= 0: #Cayendo
+                dy = destructibleHitBoxList[destructibleIndex2].top - self.rect.bottom
+                self.velY = 0
+                self.inAir = False
+
+        if platformHitBoxList[platformIndex].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+            if self.velY >= 0 and (self.rect.bottom - platformHitBoxList[platformIndex].top) < 10: #Cayendo
+                dy = platformHitBoxList[platformIndex].top - self.rect.bottom
+                self.velY = 0
+                self.inAir = False
 
         self.rect.x += self.patrollingchasingSpeed - cameraOffset[0]
         self.rect.y += dy - cameraOffset[1]
     
-    def chase(self, world, player,cameraOffset):
+    def chase2(self, world, player,cameraOffset):
         self.jumpDelay -= 1
         self.chaseTime -= 1
 
-        if self.chaseTime <= 0:
+        if self.chaseTime <= 0 and not self.onlyChase:
             self.change_state("patrolling")
+
             
         dy = 0
         self.moved = 0
@@ -101,12 +136,6 @@ class Enemy(pygame.sprite.Sprite, Entity):
             self.viewDirection = -1
             self.moved += self.chasingSpeed
 
-        #if player.position.x == self.rect.x and player.position.y < self.rect.y:
-            # Buscar otro camino (cambiar a un estado pathfinding? 
-            # Mover x bloques hacia un lado hasta encontrar una pared que no puede saltar o conseguir bajar la y)
-            # Si se encuentra una pared que no puede saltar cambia de direccion 
-            # Puede quedar atascado, alejarse inecesariamente o caerse al vacio
-            
         self.inAir = True
         self.velY += 1
         if self.velY > 10:
@@ -114,25 +143,52 @@ class Enemy(pygame.sprite.Sprite, Entity):
         
         dy += self.velY
 
-        for tile in world.terrainHitBoxList:
-            if tile.colliderect(self.rect.x - self.moved, self.rect.y, self.width, self.height):
-                if self.jumpDelay <= 0:
-                    self.jumpDelay = 50
-                    self.velY = -12
-                    dy = self.velY
+        tileHitBoxList = world.getTilesList()
+        platformHitBoxList = world.getPlatformsList()
+        destructibleHitBoxList = world.getDestructiblesList()
 
-                self.moved = 0
-            
-            if tile.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                    if self.velY < 0: #Saltando
-                        dy = tile.bottom - self.rect.top
-                        self.velY = 0
-                    elif self.velY >= 0: #Cayendo
-                        dy = tile.top - self.rect.bottom
-                        self.velY = 0
-                        self.inAir = False
+        auxRect = pygame.Rect(self.rect.x + self.patrollingchasingSpeed, self.rect.y, self.width, self.height)
+        auxRect2 = pygame.Rect(self.rect.x, self.rect.y + dy, self.width, self.height)
         
-            
+        tileIndex = auxRect.collidelist(tileHitBoxList)
+        tileIndex2 = auxRect2.collidelist(tileHitBoxList)
+
+        platformIndex = auxRect.collidelist(platformHitBoxList)
+
+        destructibleIndex = auxRect.collidelist(destructibleHitBoxList)
+        destructibleIndex2 = auxRect2.collidelist(destructibleHitBoxList)
+
+        if tileIndex >= 0 or destructibleIndex >= 0:
+            if self.jumpDelay <= 0:
+                self.jumpDelay = 50
+                self.velY = -12
+                dy = self.velY
+
+            self.moved = 0
+
+        if tileIndex2 >= 0:
+            if self.velY < 0: #Saltando
+                dy = tileHitBoxList[tileIndex2].bottom - self.rect.top
+                self.velY = 0
+            elif self.velY >= 0: #Cayendo
+                dy = tileHitBoxList[tileIndex2].top - self.rect.bottom
+                self.velY = 0
+                self.inAir = False
+
+        if destructibleIndex2 >= 0:
+            if self.velY < 0: #Saltando
+                dy = destructibleHitBoxList[destructibleIndex2].bottom - self.rect.top
+                self.velY = 0
+            elif self.velY >= 0: #Cayendo
+                dy = destructibleHitBoxList[destructibleIndex2].top - self.rect.bottom
+                self.velY = 0
+                self.inAir = False
+
+        if platformHitBoxList[platformIndex].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+            if self.velY >= 0 and (self.rect.bottom - platformHitBoxList[platformIndex].top) < 10: #Cayendo
+                dy = platformHitBoxList[platformIndex].top - self.rect.bottom
+                self.velY = 0
+                self.inAir = False
 
         self.rect.x -= cameraOffset[0]
         self.rect.y += dy - cameraOffset[1]
@@ -143,7 +199,7 @@ class Enemy(pygame.sprite.Sprite, Entity):
             self.change_state("attacking")
         
     
-    def attack(self, world, player,cameraOffset):
+    def attack2(self, world, player,cameraOffset):
         player.hit()
     
     # Método para cambiar de estado

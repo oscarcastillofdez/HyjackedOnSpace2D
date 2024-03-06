@@ -152,28 +152,50 @@ class Player(PlayerAbstract):
             self.inAir = True
 
             # Se calculan las colisiones en ambos ejes
-            for tile in world.terrainHitBoxList:
-                if tile.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
-                    dx = 0
+            tileHitBoxList = world.getTilesList()
+            platformHitBoxList = world.getPlatformsList()
+            destructibleHitBoxList = world.getDestructiblesList()
 
-                if tile.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                    if self.velY < 0: #Saltando
-                        dy = tile.bottom - self.rect.top
-                        self.pressed_jump = MAX_JUMP_HEIGHT +1
-                        self.velY = 0
-                    elif self.velY >= 0: #Cayendo
-                        dy = tile.top - self.rect.bottom
-                        self.velY = 0
-                        self.inAir = False
-
-            platforms = world.getPlatforms()
+            auxRect = pygame.Rect(self.rect.x + dx, self.rect.y, self.width, self.height)
+            auxRect2 = pygame.Rect(self.rect.x, self.rect.y + dy, self.width, self.height)
             
-            for tile in platforms:
-                if tile.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                    if self.velY >= 0 and (self.rect.bottom - tile.top) < 10: #Cayendo
-                        dy = tile.top - self.rect.bottom
-                        self.velY = 0
-                        self.inAir = False
+            tileIndex = auxRect.collidelist(tileHitBoxList)
+            tileIndex2 = auxRect2.collidelist(tileHitBoxList)
+
+            platformIndex = auxRect.collidelist(platformHitBoxList)
+
+            destructibleIndex = auxRect.collidelist(destructibleHitBoxList)
+            destructibleIndex2 = auxRect2.collidelist(destructibleHitBoxList)
+
+
+            if tileIndex >= 0 or destructibleIndex >= 0:
+                dx = 0
+            
+            if tileIndex2 >= 0:
+                if self.velY < 0: #Saltando
+                    dy = tileHitBoxList[tileIndex2].bottom - self.rect.top
+                    self.pressed_jump = MAX_JUMP_HEIGHT +1
+                    self.velY = 0
+                elif self.velY >= 0: #Cayendo
+                    dy = tileHitBoxList[tileIndex2].top - self.rect.bottom
+                    self.velY = 0
+                    self.inAir = False
+
+            if destructibleIndex2 >= 0:
+                if self.velY < 0: #Saltando
+                    dy = destructibleHitBoxList[destructibleIndex2].bottom - self.rect.top
+                    self.pressed_jump = MAX_JUMP_HEIGHT +1
+                    self.velY = 0
+                elif self.velY >= 0: #Cayendo
+                    dy = destructibleHitBoxList[destructibleIndex2].top - self.rect.bottom
+                    self.velY = 0
+                    self.inAir = False
+
+            if platformHitBoxList[platformIndex].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                if self.velY >= 0 and (self.rect.bottom - platformHitBoxList[platformIndex].top) < 10: #Cayendo
+                    dy = platformHitBoxList[platformIndex].top - self.rect.bottom
+                    self.velY = 0
+                    self.inAir = False
             
             cameraOffsetX = 0
             cameraOffsetY = 0

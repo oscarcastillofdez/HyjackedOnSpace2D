@@ -77,6 +77,7 @@ class PlayerWithPistol(PlayerAbstract):
     def draw(self, screen):
         self.player.draw(screen)
 
+        print(self.disparosList)
         for disparo in self.disparosList:
             disparo.draw(screen)
 

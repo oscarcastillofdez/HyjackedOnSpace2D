@@ -100,14 +100,9 @@ class Gameplay(State):
                 self.player = gun.getPlayerWithIt(self.player,self.ui)
                 
         # Si se queda sin vidas acaba el juego
-        if self.player.getHp() <= 0: 
+        if self.player.getHp() <= 0:
             self.done = True
 
-            #elif item[1] == "shield":
-                #self.player = PlayerWithShield(self.player)
-                #self.player.addObserver(self.uiEnergy)
-                #self.uiEnergy.show()
-            
         #if self.player.checkInteractuable(self.world):
             #self.text.showInteractuableText("Presiona E para interactuar.", "white")
             

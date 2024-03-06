@@ -29,6 +29,6 @@ class WallDestructible(pygame.sprite.Sprite, Entity):
         self.boxBreaking.rect.y = self.rect.centery - 64
         self.boxBreaking.scale((128,128))
         self.boxBreaking.play()
-        world.terrainHitBoxList.remove(self.hitBox)
+        world.destructibleTile_list.remove(self.hitBox)
         back_animations.add(self.boxBreaking)
         
