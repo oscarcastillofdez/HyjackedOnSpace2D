@@ -29,85 +29,8 @@ class World():
             ordenador = pygame.image.load(INTERACTIVES_PATH + '/ibm5150.png')
 
             self.shieldImage = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/plasma_shield.png'), (45,45))
-            
-        
-            '''row_count = 0
-            for row in globalVars.world_data:
-                col_count = 0
-                previousTileId = -1
-                
-                for tile in row: 
-                    
-                    # Podria hacerse cuatro listas (O las que se quisieran)
-                    # 1º Contedria todos los tiles de la mitad superior izquierda del nivel
-                    # 2º Contendria todos los tiles de la mitad superior derecha del nivel
-                    # 3º Contendria todos los tiles de la mitad inferior izquierda del nivel
-                    # 4º Contendria todos los tiles de la mitad inferior derecha del nivel
-                    # Los sprites no se meterian en estas listas, tendrian una sola lista (NO va  a haber 1000 sprites, pero si tiles)
-                    # Se comprobaria en que región (en cual de las cuatro listas) esta el personaje y se comrpobarian las colisiones con los tiles presentes en esa region
-                    # Es decir se recorrerian las 4 regiones buscando si el personaje está en cada una de ellas (com collidelist se podria conrpobar si el jugador esta dentro de esta region)
-                    # O el personaje podria informar (patron observer) en que region esta
-                    # Pero esperar a que oscar lo haga con JSON primero
-
-                    # Tambien se podria simultaneamente los tiles que estan juntos juntarlos mediante union() para hacer solo un rectangulo
-                    if tile == 0:
-                        previousTileId = 0
-                    if tile >= 0 and tile < 20:
-                        img_rect = img.get_rect()
-                        img_rect.x = (col_count * TILE_SIZE)
-                        img_rect.y = row_count * TILE_SIZE
-                        
-                        hit_box = img.get_rect()
-                        hit_box.x = (col_count
-                          * TILE_SIZE)
-                        hit_box.y = row_count * TILE_SIZE
-
-                        tile = (img, img_rect)
-
-                        if previousTileId == 1:
-                            self.terrainHitBoxList.pop()
-                            joinedHitBox = previousTile.union(hit_box)
-                            previousTile = joinedHitBox
-                            self.terrainHitBoxList.append(joinedHitBox)
-                        else:
-                            self.terrainHitBoxList.append(hit_box)
-                            previousTile = hit_box
-
-                        self.tile_list.append(tile)
-                        
-                        previousTileId = 1
-
-                    if tile == 50:
-                        en = self.enemyFactory.createEnemy(col_count * TILE_SIZE, row_count * TILE_SIZE - 52, self.globalVars)
-                        enemies.add(en)
-                        previousTileId = 2
-
-                    if tile == 3:
-                        img = pygame.transform.scale(pistola, (TILE_SIZE, TILE_SIZE))
-                        img_rect = img.get_rect()
-                        img_rect.x = (col_count * TILE_SIZE)
-                        img_rect.y = row_count * TILE_SIZE
-                        tile = (img, img_rect)
-                        self.gun_list.append(tile)
-                        previousTileId = 3
-                    if tile == 4:
-                        ordenador = Computer(col_count * TILE_SIZE, row_count * TILE_SIZE, self.globalVars)
-                        interactuable.add(ordenador)
-                        previousTileId = 4
-                    col_count += 1
-                row_count += 1'''
             self.cargarNivel("Lvl1")
 
-            '''print("Numero de tiles en el terreno antes: ")
-            print(len(self.tile_list))
-            print("Numero de tiles en el terreno ahora: ")
-            print(len(self.terrainHitBoxList))
-
-
-            print("Numero de tiles en el terreno antes: ")
-            print(len(self.tile_list))
-            print("Numero de tiles en el terreno ahora: ")
-            print(len(self.terrainHitBoxList))'''
 
         def inicialOffset(self, cameraOffset):
 
@@ -233,6 +156,12 @@ class World():
                 else: 
                     previousTileId = 0
 
+                # Se actualiza la posicion del mapa
+                mapaX += 1
+                if mapaX >= mapWidth:
+                    mapaX = 0
+                    mapaY += 1
+
         def loadEntities(map):
 
             mapaX = 0
@@ -277,11 +206,7 @@ class World():
                     en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight, textureRect)
                     self.destructibles_group.add(en)
 
-                # Se actualiza la posicion del mapa
-                mapaX += 1
-                if mapaX >= mapWidth:
-                    mapaX = 0
-                    mapaY += 1
+                
 
         def getPlatforms(self):
             return self.platformsHitBoxList

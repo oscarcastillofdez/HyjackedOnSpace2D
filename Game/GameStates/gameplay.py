@@ -32,6 +32,7 @@ class Gameplay(State):
         self.front_animations_group = pygame.sprite.Group()
         self.gunPickups = pygame.sprite.Group()
 
+        self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups)
         self.world.inicialOffset((2600,220))
 
         self.uiText = UIText()
@@ -41,7 +42,7 @@ class Gameplay(State):
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText)
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy)
         
-        self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups)
+        
 
 
     def get_event(self, event):
