@@ -65,6 +65,7 @@ class PlayerAbstract():
 
     def delObserver(self, observer):
         self.uiElementsList.remove(observer)
+        
     def notify(self):
         for observer in self.uiElementsList:
             observer.update(self)

@@ -13,6 +13,7 @@ class Shield():
 
         self.minChargeDelay = 15
         self.chargeDelay = self.minChargeDelay 
+        self.uiShieldObservers = []
 
         
     def update(self, player):
@@ -38,11 +39,12 @@ class Shield():
         if not self.energy == 0:
             self.energy -= 1
         self.timeWithoutHits = self.minTimeWithoutHits
+        self.notify()
         
 
     def charge(self):
         self.energy += 1
-
+        self.notify()
 
     def getShieldHp(self):
         return self.energy
@@ -54,3 +56,13 @@ class Shield():
     def iniciar_proceso_de_cambio_de_imagen(self):
         thread = threading.Thread(target=self.cambiar_imagen_despues_de_retraso)
         thread.start()
+
+    def addObserver(self, observer):
+        self.uiShieldObservers.append(observer)
+
+    def delObserver(self, observer):
+        self.uiShieldObservers.remove(observer)
+        
+    def notify(self):
+        for observer in self.uiShieldObservers:
+            observer.update(self)

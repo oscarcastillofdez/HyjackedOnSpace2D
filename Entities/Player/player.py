@@ -9,7 +9,7 @@ from .playerAbstract import PlayerAbstract
 from Entities.shield import Shield
 import random
 class Player(PlayerAbstract):
-        def __init__(self, x, y):
+        def __init__(self, x, y,uiHearts, uiText):
             super().__init__(x, y)
             # Imagenes - patron estado
             self.states = {
@@ -26,6 +26,8 @@ class Player(PlayerAbstract):
             self.hitImage = pygame.transform.rotate(self.standing,90)
             self.shaking = -1
             self.currentVelocity = 0
+            self.addObserver(uiText)
+            self.addObserver(uiHearts)
 
 
         def change_state(self):
@@ -225,6 +227,8 @@ class Player(PlayerAbstract):
             print(self.currentVelocity)
             return self.currentVelocity
         
+        def getShieldHp(self):
+            return 0
 
 
 

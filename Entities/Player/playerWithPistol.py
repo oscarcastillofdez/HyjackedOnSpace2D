@@ -47,6 +47,9 @@ class PlayerWithPistol(PlayerAbstract):
     def getHp(self):
         return self.player.getHp()
     
+    def interact(self, interactuableGroup):
+        self.player.interact(interactuableGroup)
+
     def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset):
         cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, cameraOffset)
         self.coolDown -= 1

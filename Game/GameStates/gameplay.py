@@ -31,18 +31,14 @@ class Gameplay(State):
         self.front_animations_group = pygame.sprite.Group()
         self.gunPickups = pygame.sprite.Group()
 
-        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1])
-        
-        self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups)
-        
         self.uiText = UIText()
         self.uiHearts = UIHearts()
         self.uiEnergy = UIEnergy()
+
+        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText)
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy)
-
-
-        self.player.addObserver(self.uiText)
-        self.player.addObserver(self.uiHearts)
+        
+        self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups)
 
 
     def get_event(self, event):
@@ -82,7 +78,7 @@ class Gameplay(State):
         
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)
         self.enemies_group.update(dt, self.world, self.player, self.cameraOffset)
-        self.interactiveGroup.update(self.player)
+        self.interactiveGroup.update(self.player, self.cameraOffset)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.grenades_group.update(self.cameraOffset, dt, self.world, self.enemies_group, self.destructibles_group, self.grenades_group,self.back_animations_group)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)

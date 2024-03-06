@@ -19,6 +19,7 @@ class World():
             self.healthPickUps = healthPickUps
             self.destructibles_group = destructibles_group
             self.gunPickups = gunPickups
+            self.interactiveGroup = interactives
 
             self.enemyFactory = enemyFactory
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
@@ -238,8 +239,13 @@ class World():
                     self.healthPickUps.add(health)
 
                 if mapaX == 30 and mapaY == 31:
-                    #en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
-                    #self.enemies.add(en)
+                    en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
+                    self.enemies.add(en)
+                    print("A")
+
+                if mapaX == 30 and mapaY == 31:
+                    computer = Computer(mapaX * tileWidth, mapaY * tileHeight)
+                    self.interactiveGroup.add(computer)
                     print("A")
 
                 if mapaX == 30 and mapaY == 31:

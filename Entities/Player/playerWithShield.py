@@ -11,7 +11,7 @@ from Entities.bullet import Bullet
 
 
 class PlayerWithShield(PlayerAbstract):
-        def __init__(self, player):
+        def __init__(self, player, ui):
             super().__init__(player.position().x, player.position().y)
             self.player = player
 
@@ -36,6 +36,9 @@ class PlayerWithShield(PlayerAbstract):
             self.coolDown = 30
 
             self.deflectedShotsList = []
+            self.shield.addObserver(ui.uiEnergy)
+            ui.uiEnergy.show()
+            print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
 
 
         def move_left(self):
@@ -55,7 +58,7 @@ class PlayerWithShield(PlayerAbstract):
                 return self.player.hit()
             else:
                 self.shield.deflect(self.shieldHitImage)
-                self.notify()
+                
                 return False
             
         def getShieldHp(self):
