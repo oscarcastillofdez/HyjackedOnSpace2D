@@ -80,7 +80,9 @@ class PlayerWithPistol(PlayerAbstract):
         for disparo in self.disparosList:
             disparo.draw(screen)
 
-    
+    def doInteract(self, interactuableGroup):
+        self.player.doInteract(interactuableGroup)
+
     def position(self):
         return self.player.position()
     

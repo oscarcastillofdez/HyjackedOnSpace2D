@@ -77,10 +77,15 @@ class Player(PlayerAbstract):
         # La clase checkGunClollide deberia de eliminarse
         # Interact deberia de valer para todo objeto interactuable (Ordenador, puertas, luces, armas, vidas, mejoras...)
         # En world meter armas como un interactuable pygame.sprite.interacutableGroup
+        def doInteract(self, interactuableGroup):
+            interactsWith = pygame.sprite.spritecollideany(self, interactuableGroup)
+            if interactsWith:
+                interactsWith.interact()
+                
         def interact(self, interactuableGroup):
             interactsWith = pygame.sprite.spritecollideany(self, interactuableGroup)
             if interactsWith:
-                newText = interactsWith.interact()
+                newText = interactsWith.getText()
                 if newText != self.interactuableText:
                     self.interactuableText = newText
                     self.notify()

@@ -118,3 +118,6 @@ class PlayerWithShield(PlayerAbstract):
 
         def getCurrentVelocity(self):
             return self.player.getCurrentVelocity()
+        
+        def doInteract(self, interactuableGroup):
+            self.player.doInteract(interactuableGroup)

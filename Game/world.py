@@ -40,10 +40,6 @@ class World():
                 tile[1].x -= cameraOffsetX
                 tile[1].y -= cameraOffsetY
 
-            for gun in self.gun_list:
-                gun[1].x -= cameraOffsetX
-                gun[1].y -= cameraOffsetY
-
             for hitbox in self.terrainHitBoxList:
                 hitbox.x -= cameraOffsetX
                 hitbox.y -= cameraOffsetY
@@ -281,4 +277,6 @@ class World():
            
 
         
-            
+        def initSecuence(self,enemyFactory,enemies):
+            en = enemyFactory.createEnemy()
+            self.enemies.add(en)
