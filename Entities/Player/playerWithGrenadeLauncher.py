@@ -7,11 +7,12 @@ from Constants.constants import *
 from MovementAndCollisions.aux_functions import *
 from .playerAbstract import PlayerAbstract
 from Entities.shield import Shield
-from Entities.bullet import Bullet
+from Entities.grenade import Grenade
 
 
-class PlayerWithShield(PlayerAbstract):
+class PlayerWithGrenadeLauncher(PlayerAbstract):
         def __init__(self, player):
+            print("BBBBBBBBBBBBB")
             super().__init__(player.position().x, player.position().y)
             self.player = player
 
@@ -35,7 +36,9 @@ class PlayerWithShield(PlayerAbstract):
             self.applyShield = False
             self.coolDown = 30
 
-            self.deflectedShotsList = []
+            self.grenadeImg = pygame.image.load(PLAYER_PATH + "grenade.png")
+            self.grenadeVelocity = 5
+            self.disparosList = []
 
 
         def move_left(self):
@@ -51,19 +54,11 @@ class PlayerWithShield(PlayerAbstract):
             return self.player.getHp()
         
         def hit(self):
-            if not self.applyShield or self.shield.getShieldHp() <= 0:
-                return self.player.hit()
-            else:
-                self.shield.deflect(self.shieldHitImage)
-                self.notify()
-                return False
+            return self.player.hit()
             
         def getShieldHp(self):
-            return self.shield.getShieldHp()
+            return self.player.getShieldHp()
         
-        # La clase checkGunClollide deberia de eliminarse
-        # Interact deberia de valer para todo objeto interactuable (Ordenador, puertas, luces, armas, vidas, mejoras...)
-        # En world meter armas como un interactuable pygame.sprite.interacutableGroup
         def interact(self, interactuableGroup):
             self.player.interact(interactuableGroup)
             
@@ -71,47 +66,30 @@ class PlayerWithShield(PlayerAbstract):
             return self.player.getInteractuableText()
                 
         def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
-            cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, cameraOffset)
             self.coolDown -= 1
-
-            for shot in self.deflectedShotsList:
-                shot.update(cameraOffset)
-                if shot.checkBulletCollision(world, enemies_group) or shot.checkDespawnTime():
-                    self.deflectedShotsList.remove(shot)
-                    del shot
-
-            self.shield.update(self)
-
-            return cameraOffset
-
+            return self.player.update(world, dt, enemies_group, interactuableGroup, cameraOffset)
+        
         def deflect(self, direction, newBulletImage, velocidadBala):
-            if self.coolDown <= 0:
-                self.coolDown = 30
-                disparo = Bullet(newBulletImage, direction, velocidadBala, self.player.position().x, self.player.position().y)
-                self.deflectedShotsList.append(disparo)
+            self.player.deflect(direction, newBulletImage, velocidadBala)
 
         def shoot(self, direction):
             self.player.shoot(direction)
 
         def draw(self, screen):
             self.player.draw(screen)
-            if self.applyShield:
-                self.shield.draw(screen)
-                self.applyShield = False
-            for disparo in self.deflectedShotsList:
-                disparo.draw(screen)
 
         def position(self):
             return self.player.position()
         
         def cover(self):
-            self.applyShield = True
+            self.player.cover()
 
         def heal(self):
             self.player.heal()
-            
-        def launchGrenade(self, direction, grenades_group):
-            self.player.launchGrenade(direction, grenades_group)
 
-        def getCurrentVelocity(self):
-            return self.player.getCurrentVelocity()
+        def launchGrenade(self, direction, grenades_group):
+            if self.coolDown <= 0:
+                self.coolDown = 30
+                grenade = Grenade(self.grenadeImg, direction, self.grenadeVelocity, self.player.position().x, self.player.position().y)
+                grenades_group.add(grenade)
+            

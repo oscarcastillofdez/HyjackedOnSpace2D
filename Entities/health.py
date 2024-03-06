@@ -20,7 +20,6 @@ class Health(pygame.sprite.Sprite):
     
     def update(self, player, cameraOffset, healingGroup):
         if self.rect.colliderect(player.position()):
-            print("AAAAAAAAAAAAAAAAAAAAAAAAAA")
             player.heal()
             healingGroup.remove(self)
         

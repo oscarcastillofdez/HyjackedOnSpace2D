@@ -25,7 +25,8 @@ class Player(PlayerAbstract):
             self.deadImage = pygame.transform.rotate(self.standing,90)
             self.hitImage = pygame.transform.rotate(self.standing,90)
             self.shaking = -1
-            
+            self.currentVelocity = 0
+
 
         def change_state(self):
             self.state.done = False
@@ -112,6 +113,7 @@ class Player(PlayerAbstract):
             (self.right_mov, right_movement) = move_horizontal(self.moving_right, self.right_mov, dt)
             horizontal_movement = floor(right_movement - left_movement)
 
+            self.currentVelocity = horizontal_movement
             # Calculo del movimiento vertical
             if self.jumping and self.inAir == False and self.pressed_jump == 0:
                 self.velY = -MIN_JUMP_HEIGHT
@@ -196,14 +198,6 @@ class Player(PlayerAbstract):
             
             return (cameraOffsetX + shakingX, cameraOffsetY + shakingY)
 
-        def checkGunPick(self, world):
-            i = 0
-            for gun in world.gun_list:
-                if gun[0][1].colliderect(self.rect.x, self.rect.y, self.width, self.height):
-                    del world.gun_list[i] # Se elimina la pistola de la lista de objetos
-                    return gun # Devolver gun en vez de True para tener mas armas?
-                i += 1
-            
         def shoot(self, direction):
             print("No tengo arma")
 
@@ -223,9 +217,15 @@ class Player(PlayerAbstract):
             if self.healthPoints < self.maxHealthPoints:
                 self.healthPoints += 1
                 self.notify()
-            
                 
-            
+        def launchGrenade(self, direction,grenades_group):
+            print("No tengo lanza grandas")
+                
+        def getCurrentVelocity(self):
+            print(self.currentVelocity)
+            return self.currentVelocity
+        
+
 
 
             

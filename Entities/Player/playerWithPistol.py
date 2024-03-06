@@ -9,7 +9,7 @@ from .playerAbstract import PlayerAbstract
 from Entities.bullet import Bullet
 from Constants.constants import *
 
-class Pistol(PlayerAbstract):
+class PlayerWithPistol(PlayerAbstract):
     def __init__(self, player):
         super().__init__(player.position().x, player.position().y)
         self.player = player
@@ -77,8 +77,6 @@ class Pistol(PlayerAbstract):
         for disparo in self.disparosList:
             disparo.draw(screen)
 
-    def checkGunPick(self, world):
-        return self.player.checkGunPick(world)
     
     def position(self):
         return self.player.position()
@@ -91,3 +89,9 @@ class Pistol(PlayerAbstract):
 
     def heal(self):
         self.player.heal()
+
+    def launchGrenade(self, direction,grenades_group):
+        self.player.launchGrenade(direction,grenades_group)
+    
+    def getCurrentVelocity(self):
+        return self.player.getCurrentVelocity()

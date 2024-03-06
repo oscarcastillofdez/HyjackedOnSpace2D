@@ -60,9 +60,6 @@ class PlayerAbstract():
     def draw(self, screen):
         pass
 
-    def checkGunPick(self, world):
-        pass
-    
     def addObserver(self, observer):
         self.uiElementsList.append(observer)
 

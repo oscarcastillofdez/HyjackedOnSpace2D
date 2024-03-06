@@ -1,19 +1,24 @@
 import pygame
 import json
 from Entities.Enemies.enemy import *
-from Entities.Player.pistol import *
+from Entities.Player.playerWithPistol import *
+from Entities.shieldPickup import ShieldPickup
 from Interactives.computer import Computer
 from Constants.constants import *
 from Entities.health import Health
+from Entities.grenadeLauncher import GrenadeLauncher
+from Entities.pistol import Pistol
 
 class World():
-        def __init__(self, enemies, enemyFactory, interactives, cameraOffset, healthPickUps):
+        def __init__(self, enemies, enemyFactory, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups):
             self.tile_list = []
             self.gun_list = []
             self.terrainHitBoxList = []
             self.interactuableList = []
             self.enemies = enemies
             self.healthPickUps = healthPickUps
+            self.destructibles_group = destructibles_group
+            self.gunPickups = gunPickups
 
             self.enemyFactory = enemyFactory
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
@@ -217,30 +222,33 @@ class World():
                 # facilitara el saber si se recogio una cosa u otra 
                 # y se le quitaria trabajo a la clase update() del player (actualmente comprueba colision con todos los pickups)
                 if mapaX == 14 and mapaY == 31:
-                    texture = self.pistola
-                    textureRect = texture.get_rect()
-                    textureRect.x = mapaX * tileWidth
-                    textureRect.y = mapaY * tileHeight
-                    tileTuple = (texture, textureRect)
-                    tileTupleId = (tileTuple, "pistol1")
-                    self.gun_list.append(tileTupleId)
+                    pistol = Pistol(mapaX * tileWidth, mapaY * tileHeight)
+                    self.gunPickups.add(pistol)
                 
                 if mapaX == 20 and mapaY == 31:
-                    texture = self.shieldImage
-                    textureRect = texture.get_rect()
-                    textureRect.x = mapaX * tileWidth
-                    textureRect.y = mapaY * tileHeight
-                    tileTuple = (texture, textureRect)
-                    tileTupleId = (tileTuple, "shield")
-                    self.gun_list.append(tileTupleId)
+                    shieldPickup = ShieldPickup(mapaX * tileWidth, mapaY * tileHeight)
+                    self.gunPickups.add(shieldPickup)
+
+                if mapaX == 26 and mapaY == 31:
+                    grenadeLauncher = GrenadeLauncher(mapaX * tileWidth, mapaY * tileHeight)
+                    self.gunPickups.add(grenadeLauncher)
 
                 if mapaX == 50 and mapaY == 31:
                     health = Health(mapaX * tileWidth, mapaY * tileHeight)
                     self.healthPickUps.add(health)
 
                 if mapaX == 30 and mapaY == 31:
-                    en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
-                    self.enemies.add(en)
+                    #en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
+                    #self.enemies.add(en)
+                    print("A")
+
+                if mapaX == 30 and mapaY == 31:
+                    textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth,tileHeight)
+                    self.terrainHitBoxList.append(textureRect)
+
+                    en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight, textureRect)
+                    self.destructibles_group.add(en)
+
                 # Se actualiza la posicion del mapa
                 mapaX += 1
                 if mapaX >= anchuraMapa:
