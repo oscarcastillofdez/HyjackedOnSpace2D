@@ -13,15 +13,18 @@ class Gameplay(State):
     def __init__(self):
         super(Gameplay, self).__init__()
         self.next_state = "GAME_OVER"
-        self.cameraOffset = (0,0)
+        self.cameraOffset = (1000,0)
         
         self.randomEnemyFactory = RandomEnemyFactory()
         self.enemies_group = pygame.sprite.Group()
         self.interactiveGroup = pygame.sprite.Group()
 
+
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1])
         
         self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset)
+
+        self.world.inicialOffset((2600,220))
         
         self.uiText = UIText()
         self.uiHearts = UIHearts()

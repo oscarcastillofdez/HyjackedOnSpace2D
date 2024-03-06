@@ -103,7 +103,7 @@ class Player(PlayerAbstract):
                 self.current_state = self.states["IDLE"]
 
             # Se añade la gravedad al movimiento en y
-            self.velY += GRAVITY
+            self.velY += floor(GRAVITY * dt/1000)
             if self.velY > MAX_FALL_VELOCITY:
                  self.velY = MAX_FALL_VELOCITY
             dy = self.velY
@@ -119,14 +119,25 @@ class Player(PlayerAbstract):
                 if tile.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
                     if self.velY < 0: #Saltando
                         dy = tile.bottom - self.rect.top
+                        self.pressed_jump = MAX_JUMP_HEIGHT +1
                         self.velY = 0
                     elif self.velY >= 0: #Cayendo
+                        dy = tile.top - self.rect.bottom
+                        self.velY = 0
+                        self.inAir = False
+
+            platforms = world.getPlatforms()
+            
+            for tile in platforms:
+                if tile.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                    if self.velY >= 0 and (self.rect.bottom - tile.top) < 10: #Cayendo
                         dy = tile.top - self.rect.bottom
                         self.velY = 0
                         self.inAir = False
             
             cameraOffsetX = 0
             cameraOffsetY = 0
+
 
             # Si el jugador se mueve en los limites del scroll se mueve sin mas, si no se hace scroll
             if self.rect.x > SCREEN_WIDTH / 3 and self.rect.x < SCREEN_WIDTH - (SCREEN_WIDTH / 3):
@@ -165,7 +176,10 @@ class Player(PlayerAbstract):
             print("No tengo arma")
 
         def draw(self, screen):
-            screen.blit(self.standing, self.rect)
+            offsetX = self.rect.x - 23
+            screen.blit(self.standing, (offsetX, self.rect.y, self.rect.width, self.rect.height))
+            #pygame.draw.rect(screen, (255,255,255), self.rect)
+   
 
         def addObserver(self, observer):
             self.uiElementsList.append(observer)

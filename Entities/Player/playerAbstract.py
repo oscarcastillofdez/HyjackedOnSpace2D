@@ -8,7 +8,7 @@ from MovementAndCollisions.aux_functions import *
 class PlayerAbstract():
     def __init__(self,x,y):
         # Posicion
-        self.rect = pygame.Rect(0,0,66,94)
+        self.rect = pygame.Rect(0,0,50,94)
         self.rect.x = x
         self.rect.y = y
         self.width = self.rect.width

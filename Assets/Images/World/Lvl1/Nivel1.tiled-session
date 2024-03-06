@@ -3,34 +3,46 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "datosNivel.json",
+    "activeFile": "datosNivelB.json",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "datosNivel.json": {
-            "scale": 0.125,
-            "selectedLayer": 2,
+            "scale": 0.5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 4772,
-                "y": 1388
+                "x": 4799,
+                "y": 2399
+            }
+        },
+        "datosNivelB.json": {
+            "scale": 1.0614,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 3011.5884680610516,
+                "y": 623.2334652345959
             }
         },
         "datosTexturas.json": {
-            "scaleInDock": 1,
+            "scaleInDock": 1.5,
             "scaleInEditor": 1
         }
     },
+    "map.height": 50,
     "map.lastUsedFormat": "json",
+    "map.width": 120,
     "openFiles": [
         "datosTexturas.json",
-        "datosNivel.json"
+        "datosNivel.json",
+        "datosNivelB.json"
     ],
     "project": "Nivel1.tiled-project",
     "recentFiles": [
         "datosTexturas.json",
-        "datosNivel.json"
+        "datosNivel.json",
+        "datosNivelB.json"
     ],
     "tileset.lastUsedFormat": "json"
 }

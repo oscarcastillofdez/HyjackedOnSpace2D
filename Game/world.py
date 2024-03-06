@@ -10,6 +10,7 @@ class World():
             self.tile_list = []
             self.gun_list = []
             self.terrainHitBoxList = []
+            self.platformsHitBoxList = []
             self.interactuableList = []
 
             self.enemyFactory = enemyFactory
@@ -45,7 +46,8 @@ class World():
                         img_rect.y = row_count * TILE_SIZE
                         
                         hit_box = img.get_rect()
-                        hit_box.x = (col_count * TILE_SIZE)
+                        hit_box.x = (col_count
+                          * TILE_SIZE)
                         hit_box.y = row_count * TILE_SIZE
 
                         tile = (img, img_rect)
@@ -95,6 +97,28 @@ class World():
             print("Numero de tiles en el terreno ahora: ")
             print(len(self.terrainHitBoxList))'''
 
+        def inicialOffset(self, cameraOffset):
+
+            (cameraOffsetX,cameraOffsetY) = cameraOffset
+            
+            for tile in self.tile_list:
+                tile[1].x -= cameraOffsetX
+                tile[1].y -= cameraOffsetY
+
+            for gun in self.gun_list:
+                gun[1].x -= cameraOffsetX
+                gun[1].y -= cameraOffsetY
+
+            for hitbox in self.terrainHitBoxList:
+                hitbox.x -= cameraOffsetX
+                hitbox.y -= cameraOffsetY
+
+            for hitbox in self.platformsHitBoxList:
+                hitbox.x -= cameraOffsetX
+                hitbox.y -= cameraOffsetY
+
+
+
         def draw(self, screen, cameraOffset):
             # Se dibuja las tiles teniendo en cuenta el scroll
 
@@ -103,9 +127,7 @@ class World():
             for tile in self.tile_list:
                 tile[1].x -= cameraOffsetX
                 tile[1].y -= cameraOffsetY
-
-                if tile[1].x > cameraOffsetX - 320 and tile[1].x < cameraOffsetX + SCREEN_WIDTH + 320 and tile[1].y > cameraOffsetY - 320 and tile[1].y < cameraOffsetY + SCREEN_HEIGTH + 320:
-                    screen.blit(tile[0], tile[1])
+                screen.blit(tile[0], tile[1])
 
             for gun in self.gun_list:
                 gun[1].x -= cameraOffsetX
@@ -113,6 +135,10 @@ class World():
                 screen.blit(gun[0], gun[1])
 
             for hitbox in self.terrainHitBoxList:
+                hitbox.x -= cameraOffsetX
+                hitbox.y -= cameraOffsetY
+            
+            for hitbox in self.platformsHitBoxList:
                 hitbox.x -= cameraOffsetX
                 hitbox.y -= cameraOffsetY
 
@@ -123,71 +149,24 @@ class World():
             else:
                 return imagen.subsurface((columna*anchura, fila*altura, anchura, altura))
             
-        def cargarNivel(self, nivel):
-
-            # Cargar el json con los datos del nivel
-
-            with open(LVLS_PATH + nivel + '/datosNivel.json', 'r') as file:
-                nivelData = file.read()
-            nivelData = json.loads(nivelData)
-            mapaNivel1 = nivelData['layers'][0]
-            mapaFondo = nivelData['layers'][2]['data']
-            nivel1Grid = mapaNivel1['data']
-            anchuraMapa = mapaNivel1['width']
-            compresion = nivelData['compressionlevel']
-
-            # Cargar el json con los datos de las texturas
-
-            pathTextura = nivelData['tilesets'][0]['source']
-            with open(LVLS_PATH + nivel + "/" + pathTextura, 'r') as file:
-                texturasNivel = file.read()
-            texturasNivel = json.loads(texturasNivel)
-            columnas = texturasNivel['columns']
-            tileHeight = texturasNivel['tileheight']
-            tileWidth = texturasNivel['tilewidth']
-
-            # Cargar la imagen con las texturas de los tiles
-            imagen = pygame.image.load(LVLS_PATH + nivel + '/texturas.png') 
-
-
-            mapaX = 0
-            mapaY = 0
-
-            '''# Se recorre el nivel tile por tile
-            for tile in mapaFondo:
-                # Si un tile
-                if tile > 0:
-                    # Se recupera la textura que representa el tile y se añade una hitbox
-                    texture = self.seleccionarTextura(0, tile+compresion, columnas, tileHeight, tileWidth, imagen)
-                    textureRect = texture.get_rect()
-                    textureRect.x = mapaX * tileWidth
-                    textureRect.y = mapaY * tileHeight
-                    tileTuple = (texture, textureRect)
-                    self.tile_list.append(tileTuple) 
-                    
-                # Se actualiza la posicion del mapa
-                mapaX += 1
-                if mapaX >= anchuraMapa:
-                    mapaX = 0
-                    mapaY += 1'''
-
-
-            # Iniciar la posicion del mapa
+        def loadMap(self, map, compression, columns, tileHeight, tileWidth, textures, mapWidth):
+            
+             # Iniciar la posicion del mapa
             mapaX = 0
             mapaY = 0
             previousTileId = 0
 
             # Se recorre el nivel tile por tile
-            for tile in nivel1Grid:
+            for tile in map:
                 # Si un tile
                 if tile > 0:
                     # Se recupera la textura que representa el tile y se añade una hitbox
-                    texture = self.seleccionarTextura(0, tile+compresion, columnas, tileHeight, tileWidth, imagen)
+                    texture = self.seleccionarTextura(0, tile+compression, columns, tileHeight, tileWidth, textures)
                     textureRect = texture.get_rect()
                     textureRect.x = mapaX * tileWidth
                     textureRect.y = mapaY * tileHeight
                     tileTuple = (texture, textureRect)
-                    self.tile_list.append(tileTuple) 
+                    self.tile_list.append(tileTuple)
 
                     if previousTileId == 1:
                         self.terrainHitBoxList.pop()
@@ -195,7 +174,7 @@ class World():
                         previousTile = joinedHitBox
                         self.terrainHitBoxList.append(joinedHitBox)
                     else:
-                        self.terrainHitBoxList.append(textureRect)
+                        self.terrainHitBoxList.append(texture.get_rect())
                         previousTile = textureRect
 
                     previousTileId = 1
@@ -205,8 +184,113 @@ class World():
                     
                 # Se actualiza la posicion del mapa
                 mapaX += 1
-                if mapaX >= anchuraMapa:
+                if mapaX >= mapWidth:
                     mapaX = 0
                     mapaY += 1
 
+        def loadPlatforms(self, map, compression, columns, tileHeight, tileWidth, textures, mapWidth):
+            
+             # Iniciar la posicion del mapa
+            mapaX = 0
+            mapaY = 0
+            previousTileId = 0
+
+            # Se recorre el nivel tile por tile
+            for tile in map:
+                # Si un tile
+                if tile > 0:
+                    # Se recupera la textura que representa el tile y se añade una hitbox
+                    texture = self.seleccionarTextura(0, tile+compression, columns, tileHeight, tileWidth, textures)
+                    textureRect = texture.get_rect()
+                    textureRect.x = mapaX * tileWidth
+                    textureRect.y = mapaY * tileHeight
+                    tileTuple = (texture, textureRect)
+                    self.tile_list.append(tileTuple)
+
+                    if previousTileId == 1:
+                        self.platformsHitBoxList.pop()
+                        joinedHitBox = previousTile.union(textureRect)
+                        previousTile = joinedHitBox
+                        self.platformsHitBoxList.append(joinedHitBox)
+                    else:
+                        self.platformsHitBoxList.append(texture.get_rect())
+                        previousTile = textureRect
+
+                    previousTileId = 1
+                
+                else: 
+                    previousTileId = 0
+                    
+                # Se actualiza la posicion del mapa
+                mapaX += 1
+                if mapaX >= mapWidth:
+                    mapaX = 0
+                    mapaY += 1
+
+        def getPlatforms(self):
+            return self.platformsHitBoxList
+
+        def loadBackground(self, background, compression, columns, tileHeight, tileWidth, textures, mapWidth):
+            mapaX = 0
+            mapaY = 0
+
+            # Se recorre el nivel tile por tile
+            for tile in background:
+                # Si un tile
+                if tile > 0:
+                    # Se recupera la textura que representa el tile y se añade una hitbox
+                    texture = self.seleccionarTextura(0, tile+compression, columns, tileHeight, tileWidth, textures)
+                    textureRect = texture.get_rect()
+                    textureRect.x = mapaX * tileWidth
+                    textureRect.y = mapaY * tileHeight
+                    tileTuple = (texture, textureRect)
+                    self.tile_list.append(tileTuple) 
+                    
+                # Se actualiza la posicion del mapa
+                mapaX += 1
+                if mapaX >= mapWidth:
+                    mapaX = 0
+                    mapaY += 1
+            
+        def cargarNivel(self, nivel):
+
+            # Cargar el json con los datos del nivel
+
+            with open(LVLS_PATH + nivel + '/datosNivelB.json', 'r') as file:
+                nivelData = file.read()
+            nivelData = json.loads(nivelData)
+            mapaNivel1 = nivelData['layers'][1]
+            platforms = nivelData['layers'][2]['data']
+            map = mapaNivel1['data']
+            mapWidth = mapaNivel1['width']
+            compression = nivelData['compressionlevel']
+
+            # Cargar el json con los datos de las texturas
+
+            pathTextura = nivelData['tilesets'][0]['source']
+            with open(LVLS_PATH + nivel + "/" + pathTextura, 'r') as file:
+                texturasNivel = file.read()
+            texturasNivel = json.loads(texturasNivel)
+            columns = texturasNivel['columns']
+            tileHeight = texturasNivel['tileheight']
+            tileWidth = texturasNivel['tilewidth']
+
+            # Cargar la imagen con las texturas de los tiles
+            textures = pygame.image.load(LVLS_PATH + nivel + '/texturas.png') 
+
+            background = pygame.image.load(LVLS_PATH + nivel + '/background.png')
+
+            backgroundRect = background.get_rect()
+            self.tile_list.append((background, backgroundRect)) 
+            self.loadMap(map, compression, columns, tileHeight, tileWidth, textures, mapWidth)
+            self.loadPlatforms(platforms, compression, columns, tileHeight, tileWidth, textures, mapWidth)
+            
+
+
+            
+
+
+           
+
+        
             
