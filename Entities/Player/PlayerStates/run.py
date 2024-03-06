@@ -30,9 +30,6 @@ class RunLeft(pState):
             self.spritesheet = Spritesheet(PLAYER_SPRITES_PATH + 'RunLeft-player.png',(100,100))
         self.animation = self.spritesheet.get_animation(0,0,64,64,6,(255,0,0))
     
-    def initial(self):
-        return self.animation[0]
-    
     def next_sprite(self):
         self.sprite_index += 1
         if self.sprite_index == len(self.animation):

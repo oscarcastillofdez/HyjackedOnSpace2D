@@ -1,12 +1,13 @@
 import pygame
 from .entity import Entity
 import math
+from Entities.Enemies.EnemyStates.patrol import Patrol
+from Entities.Enemies.EnemyStates.chase import Chase
+from Entities.Enemies.EnemyStates.attack import Attack
 from Game.spritesheet import Spritesheet
 from Constants.constants import *
 
 from Entities.bullet import Bullet
-
-
 class FlyingEnemy(pygame.sprite.Sprite, Entity):
     def __init__(self,x,y) -> None:
         pygame.sprite.Sprite.__init__(self)
@@ -43,12 +44,13 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.minFlyingHeight = -5
         
         # Define los estados posibles
-        self.states = {"patrolling": self.patrol,
-                       "chasing": self.chase,
-                       "attacking": self.attack}
+        self.states = {"patrolling": Patrol(self),
+                       "chasing": Chase(self),
+                       "attacking": Attack(self)}
         
+        self.state_name = "patrolling"
         # Inicializa el estado actual
-        self.current_state = "patrolling"
+        self.current_state = self.states["patrolling"]
 
         self.lineStart = (self.rect.centerx, self.rect.centery)
         #self.disparoImg = pygame.image.load('Assets/img/lazer_1.png')
@@ -72,7 +74,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             self.index += 1
             if self.index >= len(self.sprites):
                 self.index=0
-            self.image = self.sprites[self.index]
+            self.image = self.current_state.next_sprite()
 
         for disparo in self.disparosList:
             disparo.update(cameraOffset)
@@ -80,8 +82,10 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
                 self.disparosList.remove(disparo)
                 del disparo
 
-        self.states[self.current_state](world, player, cameraOffset)
+        self.states[self.state_name].update(dt, world, player, cameraOffset)
         self.player_in_sight(world, player)
+        if self.current_state.done:
+            self.change_state()
 
     def patrol(self, world, player, cameraOffset):
         # Comportamiento cuando está patrullando
@@ -118,7 +122,8 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.chaseTime -= 1
 
         if self.chaseTime <= 0:
-            self.change_state("patrolling")
+            self.current_state.next_state = "patrolling"
+            self.current_state.done = True
             
         self.moved = 0
 
@@ -140,7 +145,8 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.rect.x -= self.moved
 
         if self.distanciaAlJugador < self.minAtackDistance:
-            self.change_state("attacking")
+            self.current_state.next_state = "attacking"
+            self.current_state.done = True
 
     
     def attack(self, world, player,cameraOffset):
@@ -155,15 +161,19 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.rect.y -= cameraOffset[1]
 
         if self.distanciaAlJugador > self.minAtackDistance:
-            self.change_state("chasing")
+            self.current_state.done = True
+            self.current_state.next_state = "chasing"
     
     def drawBullets(self, screen):
         for disparo in self.disparosList:
             disparo.draw(screen)
             
     # Método para cambiar de estado
-    def change_state(self, new_state):
-        self.current_state = new_state
+    def change_state(self):
+        self.state_name = self.current_state.next_state
+        self.current_state.done = False
+
+        self.current_state = self.states[self.state_name]
 
     # Lógica para determinar si el jugador está dentro del rango de visión
     def player_in_sight(self, world, player):
@@ -186,6 +196,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         
         # Si no hay un obstaculo de por medio y esta suficientemente cerca, se está viendo al jugador
         # Cambiar al estado de chasing
-        if self.current_state == "patrolling":
+        if self.state_name == "patrolling":
             self.chaseTime = 120
-            self.change_state("chasing")
+            self.current_state.next_state = "chasing"
+            self.current_state.done = True
