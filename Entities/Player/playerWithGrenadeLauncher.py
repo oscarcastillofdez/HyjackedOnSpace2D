@@ -92,4 +92,6 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
                 self.coolDown = 30
                 grenade = Grenade(self.grenadeImg, direction, self.grenadeVelocity, self.player.position().x, self.player.position().y)
                 grenades_group.add(grenade)
-            
+
+        def doInteract(self, interactuableGroup):
+            self.player.doInteract(interactuableGroup)    

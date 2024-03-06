@@ -5,7 +5,7 @@ from Game.spritesheet import Spritesheet
 import math
 
 class Enemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y,globalVars):
+    def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
         self.time = 0
         self.sprites = Spritesheet('Assets/Images/Entities/enemy trooper_walk.png',(120,120)).cargar_sprites(512,64)
@@ -18,7 +18,6 @@ class Enemy(pygame.sprite.Sprite, Entity):
         self.patrollingchasingSpeed = 1
         
         self.moved = 0
-        self.globalVars = globalVars
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.inAir = True
@@ -38,7 +37,7 @@ class Enemy(pygame.sprite.Sprite, Entity):
         self.current_state = "patrolling"
         self.visionLine = pygame.Rect(self.rect.centerx, self.rect.y, 500, 50) 
     
-    def update(self, dt, world, player):
+    def update(self, dt, world, player,cameraOffset):
         self.time += dt
         if self.time > 100:
             self.index += 1
@@ -47,10 +46,10 @@ class Enemy(pygame.sprite.Sprite, Entity):
             self.image = self.sprites[self.index]
 
         # Llama a la función correspondiente al estado actual
-        self.states[self.current_state](world, player)
+        self.states[self.current_state](world, player,cameraOffset)
         self.player_in_sight(world, player)
 
-    def patrol(self, world, player):
+    def patrol(self, world, player,cameraOffset):
         # Comportamiento cuando está patrullando
         dy = 0
 
@@ -81,10 +80,10 @@ class Enemy(pygame.sprite.Sprite, Entity):
                         self.velY = 0
                         self.inAir = False
 
-        self.rect.x += self.patrollingchasingSpeed - self.globalVars.CAMERA_OFFSET_X
-        self.rect.y += dy - self.globalVars.CAMERA_OFFSET_Y
+        self.rect.x += self.patrollingchasingSpeed - cameraOffset[0]
+        self.rect.y += dy - cameraOffset[1]
     
-    def chase(self, world, player):
+    def chase(self, world, player,cameraOffset):
         self.jumpDelay -= 1
         self.chaseTime -= 1
 
@@ -135,8 +134,8 @@ class Enemy(pygame.sprite.Sprite, Entity):
         
             
 
-        self.rect.x -= self.globalVars.CAMERA_OFFSET_X
-        self.rect.y += dy - self.globalVars.CAMERA_OFFSET_Y
+        self.rect.x -= cameraOffset[0]
+        self.rect.y += dy - cameraOffset[1]
         
         self.rect.x -= self.moved
 
@@ -144,7 +143,7 @@ class Enemy(pygame.sprite.Sprite, Entity):
             self.change_state("attacking")
         
     
-    def attack(self, world, player):
+    def attack(self, world, player,cameraOffset):
         player.hit()
     
     # Método para cambiar de estado

@@ -162,49 +162,49 @@ class World():
                     mapaX = 0
                     mapaY += 1
 
-        def loadEntities(map):
+        # def loadEntities(self,map):
 
-            mapaX = 0
-            mapaY = 0
+        #     mapaX = 0
+        #     mapaY = 0
             
-            for tile in map:
+        #     for tile in map:
                 
 
-                # TODO: Hacer pistola y shield un objeto propio, 
-                # facilitara el saber si se recogio una cosa u otra 
-                # y se le quitaria trabajo a la clase update() del player (actualmente comprueba colision con todos los pickups)
-                if mapaX == 14 and mapaY == 31:
-                    pistol = Pistol(mapaX * tileWidth, mapaY * tileHeight)
-                    self.gunPickups.add(pistol)
+        #         # TODO: Hacer pistola y shield un objeto propio, 
+        #         # facilitara el saber si se recogio una cosa u otra 
+        #         # y se le quitaria trabajo a la clase update() del player (actualmente comprueba colision con todos los pickups)
+        #         if mapaX == 14 and mapaY == 31:
+        #             pistol = Pistol(mapaX * tileWidth, mapaY * tileHeight)
+        #             self.gunPickups.add(pistol)
                 
-                if mapaX == 20 and mapaY == 31:
-                    shieldPickup = ShieldPickup(mapaX * tileWidth, mapaY * tileHeight)
-                    self.gunPickups.add(shieldPickup)
+        #         if mapaX == 20 and mapaY == 31:
+        #             shieldPickup = ShieldPickup(mapaX * tileWidth, mapaY * tileHeight)
+        #             self.gunPickups.add(shieldPickup)
 
-                if mapaX == 26 and mapaY == 31:
-                    grenadeLauncher = GrenadeLauncher(mapaX * tileWidth, mapaY * tileHeight)
-                    self.gunPickups.add(grenadeLauncher)
+        #         if mapaX == 26 and mapaY == 31:
+        #             grenadeLauncher = GrenadeLauncher(mapaX * tileWidth, mapaY * tileHeight)
+        #             self.gunPickups.add(grenadeLauncher)
 
-                if mapaX == 50 and mapaY == 31:
-                    health = Health(mapaX * tileWidth, mapaY * tileHeight)
-                    self.healthPickUps.add(health)
+        #         if mapaX == 50 and mapaY == 31:
+        #             health = Health(mapaX * tileWidth, mapaY * tileHeight)
+        #             self.healthPickUps.add(health)
 
-                if mapaX == 30 and mapaY == 31:
-                    en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
-                    self.enemies.add(en)
-                    print("A")
+        #         if mapaX == 30 and mapaY == 31:
+        #             en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
+        #             self.enemies.add(en)
+        #             print("A")
 
-                if mapaX == 30 and mapaY == 31:
-                    computer = Computer(mapaX * tileWidth, mapaY * tileHeight)
-                    self.interactiveGroup.add(computer)
-                    print("A")
+        #         if mapaX == 30 and mapaY == 31:
+        #             computer = Computer(mapaX * tileWidth, mapaY * tileHeight, self.enemies)
+        #             self.interactiveGroup.add(computer)
+        #             print("A")
 
-                if mapaX == 30 and mapaY == 31:
-                    textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth,tileHeight)
-                    self.terrainHitBoxList.append(textureRect)
+        #         if mapaX == 30 and mapaY == 31:
+        #             textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth,tileHeight)
+        #             self.terrainHitBoxList.append(textureRect)
 
-                    en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight, textureRect)
-                    self.destructibles_group.add(en)
+        #             en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight, textureRect)
+        #             self.destructibles_group.add(en)
 
                 
 
@@ -274,4 +274,6 @@ class World():
            
 
         
-            
+        def initSecuence(self,enemyFactory,enemies):
+            en = enemyFactory.createEnemy()
+            self.enemies.add(en)
