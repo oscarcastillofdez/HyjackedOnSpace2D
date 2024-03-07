@@ -1,6 +1,6 @@
 import pygame
 from .scene import Scene
-#from .menu import Menu
+import Game.Scenes.menu as menu
 
 class GameOver(Scene):
     def __init__(self,director):
@@ -16,10 +16,9 @@ class GameOver(Scene):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
-        if keys[pygame.K_RETURN]:
-            print("IMPORT CIRCULAR")
-            """scene = Menu()
-            self.director.changeScene(scene)"""
+        if keys[pygame.K_RETURN]:  
+            scene = menu.Menu(self.director)
+            self.director.changeScene(scene)
         if keys[pygame.K_SPACE]:
             self.director.finishScene()
         if keys[pygame.K_ESCAPE]:

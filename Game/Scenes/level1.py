@@ -1,16 +1,16 @@
 import pygame
 from Game.Scenes.scene import Scene
-from Game.Scenes.game_over import GameOver
 from Entities.Player.player import Player
+from Game.Scenes.game_over import GameOver
 from Game.world import World
 from UI.ui import Ui
 from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts
 from UI.uiEnergy import UIEnergy
+from UI.uiCounter import UICounter
 from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
-from Animations.animation import Animation
 
 
 class Level1(Scene):
@@ -32,17 +32,17 @@ class Level1(Scene):
 
         self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups)
         self.world.inicialOffset((2600,220))
-        
 
         self.uiText = UIText()
         self.uiHearts = UIHearts()
         self.uiEnergy = UIEnergy()
+        self.uiCounter = UICounter()
 
-        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText)
-        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy)
+        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.uiCounter)
+        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset)
-        self.interactiveGroup.update(self.cameraOffset)
+        self.interactiveGroup.update(self.cameraOffset, self.player)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
         self.destructibles_group.update(self.cameraOffset)
@@ -88,7 +88,7 @@ class Level1(Scene):
     def update(self, dt):
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)
         self.enemies_group.update(dt, self.world, self.player, self.cameraOffset)
-        self.interactiveGroup.update(self.cameraOffset)
+        self.interactiveGroup.update(self.cameraOffset, dt)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.grenades_group.update(self.cameraOffset, dt, self.world, self.enemies_group, self.destructibles_group, self.grenades_group,self.back_animations_group)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
@@ -98,11 +98,11 @@ class Level1(Scene):
         for gun in self.gunPickups:
             if gun.collidesWithPlayer(self.player, self.gunPickups):
                 self.player = gun.getPlayerWithIt(self.player,self.ui)
-                
+
         # Si se queda sin vidas acaba el juego
         if self.player.getHp() <= 0:
-            scene = GameOver()
-            self.director.stackScene(scene)
+            scene = GameOver(self.director)
+            self.director.changeScene(scene)
 
         #if self.player.checkInteractuable(self.world):
             #self.text.showInteractuableText("Presiona E para interactuar.", "white")

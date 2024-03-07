@@ -12,7 +12,6 @@ class Scene(object):
         self.quit = False
         self.next_state = None
         """
-
         # Esto para que lo necesitamos?
         self.screen_rect = pygame.display.get_surface().get_rect()
 

@@ -124,7 +124,6 @@ class Enemy(pygame.sprite.Sprite, Entity):
 
         if self.chaseTime <= 0 and not self.onlyChase:
             self.change_state("patrolling")
-
             
         dy = 0
         self.moved = 0
@@ -198,7 +197,6 @@ class Enemy(pygame.sprite.Sprite, Entity):
 
         if self.rect.colliderect(player.position()):
             self.change_state("attacking")
-        
     
     def attack2(self, world, player,cameraOffset):
         player.hit()
