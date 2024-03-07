@@ -10,27 +10,22 @@ class RandomEnemyFactorySecuence(EnemyFactory):
     def __init__(self,x,y, enemiesGroup) -> None:
         self.enemiesGroup = enemiesGroup
 
-        #self.spawnArea = Rect(x,y,1000,500)
         self.spawnArea = Rect(x,y,500,500)
-        #self.spawnArea.x = random.randrange(-100, -40)
-        #self.spawnArea.y = random.randrange(0, SCREEN_HEIGTH)
         
         self.enemySpawnRate = 100
+        self.maxEnemyCount = 15
 
-    def activate(self, spawnCenterX, spawnCenterY):
-        #self.spawnArea.x = spawnCenterX - 1000
-        #self.spawnArea.y = spawnCenterY - 500
-
-        self.spawnArea.x = spawnCenterX
+    def createEnemy(self, spawnCenterX, spawnCenterY):
+        self.spawnArea.x = spawnCenterX + 500
         self.spawnArea.y = spawnCenterY - 500
         spawnPointX = random.randrange(self.spawnArea.x, self.spawnArea.x + 500)
         spawnPointY = random.randrange(self.spawnArea.y, self.spawnArea.y + 500)
 
         selectEnemy = random.randint(0, 1)
         if selectEnemy == 0:
-            en = Enemy(spawnPointX, spawnPointY)
+            en = Enemy(spawnPointX, spawnPointY, True)
             self.enemiesGroup.add(en)
         elif selectEnemy == 1:
-            en = FlyingEnemy(spawnPointX, spawnPointY)
+            en = FlyingEnemy(spawnPointX, spawnPointY, True)
             self.enemiesGroup.add(en)
         

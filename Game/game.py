@@ -1,20 +1,91 @@
 import pygame
+from Constants.constants import *
+from .Scenes.splash import Splash
 
 class Game():
-    def __init__(self, screen, states, start_state):
-        self.done = False
-        self.screen = screen
+    # Director
+    def __init__(self):
+        # Iniciar la ventana del juego
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGTH))
+        pygame.display.set_caption("Hyjacked on Space")
+
         self.clock = pygame.time.Clock()
         self.fps = 60
-        self.states = states
-        self.state_name = start_state
-        self.state = self.states[self.state_name]
+
+        # Pila de escenas para el patron director
+        self.pila = []
+        self.escena_done = False
+
+        # Variable para salir del juego
+        self.done = False
     
-    def event_loop(self):
-        for event in pygame.event.get():
-            self.state.get_event(event)
+    def loop(self, scene):
+        self.escena_done = False
+        # Eliminamos todos los eventos producidos antes de entrar en el bucle
+        pygame.event.clear()
+
+        while not self.escena_done:
+            # dt= Tiempo restante para los 60 FPS
+            dt = self.clock.tick(self.fps)
+
+            # Eventos
+            scene.events(pygame.event.get(), pygame.key.get_pressed())
+
+            # Actualizamos escena
+            scene.update(dt)
+
+            #Dibujamos
+            scene.draw(self.screen)
+            pygame.display.update()
+            # pygame.display.flip()
+
+    def run(self):
+        firstScene = Splash(self)
+        self.pila.append(firstScene)
+
+        self.escena_done = False
+        # Eliminamos todos los eventos producidos antes de entrar en el bucle
+        pygame.event.clear()
+
+        while (len(self.pila)>0):
+            escena = self.pila[len(self.pila)-1]
+
+            self.loop(escena)
+
+    # METODOS DE CONTROL DE ESCENAS
+        # Para indicar que una escena ha acabado
+    def finishScene(self):
+        self.escena_done = True
+
+        if(len(self.pila)>0):
+            self.pila.pop()
+
+        # Para salir de la aplicacion
+    def endApplication(self):
+        self.pila = []
+        self.escena_done = True
+
+        # Para indicar que una escena quiere transitar a otra
+    def changeScene(self, scene):
+        self.finishScene()
+        self.pila.append(scene)
+
+        # Para indicar que una escena quiere transitar a otra Y VOLVER
+    def stackScene(self, scene):
+        self.escena_done = True
+        self.pila.append(scene)
     
-    def change_state(self):
+    """
+    -------------------------------------------------------------------------
+                        CODIGO VIEJO - NO LO BORRO POR SI ACASO
+    -------------------------------------------------------------------------
+    def event_loop(self, scene):
+            if (scene.eventos(pygame.event.get())):
+                self.done = True
+            for event in pygame.event.get():
+                self.state.get_event(event)"""
+    
+    """def change_state(self):
         next_state = self.state.next_state
         self.state.done = False
         self.state_name = next_state
@@ -22,28 +93,20 @@ class Game():
         # Datos persistentes entre estados. Ej.:(Posicion del jugador/enemigos)
         persistent = self.state.persist
         self.state = self.states[self.state_name]
-        self.state.startup(persistent)
+        self.state.startup(persistent)"""
 
     """
         Esta funcion checkea si hay que cambiar de estado o no
         usando la funcion change_state.
     """
-    def update(self, dt):
+    """def update(self, dt):
         if self.state.quit:
             self.done = True
         elif self.state.done:
             self.change_state()
         self.state.update(dt)
-    
-    # Funcion para dibujar todo
-    def draw(self):
-        self.state.draw(self.screen)
-    
-    def run(self):
-        while not self.done:
-            # dt= Tiempo restante para los 60 FPS
-            dt = self.clock.tick(self.fps)
-            self.event_loop()
-            self.update(dt)
-            self.draw()
-            pygame.display.update()
+
+        # Funcion para dibujar todo
+        def draw(self):
+            self.state.draw(self.screen)
+    """

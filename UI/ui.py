@@ -2,13 +2,14 @@ import pygame
 from Constants.constants import *
 
 class Ui():
-    def __init__(self, playerObservable, uiText, uiHearts, uiEnergy):
+    def __init__(self, playerObservable, uiText, uiHearts, uiEnergy,uiCounter):
         self.playerObservable = playerObservable
         
         self.pickUpText = ""
         self.uiText = uiText
         self.uiHearts = uiHearts
         self.uiEnergy = uiEnergy
+        self.uiCounter = uiCounter
     
     # def update(self):
         # self.hearts = pygame.transform.scale(pygame.image.load('Assets/img/hearts_'+ str(self.playerObservable.getHp()) +'.png').convert_alpha(), (180,100))
@@ -18,3 +19,4 @@ class Ui():
         self.uiHearts.draw(screen)
         self.uiText.draw(screen)
         self.uiEnergy.draw(screen)
+        self.uiCounter.draw(screen)

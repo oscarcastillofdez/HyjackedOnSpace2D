@@ -8,8 +8,10 @@ from MovementAndCollisions.aux_functions import *
 from .playerAbstract import PlayerAbstract
 from Entities.shield import Shield
 import random
+
+
 class Player(PlayerAbstract):
-        def __init__(self, x, y,uiHearts, uiText):
+        def __init__(self, x, y,uiHearts, uiText,UiCounter):
             super().__init__(x, y)
             # Imagenes - patron estado
             self.states = {
@@ -26,8 +28,12 @@ class Player(PlayerAbstract):
             self.hitImage = pygame.transform.rotate(self.standing,90)
             self.shaking = -1
             self.currentVelocity = 0
+            self.interactedOnce = False
+
             self.addObserver(uiText)
             self.addObserver(uiHearts)
+
+            self.uiCounter = UiCounter
 
 
         def change_state(self):
@@ -74,13 +80,13 @@ class Player(PlayerAbstract):
                 self.notify()
             return True
 
-        # La clase checkGunClollide deberia de eliminarse
-        # Interact deberia de valer para todo objeto interactuable (Ordenador, puertas, luces, armas, vidas, mejoras...)
-        # En world meter armas como un interactuable pygame.sprite.interacutableGroup
+
         def doInteract(self, interactuableGroup):
             interactsWith = pygame.sprite.spritecollideany(self, interactuableGroup)
-            if interactsWith:
-                interactsWith.interact()
+            
+            if interactsWith and not self.interactedOnce:
+                self.interactedOnce = True
+                interactsWith.interact(self.uiCounter)
                 
         def interact(self, interactuableGroup):
             interactsWith = pygame.sprite.spritecollideany(self, interactuableGroup)
@@ -95,7 +101,6 @@ class Player(PlayerAbstract):
             
         def getInteractuableText(self):
             return self.interactuableText
-        
         
 
         def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
@@ -152,28 +157,50 @@ class Player(PlayerAbstract):
             self.inAir = True
 
             # Se calculan las colisiones en ambos ejes
-            for tile in world.terrainHitBoxList:
-                if tile.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
-                    dx = 0
+            tileHitBoxList = world.getTilesList()
+            platformHitBoxList = world.getPlatformsList()
+            destructibleHitBoxList = world.getDestructiblesList()
 
-                if tile.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                    if self.velY < 0: #Saltando
-                        dy = tile.bottom - self.rect.top
-                        self.pressed_jump = MAX_JUMP_HEIGHT +1
-                        self.velY = 0
-                    elif self.velY >= 0: #Cayendo
-                        dy = tile.top - self.rect.bottom
-                        self.velY = 0
-                        self.inAir = False
-
-            platforms = world.getPlatforms()
+            auxRect = pygame.Rect(self.rect.x + dx, self.rect.y, self.width, self.height)
+            auxRect2 = pygame.Rect(self.rect.x, self.rect.y + dy, self.width, self.height)
             
-            for tile in platforms:
-                if tile.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                    if self.velY >= 0 and (self.rect.bottom - tile.top) < 10: #Cayendo
-                        dy = tile.top - self.rect.bottom
-                        self.velY = 0
-                        self.inAir = False
+            tileIndex = auxRect.collidelist(tileHitBoxList)
+            tileIndex2 = auxRect2.collidelist(tileHitBoxList)
+
+            platformIndex = auxRect.collidelist(platformHitBoxList)
+
+            destructibleIndex = auxRect.collidelist(destructibleHitBoxList)
+            destructibleIndex2 = auxRect2.collidelist(destructibleHitBoxList)
+
+
+            if tileIndex >= 0 or destructibleIndex >= 0:
+                dx = 0
+            
+            if tileIndex2 >= 0:
+                if self.velY < 0: #Saltando
+                    dy = tileHitBoxList[tileIndex2].bottom - self.rect.top
+                    self.pressed_jump = MAX_JUMP_HEIGHT +1
+                    self.velY = 0
+                elif self.velY >= 0: #Cayendo
+                    dy = tileHitBoxList[tileIndex2].top - self.rect.bottom
+                    self.velY = 0
+                    self.inAir = False
+
+            if destructibleIndex2 >= 0:
+                if self.velY < 0: #Saltando
+                    dy = destructibleHitBoxList[destructibleIndex2].bottom - self.rect.top
+                    self.pressed_jump = MAX_JUMP_HEIGHT +1
+                    self.velY = 0
+                elif self.velY >= 0: #Cayendo
+                    dy = destructibleHitBoxList[destructibleIndex2].top - self.rect.bottom
+                    self.velY = 0
+                    self.inAir = False
+
+            if platformHitBoxList[platformIndex].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                if self.velY >= 0 and (self.rect.bottom - platformHitBoxList[platformIndex].top) < 10: #Cayendo
+                    dy = platformHitBoxList[platformIndex].top - self.rect.bottom
+                    self.velY = 0
+                    self.inAir = False
             
             cameraOffsetX = 0
             cameraOffsetY = 0

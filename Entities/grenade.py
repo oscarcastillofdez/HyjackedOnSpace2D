@@ -82,17 +82,28 @@ class Grenade(pygame.sprite.Sprite):
         dx = self.velocidadX*self.timePassed
         dy = self.velocidadY*self.timePassed - (0.5*self.gravity*self.timePassed**2)
 
-        for tile in world.terrainHitBoxList:
-            if tile.colliderect(self.rect.x - dx, self.rect.y, self.rect.width, self.rect.height):
-                dx = 0
-                self.velocidadX = 0
-                self.velocidadY = 0
-          
-            if tile.colliderect(self.rect.x, self.rect.y - dy, self.rect.width, self.rect.height):
-                self.velocidadX = 0
-                self.velocidadY = 0
-                self.gravity = 0
-                dy = 0
+        tileList = world.getTilesList()
+        destructibleHitBoxList = world.getDestructiblesList()
+
+        auxRect = pygame.Rect(self.rect.x - dx, self.rect.y, self.rect.width, self.rect.height)
+        auxRect2 = pygame.Rect(self.rect.x, self.rect.y - dy, self.rect.width, self.rect.height)
+
+        tileIndex = auxRect.collidelist(tileList)
+        tileIndex2 = auxRect2.collidelist(tileList)
+
+        destructibleIndex = auxRect.collidelist(destructibleHitBoxList)
+        destructibleIndex2 = auxRect2.collidelist(destructibleHitBoxList)
+
+        if tileIndex >= 0 or destructibleIndex >= 0:
+            dx = 0
+            self.velocidadX = 0
+            self.velocidadY = 0
+        
+        if tileIndex2 >= 0 or destructibleIndex2 >= 0:
+            self.velocidadX = 0
+            self.velocidadY = 0
+            self.gravity = 0
+            dy = 0
 
         self.rect.x -= dx + cameraOffsetX
         self.rect.y -= dy + cameraOffsetY
