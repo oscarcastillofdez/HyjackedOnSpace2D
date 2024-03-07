@@ -1,6 +1,6 @@
 import pygame
 from .PlayerStates.idle import Idle
-from .PlayerStates.run import RunRight, RunLeft
+from .PlayerStates.run import Run
 from .PlayerStates.jump import Jump
 from math import floor
 from Constants.constants import *
@@ -19,8 +19,8 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             # Imagenes
             self.states = {
                 "IDLE": Idle(False),
-                "RUNR": RunRight(True),
-                "RUNL": RunLeft(True),
+                "RUNR": Run(True),
+                "RUNL": Run(True),
             }
             # Imagenes
             self.anim = 0 

@@ -13,7 +13,4 @@ class Shoot(pState):
         """if direction == "downR":
             self.animation = Spritesheet("Assets/player/RunShootDownR").get_animation()
         if direction == "up":
-            self.animation = Spritesheet("Assets/player/RunShootDownL").get_animation()"""
-        
-    def initial(self):
-        return self.animation[0]
+            self.animation = Spritesheet("Assets/player/RunShootDownL").get_animation()"""      

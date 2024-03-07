@@ -15,6 +15,7 @@ from Animations.animation import Animation
 class Gameplay(State):
     def __init__(self):
         super(Gameplay, self).__init__()
+        
         self.next_state = "GAME_OVER"
         self.cameraOffset = (2600,220)
         
@@ -48,7 +49,6 @@ class Gameplay(State):
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
         self.destructibles_group.update(self.cameraOffset)
         self.gunPickups.update(self.cameraOffset)
-        
 
 
     def get_event(self, event):
