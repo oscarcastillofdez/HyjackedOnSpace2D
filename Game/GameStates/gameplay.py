@@ -128,7 +128,8 @@ class Gameplay(State):
             animation.draw(surface)
 
         #self.text.draw(surface)
-        
+        for enemy in self.enemies_group:
+            enemy.drawBullets(surface)
         #for enemy in self.enemies_group:
         #     #pygame.draw.rect(surface, (255,0,0), enemy.visionLine)
         #     #print(enemy.lineStart)

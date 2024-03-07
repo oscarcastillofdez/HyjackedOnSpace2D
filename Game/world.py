@@ -1,6 +1,6 @@
 import pygame
 import json
-from Entities.Enemies.enemy import *
+from Entities.Enemies.meleeEnemy import *
 from Entities.Player.playerWithPistol import *
 from Entities.shieldPickup import ShieldPickup
 from Interactives.computer import Computer
