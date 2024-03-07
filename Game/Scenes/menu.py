@@ -52,7 +52,6 @@ class Menu(Scene):
                 self.handle_action()"""
 
     def update(self, *args):
-        print("MENU UPDATE: NO NECESARIO")
         pass 
     
     def draw(self, surface):

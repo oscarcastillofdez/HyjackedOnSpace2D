@@ -32,7 +32,6 @@ class Computer(pygame.sprite.Sprite):
     def initCounter(self):
         while self.countdown > 0:
             time.sleep(1)
-            print(self.countdown)
             self.countdown -= 1
             self.noitify()
         self.activeSecuence = False

@@ -1,7 +1,7 @@
 import pygame
 from Game.Scenes.scene import Scene
 from Entities.Player.player import Player
-from Game.Scenes.game_over import GameOver
+import Game.Scenes.game_over as game_over
 from Game.world import World
 from UI.ui import Ui
 from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
@@ -102,7 +102,7 @@ class Level1(Scene):
 
         # Si se queda sin vidas acaba el juego
         if self.player.getHp() <= 0:
-            scene = GameOver(self.director)
+            scene = game_over.GameOver(self.director)
             self.director.changeScene(scene)
 
         #if self.player.checkInteractuable(self.world):

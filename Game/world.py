@@ -176,6 +176,12 @@ class World():
                     en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight, textureRect)
                     self.destructibles_group.add(en)
 
+                elif tile == 40:
+                    textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth*6, tileHeight)
+                    texture = pygame.image.load("Assets/Images/Desorden/pruebasTrigger.png")
+                    self.background_list.append((texture, textureRect))
+                    
+
                 # Se actualiza la posicion del mapa
                 mapaX += 1
                 if mapaX >= mapWidth:
@@ -198,28 +204,6 @@ class World():
             return self.destructibleTile_list
         
         
-        def loadBackground(self, background, compression, columns, tileHeight, tileWidth, textures, mapWidth):
-            mapaX = 0
-            mapaY = 0
-
-            # Se recorre el nivel tile por tile
-            for tile in background:
-                # Si un tile
-                if tile > 0:
-                    # Se recupera la textura que representa el tile y se añade una hitbox
-                    texture = self.seleccionarTextura(0, tile+compression, columns, tileHeight, tileWidth, textures)
-                    textureRect = texture.get_rect()
-                    textureRect.x = mapaX * tileWidth
-                    textureRect.y = mapaY * tileHeight
-                    tileTuple = (texture, textureRect)
-                    self.background_list.append(tileTuple) 
-                    
-                # Se actualiza la posicion del mapa
-                mapaX += 1
-                if mapaX >= mapWidth:
-                    mapaX = 0
-                    mapaY += 1
-            
         def cargarNivel(self, nivel):
 
             # Cargar el json con los datos del nivel
@@ -250,7 +234,7 @@ class World():
             background = pygame.image.load(LVLS_PATH + nivel + '/background.png')
 
             backgroundRect = background.get_rect()
-            #self.background_list.append((background, backgroundRect))
+            self.background_list.append((background, backgroundRect))
             self.loadMap(map, compression, columns, tileHeight, tileWidth, textures, mapWidth)
             self.loadPlatforms(platforms, compression, columns, tileHeight, tileWidth, textures, mapWidth)
             self.loadEntities(entities, compression, columns, tileHeight, tileWidth, mapWidth)

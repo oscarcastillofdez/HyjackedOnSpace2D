@@ -16,7 +16,6 @@ class UIHearts():
         self.rect.y = 30
     
     def update(self, observable):
-        print(observable.getHp())
         self.hearts = self.heartsList[observable.getHp()]
     
     def draw(self, screen):
