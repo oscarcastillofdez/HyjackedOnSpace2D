@@ -3,6 +3,7 @@ from Constants.constants import *
 from .entity import Entity
 from Game.spritesheet import Spritesheet
 import math
+import random
 
 class Enemy(pygame.sprite.Sprite, Entity):
     def __init__(self,x,y, onlyChase):
@@ -23,7 +24,7 @@ class Enemy(pygame.sprite.Sprite, Entity):
         self.height = self.image.get_height()
         self.inAir = True
         self.velY = 0
-        self.chasingSpeed = 4
+        self.chasingSpeed = random.randint(2, 4)
         self.jumped = False
         self.jumpDelay = 0
         self.viewDirection = 1

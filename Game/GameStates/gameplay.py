@@ -4,6 +4,7 @@ from Entities.Player.player import Player
 from Game.world import World
 from UI.ui import Ui
 from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
+from UI.uiCounter import UICounter
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts
 from UI.uiEnergy import UIEnergy
@@ -36,12 +37,13 @@ class Gameplay(State):
         self.uiText = UIText()
         self.uiHearts = UIHearts()
         self.uiEnergy = UIEnergy()
+        self.uiCounter = UICounter()
 
-        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText)
-        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy)
+        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText,self.uiCounter)
+        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy,self.uiCounter)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset)
-        self.interactiveGroup.update(self.cameraOffset)
+        self.interactiveGroup.update(self.cameraOffset, self.player)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
         self.destructibles_group.update(self.cameraOffset)
@@ -88,7 +90,7 @@ class Gameplay(State):
         
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)
         self.enemies_group.update(dt, self.world, self.player, self.cameraOffset)
-        self.interactiveGroup.update(self.cameraOffset)
+        self.interactiveGroup.update(self.cameraOffset, dt)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.grenades_group.update(self.cameraOffset, dt, self.world, self.enemies_group, self.destructibles_group, self.grenades_group,self.back_animations_group)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
@@ -119,7 +121,7 @@ class Gameplay(State):
         self.gunPickups.draw(surface)
 
         #for interactive in self.interactiveGroup:
-            #interactive.draw2(surface)
+            #interactive.draw(surface)
         #for grenade in self.grenades_group:
             #grenade.draw(surface)
         for animation in self.back_animations_group:
