@@ -8,6 +8,8 @@ from MovementAndCollisions.aux_functions import *
 from .playerAbstract import PlayerAbstract
 from Entities.shield import Shield
 import random
+
+
 class Player(PlayerAbstract):
         def __init__(self, x, y,uiHearts, uiText):
             super().__init__(x, y)
@@ -28,16 +30,6 @@ class Player(PlayerAbstract):
             self.currentVelocity = 0
             self.addObserver(uiText)
             self.addObserver(uiHearts)
-
-
-        def change_state(self):
-            self.state.done = False
-            self.state_name = self.state.next_state
-
-            persistent = self.state.persist
-            self.state = self.states[self.state_name]
-                # Por ahora esto esta vacio
-            self.state.startup(persistent)
 
         def change_state(self):
             self.state.done = False
@@ -95,7 +87,6 @@ class Player(PlayerAbstract):
             
         def getInteractuableText(self):
             return self.interactuableText
-        
         
 
         def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:

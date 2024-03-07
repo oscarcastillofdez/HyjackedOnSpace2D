@@ -9,6 +9,7 @@ from Entities.health import Health
 from Entities.grenadeLauncher import GrenadeLauncher
 from Entities.pistol import Pistol
 
+
 class World():
         def __init__(self, enemies, enemyFactory, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups):
             self.tile_list = []
