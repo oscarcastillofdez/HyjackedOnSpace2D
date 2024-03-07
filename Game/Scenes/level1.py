@@ -84,6 +84,10 @@ class Level1(Scene):
             self.player.launchGrenade(45,self.grenades_group)
         if keys[pygame.K_e]:
             self.player.doInteract(self.interactiveGroup)
+        if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
+            self.player.idle()
+        if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+            self.player.stopShooting()
 
     def update(self, dt):
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)

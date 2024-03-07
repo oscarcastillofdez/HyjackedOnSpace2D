@@ -1,7 +1,11 @@
+import pygame
+
 class pState(object):
     def __init__(self):
         self.animation = None
         self.next_state = None
+        self.posibleNexts = {}
+        self.left = False
         self.done =  False
         self.sprite_index = 0
         self.persist = {}
@@ -16,7 +20,11 @@ class pState(object):
         self.sprite_index += 1
         if self.sprite_index == len(self.animation):
             self.sprite_index = 0
-        return self.animation[self.sprite_index]
+        if self.left:
+            sprite=pygame.transform.flip(self.animation[self.sprite_index], True, False)
+        else:
+            sprite = self.animation[self.sprite_index]
+        return sprite
 
     def update(self, dt):
         pass

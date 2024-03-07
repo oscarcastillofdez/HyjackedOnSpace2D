@@ -1,6 +1,6 @@
 import pygame
 from .PlayerStates.idle import Idle
-from .PlayerStates.run import RunRight, RunLeft
+from .PlayerStates.run import Run
 from .PlayerStates.jump import Jump
 from math import floor
 from Constants.constants import *
@@ -16,13 +16,14 @@ class Player(PlayerAbstract):
             # Imagenes - patron estado
             self.states = {
                 "IDLE": Idle(False),
-                "RUNR": RunRight(False),
-                "RUNL": RunLeft(False),
+                "RUN": Run(False),
                 "JUMP": Jump(False)
             }
             self.anim = 0
+                # State para empezar
             self.state_name = "IDLE"
             self.state = self.states[self.state_name]
+
             self.standing = self.state.get_initial()
             self.deadImage = pygame.transform.rotate(self.standing,90)
             self.hitImage = pygame.transform.rotate(self.standing,90)
@@ -35,39 +36,42 @@ class Player(PlayerAbstract):
 
             self.uiCounter = UiCounter
 
-
         def change_state(self):
             self.state.done = False
             self.state_name = self.state.next_state
+            left = self.state.left
 
             persistent = self.state.persist
             self.state = self.states[self.state_name]
+            if left:
+                self.state.left = True
+            else:
+                self.state.left = False
                 # Por ahora esto esta vacio
             self.state.startup(persistent)
-
-        def change_state(self):
-            self.state.done = False
-            self.state_name = self.state.next_state
-
-            persistent = self.state.persist
-            self.state = self.states[self.state_name]
-                # Por ahora esto esta vacio
-            self.state.startup(persistent)
+        
+        # FUNCIONES MOVIMIENTO
+        def idle(self):
+            self.state.done = True
+            self.state.next_state = self.state.posibleNexts["IDLE"]
 
         def move_left(self):
             self.moving_left = True
             self.state.done = True
-            self.state.next_state = "RUNL"
+            self.state.left = True
+            self.state.next_state = self.state.posibleNexts["RUN_LEFT"]
 
         def move_right(self):
             self.moving_right = True
             self.state.done = True
-            self.state.next_state = "RUNR"
+            self.state.left = False
+            self.state.next_state = self.state.posibleNexts["RUN_RIGHT"]
 
         def jump(self):
             self.jumping = True
-            self.state.done = True
-            self.state.next_state = "JUMP"
+            if self.inAir:
+                self.state.done = True
+                self.state.next_state = self.state.posibleNexts["JUMP"]
 
         def getHp(self):
             return self.healthPoints
@@ -79,7 +83,6 @@ class Player(PlayerAbstract):
                 self.hitCooldown = 60
                 self.notify()
             return True
-
 
         def doInteract(self, interactuableGroup):
             interactsWith = pygame.sprite.spritecollideany(self, interactuableGroup)
@@ -111,6 +114,7 @@ class Player(PlayerAbstract):
 
             if self.state.done:
                 self.change_state()
+
             cameraOffsetX, cameraOffsetY = cameraOffset
 
             self.interact(interactuableGroup)
@@ -126,6 +130,7 @@ class Player(PlayerAbstract):
             horizontal_movement = floor(right_movement - left_movement)
 
             self.currentVelocity = horizontal_movement
+
             # Calculo del movimiento vertical
             if self.jumping and self.inAir == False and self.pressed_jump == 0:
                 self.velY = -MIN_JUMP_HEIGHT
@@ -139,13 +144,6 @@ class Player(PlayerAbstract):
             # Para que al mantener el espacio solo salte una vez
             if self.jumping == False:
                 self.pressed_jump = 0
-
-            """if horizontal_movement < 0:
-                self.current_state = self.states["RUNL"]
-            if horizontal_movement > 0:
-                self.current_state = self.states["RUNR"]
-            if horizontal_movement == 0: 
-                self.current_state = self.states["IDLE"]"""
 
             # Se añade la gravedad al movimiento en y
             self.velY += floor(GRAVITY * dt/1000)
@@ -238,6 +236,7 @@ class Player(PlayerAbstract):
                 #shakingY = random.randint(0,8) - 4
 
             self.jumping = False
+
             if self.state.done:
                 self.change_state(self.state.next_state)
             

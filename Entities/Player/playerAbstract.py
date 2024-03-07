@@ -36,6 +36,12 @@ class PlayerAbstract():
     def change_state(self):
         pass
 
+    def idle(self):
+        pass
+
+    def stopShooting(self):
+        pass
+
     def move_left(self):
         pass
     

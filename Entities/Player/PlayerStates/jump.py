@@ -8,16 +8,27 @@ class Jump(pState):
         super(Jump, self).__init__()
         self.spritesheet = Spritesheet(PLAYER_SPRITES_PATH + 'run-player.png',(96,96))
         
+        self.posibleNexts = {
+            "JUMP": "JUMP",
+            "RUN_LEFT": "RUN",
+            "RUN_RIGHT": "RUN",
+            "IDLE": "IDLE",
+            "SHOOT": "JUMP-SHOOT",
+            "STOP-SHOOT": "JUMP"
+        }
+
         self.gun = gun
         self.animation = self.spritesheet.get_animation(0,0,64,64,7,(255,0,0))
-        self.current = self.animation[0]
-        self.count = 1
-    
     
     def next_sprite(self):
         self.sprite_index += 1
         if self.sprite_index == len(self.animation):
             self.sprite_index = 0
+        
+        if self.left:
+            sprite=pygame.transform.flip(self.animation[self.sprite_index], True, False)
+        else:
+            sprite = self.animation[self.sprite_index]
 
-        res = pygame.transform.rotate(self.animation[self.sprite_index],45*self.sprite_index)
-        return res
+        sprite = pygame.transform.rotate(sprite,45*self.sprite_index)
+        return sprite
