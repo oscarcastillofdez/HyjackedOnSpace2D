@@ -1,6 +1,9 @@
+import time
 import pygame
 from Constants.constants import *
 from Entities.Enemies.randomEnemyFactorySecuence import RandomEnemyFactorySecuence
+from UI.uiCounter import UICounter
+import threading
 
 class Computer(pygame.sprite.Sprite):
     def __init__(self,x,y,enemies_group):
@@ -10,18 +13,38 @@ class Computer(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+        #self.interactiveIndicator = InteractiveIndicator(x, y)
+
         self.activeSecuence = False
-        self.timeRemaining = 5000
         self.spawnDelay = 60
+        self.observers = []
+        self.countdown = 5
 
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(x,y,enemies_group)
-
-    def interact(self):
-        self.activeSecuence = True
+    
+    def getCounter(self):
+        return str(self.countdown)
+    
+    def noitify(self):
+        for observer in self.observers:
+            observer.update(self)
+    
+    def initCounter(self):
+        while self.countdown > 0:
+            time.sleep(1)
+            print(self.countdown)
+            self.countdown -= 1
+            self.noitify()
+        self.activeSecuence = False
+        for observer in self.observers:
+            self.observers.remove(observer)
         
-        print("Interaccionaste pedrito.")
+    def interact(self, uiCounter):
+        self.activeSecuence = True
+        self.observers.append(uiCounter)
+        threading.Thread(target=self.initCounter).start()
 
-    def update(self, cameraOffset):
+    def update(self, cameraOffset, player):
         self.rect.x -= cameraOffset[0]
         self.rect.y -= cameraOffset[1]
 
@@ -29,17 +52,12 @@ class Computer(pygame.sprite.Sprite):
             self.spawnDelay -= 1
             if self.spawnDelay < 0:
                 self.spawnDelay = 60
-                self.timeRemaining -= 1
-                if self.timeRemaining < 0:
-                    self.activeSecuence = False
-                else:
-                    self.randomEnemyFactorySecuence.activate(self.rect.x, self.rect.y)
-        
-        
+                self.randomEnemyFactorySecuence.createEnemy(self.rect.x, self.rect.y)
 
     def getText(self):
         return "Presiona E para interactuar."
     
-    def draw2(self,screen):
-        pygame.draw.rect(screen, (255,255,255), self.randomEnemyFactorySecuence.spawnArea)
+    #def draw(self,screen):
+        #self.interactiveIndicator.draw(screen)
+        #pygame.draw.rect(screen, (255,255,255), self.randomEnemyFactorySecuence.spawnArea)
         

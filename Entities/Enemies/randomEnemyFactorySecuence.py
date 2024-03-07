@@ -15,7 +15,7 @@ class RandomEnemyFactorySecuence(EnemyFactory):
         self.enemySpawnRate = 100
         self.maxEnemyCount = 15
 
-    def activate(self, spawnCenterX, spawnCenterY):
+    def createEnemy(self, spawnCenterX, spawnCenterY):
         self.spawnArea.x = spawnCenterX + 500
         self.spawnArea.y = spawnCenterY - 500
         spawnPointX = random.randrange(self.spawnArea.x, self.spawnArea.x + 500)

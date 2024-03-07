@@ -11,7 +11,7 @@ import random
 
 
 class Player(PlayerAbstract):
-        def __init__(self, x, y,uiHearts, uiText):
+        def __init__(self, x, y,uiHearts, uiText,UiCounter):
             super().__init__(x, y)
             # Imagenes - patron estado
             self.states = {
@@ -28,8 +28,22 @@ class Player(PlayerAbstract):
             self.hitImage = pygame.transform.rotate(self.standing,90)
             self.shaking = -1
             self.currentVelocity = 0
+            self.interactedOnce = False
+
             self.addObserver(uiText)
             self.addObserver(uiHearts)
+
+            self.uiCounter = UiCounter
+
+
+        def change_state(self):
+            self.state.done = False
+            self.state_name = self.state.next_state
+
+            persistent = self.state.persist
+            self.state = self.states[self.state_name]
+                # Por ahora esto esta vacio
+            self.state.startup(persistent)
 
         def change_state(self):
             self.state.done = False
@@ -66,13 +80,13 @@ class Player(PlayerAbstract):
                 self.notify()
             return True
 
-        # La clase checkGunClollide deberia de eliminarse
-        # Interact deberia de valer para todo objeto interactuable (Ordenador, puertas, luces, armas, vidas, mejoras...)
-        # En world meter armas como un interactuable pygame.sprite.interacutableGroup
+
         def doInteract(self, interactuableGroup):
             interactsWith = pygame.sprite.spritecollideany(self, interactuableGroup)
-            if interactsWith:
-                interactsWith.interact()
+            
+            if interactsWith and not self.interactedOnce:
+                self.interactedOnce = True
+                interactsWith.interact(self.uiCounter)
                 
         def interact(self, interactuableGroup):
             interactsWith = pygame.sprite.spritecollideany(self, interactuableGroup)
