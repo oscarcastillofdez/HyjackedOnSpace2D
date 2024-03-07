@@ -18,11 +18,19 @@
             }
         },
         "datosNivelB.json": {
+<<<<<<< HEAD
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1037.878787878788,
+                "y": 716.6666666666667
+=======
             "scale": 0.3273,
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 1813.321112129545,
                 "y": 918.1179346165599
+>>>>>>> 8d61d1f6747fb5dc387281cd396b82e4bdf14601
             }
         },
         "datosTexturas.json": {
