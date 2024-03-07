@@ -53,7 +53,7 @@ class Gameplay(State):
 
     def get_event(self, event):
         if event.type == pygame.QUIT:
-                self.quit = True
+            self.quit = True
 
     def update(self, dt):
         keys = pygame.key.get_pressed()

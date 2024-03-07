@@ -3,4 +3,4 @@ class uiTextInteractuable():
         pass
     
     def update(self, observable):
-        self.setInteractualeText(observable.getInteractuableText(), "black")
+        self.setInteractualeText(observable.getInteractuableText(), (255,255,255))

@@ -1,66 +1,36 @@
 import pygame
-import random
 
-# Inicializar Pygame
 pygame.init()
-
-# Definir colores
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-
-# Definir la clase para los enemigos
-class Enemy(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((20, 20)) # Tamaño del enemigo
-        self.image.fill("red") # Color del enemigo
-        self.rect = self.image.get_rect()
-        self.rect.x = random.randrange(0, SCREEN_WIDTH)
-        self.rect.y = random.randrange(-100, -40) # Posición inicial fuera de la pantalla
-        self.speedy = random.randrange(1, 5) # Velocidad vertical del enemigo
-
-    def update(self):
-        self.rect.y += self.speedy
-        if self.rect.top > SCREEN_HEIGHT + 10: # Elimina los enemigos que salen de la pantalla
-            self.rect.x = random.randrange(0, SCREEN_WIDTH)
-            self.rect.y = random.randrange(-100, -40)
-            self.speedy = random.randrange(1, 5)
-
-# Configurar la pantalla
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Ejemplo de enemigos")
-
+window = pygame.display.set_mode((200, 200))
 clock = pygame.time.Clock()
+font = pygame.font.SysFont(None, 100)
 
-# Lista de todos los sprites
-all_sprites = pygame.sprite.Group()
-enemies = pygame.sprite.Group()
+counter = 0
+text = font.render(str(counter), True, (0, 128, 0))
 
-# Bucle principal
-running = True
-while running:
-    clock.tick(30) # Framerate
+time_delay = 1000
+timer_event = pygame.USEREVENT+1
 
-    # Eventos del teclado
+# main application loop
+run = True
+while run:
+    clock.tick(60)
+
+    # event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN: # Si se presiona una tecla
-            if event.key == pygame.K_SPACE: # Si la tecla es la barra espaciadora
-                # Crear 10 enemigos y agregarlos a la lista de sprites
-                for i in range(10):
-                    enemy = Enemy()
-                    all_sprites.add(enemy)
-                    enemies.add(enemy)
+            run = False
+        elif event.type == timer_event:
+            # recreate text
+            counter += 1
+            text = font.render(str(counter), True, (0, 128, 0))
 
-    # Actualizar
-    all_sprites.update()
+    # clear the display
+    window.fill((255, 255, 255))
 
-    # Dibujar
-    screen.fill(BLACK)
-    all_sprites.draw(screen)
+    # draw the scene
+    text_rect = text.get_rect(center = window.get_rect().center)   
+    window.blit(text, text_rect)
+
+    # update the display
     pygame.display.flip()
-
-pygame.quit()

@@ -4,6 +4,7 @@ from Constants.constants import *
 from Entities.Enemies.randomEnemyFactorySecuence import RandomEnemyFactorySecuence
 from UI.uiCounter import UICounter
 import threading
+from math import floor
 
 class Computer(pygame.sprite.Sprite):
     def __init__(self,x,y,enemies_group):
@@ -18,8 +19,9 @@ class Computer(pygame.sprite.Sprite):
         self.activeSecuence = False
         self.spawnDelay = 60
         self.observers = []
-        self.countdown = 60
-
+        self.countdown = 5
+        self.previousTime = 0
+        self.timeElapsed = 0
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(x,y,enemies_group)
     
     def getCounter(self):
@@ -28,26 +30,27 @@ class Computer(pygame.sprite.Sprite):
     def noitify(self):
         for observer in self.observers:
             observer.update(self)
-    
-    def initCounter(self):
-        while self.countdown > 0:
-            time.sleep(1)
-            self.countdown -= 1
-            self.noitify()
-        self.activeSecuence = False
-        for observer in self.observers:
-            self.observers.remove(observer)
         
     def interact(self, uiCounter):
         self.activeSecuence = True
         self.observers.append(uiCounter)
-        threading.Thread(target=self.initCounter).start()
+        self.firstTick = pygame.time.get_ticks()
 
     def update(self, cameraOffset, player):
         self.rect.x -= cameraOffset[0]
         self.rect.y -= cameraOffset[1]
 
         if self.activeSecuence:
+            self.timeElapsed = (pygame.time.get_ticks() - self.firstTick)/1000
+            self.timeElapsed = floor(self.timeElapsed)
+
+            if self.timeElapsed != self.previousTime:
+                self.previousTime = self.timeElapsed
+                self.countdown -= 1
+                self.noitify()
+                if self.countdown == 0:
+                    self.activeSecuence = False
+
             self.spawnDelay -= 1
             if self.spawnDelay < 0:
                 self.spawnDelay = 60
