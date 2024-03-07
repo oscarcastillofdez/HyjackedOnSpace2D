@@ -31,9 +31,9 @@ class Enemy(pygame.sprite.Sprite, Entity):
         self.chaseTime = 120
         
         # Define los estados posibles
-        self.states = {"patrolling": self.patrol2,
-                       "chasing": self.chase2,
-                       "attacking": self.attack2}
+        self.states = {"patrolling": self.patrol,
+                       "chasing": self.chase,
+                       "attacking": self.attack}
         
         # Inicializa el estado actual
         #self.current_state = self.states["patrolling"]
@@ -56,7 +56,7 @@ class Enemy(pygame.sprite.Sprite, Entity):
         self.states[self.current_state](world, player,cameraOffset)
         self.player_in_sight(world, player)
 
-    def patrol2(self, world, player,cameraOffset):
+    def patrol(self, world, player,cameraOffset):
         # Comportamiento cuando está patrullando
         dy = 0
 
@@ -118,7 +118,7 @@ class Enemy(pygame.sprite.Sprite, Entity):
         self.rect.x += self.patrollingchasingSpeed - cameraOffset[0]
         self.rect.y += dy - cameraOffset[1]
     
-    def chase2(self, world, player,cameraOffset):
+    def chase(self, world, player,cameraOffset):
         self.jumpDelay -= 1
         self.chaseTime -= 1
 
@@ -198,7 +198,7 @@ class Enemy(pygame.sprite.Sprite, Entity):
         if self.rect.colliderect(player.position()):
             self.change_state("attacking")
     
-    def attack2(self, world, player,cameraOffset):
+    def attack(self, world, player,cameraOffset):
         player.hit()
     
     # Método para cambiar de estado

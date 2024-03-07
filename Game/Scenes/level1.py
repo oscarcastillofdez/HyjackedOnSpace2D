@@ -5,6 +5,7 @@ from Game.Scenes.game_over import GameOver
 from Game.world import World
 from UI.ui import Ui
 from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
+from UI.uiCounter import UICounter
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts
 from UI.uiEnergy import UIEnergy
@@ -88,7 +89,7 @@ class Level1(Scene):
     def update(self, dt):
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)
         self.enemies_group.update(dt, self.world, self.player, self.cameraOffset)
-        self.interactiveGroup.update(self.cameraOffset, dt)
+        self.interactiveGroup.update(self.cameraOffset, self.player)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.grenades_group.update(self.cameraOffset, dt, self.world, self.enemies_group, self.destructibles_group, self.grenades_group,self.back_animations_group)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
