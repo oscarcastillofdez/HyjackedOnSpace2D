@@ -11,7 +11,7 @@ from Entities.pistol import Pistol
 
 
 class World():
-        def __init__(self, enemies, enemyFactory, enemyFactorySecuence, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups):
+        def __init__(self, enemies, enemyFactory, enemyFactorySecuence, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups, dificulty):
             self.tile_list = []
             self.platform_list = []
             self.background_list = []
@@ -19,6 +19,7 @@ class World():
             self.gun_list = []
             self.interactuableList = []
             self.enemies = enemies
+            self.dificulty = dificulty
             self.healthPickUps = healthPickUps
             self.destructibles_group = destructibles_group
             self.gunPickups = gunPickups
@@ -159,7 +160,7 @@ class World():
                     self.gunPickups.add(grenadeLauncher)
 
                 elif tile == 4:
-                    health = Health(mapaX * tileWidth, mapaY * tileHeight)
+                    health = Health(mapaX * tileWidth, mapaY * tileHeight, self.dificulty)
                     self.healthPickUps.add(health)
 
                 elif tile == 5:

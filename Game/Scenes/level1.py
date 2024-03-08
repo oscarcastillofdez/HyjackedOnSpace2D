@@ -33,7 +33,7 @@ class Level1(Scene):
         self.front_animations_group = pygame.sprite.Group()
         self.gunPickups = pygame.sprite.Group()
 
-        self.world = World(self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups)
+        self.world = World(self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.dificulty)
         self.world.inicialOffset((2600,220))
 
         self.uiText = UIText()
@@ -41,7 +41,7 @@ class Level1(Scene):
         self.uiEnergy = UIEnergy()
         self.uiCounter = UICounter()
 
-        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.uiCounter)
+        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.uiCounter, self.dificulty)
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)

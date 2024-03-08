@@ -110,8 +110,8 @@ class PlayerWithShield(PlayerAbstract):
         def cover(self):
             self.applyShield = True
 
-        def heal(self):
-            self.player.heal()
+        def heal(self,healingPower):
+            self.player.heal(healingPower)
             
         def launchGrenade(self, direction, grenades_group):
             self.player.launchGrenade(direction, grenades_group)

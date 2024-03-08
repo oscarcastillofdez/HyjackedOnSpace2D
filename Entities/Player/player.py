@@ -11,8 +11,9 @@ import random
 
 
 class Player(PlayerAbstract):
-        def __init__(self, x, y,uiHearts, uiText,UiCounter):
-            super().__init__(x, y)
+        def __init__(self, x, y,uiHearts, uiText,UiCounter, dificulty):
+            super().__init__(x, y, dificulty)
+            self.dificulty = dificulty
             # Imagenes - patron estado
             self.states = {
                 "IDLE": Idle(False),
@@ -277,11 +278,12 @@ class Player(PlayerAbstract):
         def deflect(self, direction, bulletImage, velocidadBala):
             print("No se puede dar este caso")
 
-        def heal(self):
-            if self.healthPoints < self.maxHealthPoints:
-                self.healthPoints += 1
-                self.notify()
-                
+        def heal(self, healingPower):
+            self.healthPoints += healingPower
+            if self.healthPoints >= self.maxHealthPoints:
+                self.healthPoints = self.maxHealthPoints
+            self.notify()
+            
         def launchGrenade(self, direction,grenades_group):
             print("No tengo lanza grandas")
                 

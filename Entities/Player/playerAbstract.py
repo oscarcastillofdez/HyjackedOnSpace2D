@@ -4,7 +4,7 @@ from Constants.constants import *
 from MovementAndCollisions.aux_functions import *
 
 class PlayerAbstract():
-    def __init__(self,x,y):
+    def __init__(self,x,y, dificulty):
         # Posicion
         self.rect = pygame.Rect(0,0,50,94)
         self.rect.x = x
@@ -35,6 +35,9 @@ class PlayerAbstract():
         self.arma = None
         self.uiElementsList = []
         self.interactuableText = ""
+        self.bulletDamage = dificulty.getPlayerBulletDamage()
+        self.bulletSpeed = dificulty.getPlayerBulletSpeed()
+        self.shootCooldownConst = dificulty.getPlayerShootCooldown()
         
     def change_state(self):
         pass

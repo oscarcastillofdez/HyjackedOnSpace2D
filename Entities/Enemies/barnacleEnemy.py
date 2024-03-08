@@ -19,7 +19,7 @@ class BarnacleEnemy(pygame.sprite.Sprite, Entity):
         self.tongueRect.width = 10
         self.tongueRect.height = 400
 
-        self.damage = dificulty.getBarcleEnemyDamage()
+        self.damage = dificulty.getBarnacleEnemyDamage()
 
         self.states = {"patrolling": self.patrol,
                        "chasing": self.chase,
@@ -58,6 +58,6 @@ class BarnacleEnemy(pygame.sprite.Sprite, Entity):
         #pygame.draw.rect(screen, (255,255,255), self.verticalRect)
         screen.blit(self.tongueImage, self.tongueRect)
 
-    def kill(self):
+    def hit(self,damage):
         self.current_state = "die"    
     

@@ -29,11 +29,11 @@ class Bullet():
         self.rect.x -= self.velocidadX + cameraOffsetX
         self.rect.y -= self.velocidadY + cameraOffsetY
 
-    def checkBulletCollision(self, world, enemies_group):
-        objetoColision = pygame.sprite.spritecollide(self, enemies_group, False)
+    def checkBulletCollision(self, world, enemies_group, damage):
+        enemigoGolpeado = pygame.sprite.spritecollide(self, enemies_group, False)
 
-        for objeto in objetoColision:
-            objeto.kill()
+        for enemigo in enemigoGolpeado:
+            enemigo.hit(damage)
             #enemies_group.remove(objeto)
             return True
         

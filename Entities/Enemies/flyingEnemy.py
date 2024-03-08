@@ -253,5 +253,5 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
     def die(self,world, player,cameraOffset,enemies_group):
         enemies_group.remove(self)
         
-    def kill(self):
+    def hit(self,damage):
         self.current_state = "die"  

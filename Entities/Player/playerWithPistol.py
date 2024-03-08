@@ -11,13 +11,13 @@ from Constants.constants import *
 
 class PlayerWithPistol(PlayerAbstract):
     def __init__(self, player):
-        super().__init__(player.position().x, player.position().y)
+        super().__init__(player.position().x, player.position().y, player.dificulty)
         self.player = player
 
         # Shoot - Variables disparo
         self.disparosList = []
-        self.coolDown = 30
-        self.velocidadBala = 10
+        self.shootCooldown = self.shootCooldownConst
+        #self.velocidadBala = 10
         self.disparoImg = pygame.image.load(PLAYER_PATH + 'lazer_1.png')
 
         # Imagenes
@@ -61,11 +61,11 @@ class PlayerWithPistol(PlayerAbstract):
 
     def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset):
         cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, cameraOffset)
-        self.coolDown -= 1
+        self.shootCooldown -= 1
         
         for disparo in self.disparosList:
             disparo.update(cameraOffset)
-            if disparo.checkBulletCollision(world, enemies_group) or disparo.checkDespawnTime():
+            if disparo.checkBulletCollision(world, enemies_group, self.bulletDamage) or disparo.checkDespawnTime():
                 self.disparosList.remove(disparo)
                 del disparo
         
@@ -77,9 +77,9 @@ class PlayerWithPistol(PlayerAbstract):
     def shoot(self, direction):
         self.state.done = True
         self.state.next_state = "RUNSHOOTR"
-        if self.coolDown <= 0:
-            self.coolDown = 30
-            disparo = Bullet(self.disparoImg, direction, self.velocidadBala, self.player.position().x, self.player.position().y)
+        if self.shootCooldown <= 0:
+            self.shootCooldown = self.shootCooldownConst
+            disparo = Bullet(self.disparoImg, direction, self.bulletSpeed, self.player.position().x, self.player.position().y)
             self.disparosList.append(disparo)
             
 
@@ -102,8 +102,8 @@ class PlayerWithPistol(PlayerAbstract):
     def cover(self):
         self.player.cover()
 
-    def heal(self):
-        self.player.heal()
+    def heal(self,healingPower):
+        self.player.heal(healingPower)
 
     def launchGrenade(self, direction,grenades_group):
         self.player.launchGrenade(direction,grenades_group)

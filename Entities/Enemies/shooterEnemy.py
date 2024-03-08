@@ -234,14 +234,33 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
     
     def attack(self,world, player,cameraOffset,enemies_group):
         # Disparar cada x segundos
+        dy = 0
+
+        self.velY += 1
+        if self.velY > 10:
+            self.velY = 1
+        
+        dy += self.velY
+
         self.shootCooldown -= 1
         if self.shootCooldown <= 0:
             self.shootCooldown = 30
             disparo = Bullet(self.disparoImg, self.angle, self.velocidadBala, self.rect.x, self.rect.y)
             self.disparosList.append(disparo)
 
+        tileHitBoxList = world.getTilesList()
+        tileCollisions = self.collisionHandler.checkCollisions(self, tileHitBoxList, 0, dy)
+
+        if tileCollisions[1] >= 0:
+            if self.velY < 0: #Saltando
+                dy = tileHitBoxList[tileCollisions[1]].bottom - self.rect.top
+                self.velY = 0
+            elif self.velY >= 0: #Cayendo
+                dy = tileHitBoxList[tileCollisions[1]].top - self.rect.bottom
+                self.velY = 0
+
         self.rect.x -= cameraOffset[0]
-        self.rect.y -= cameraOffset[1]
+        self.rect.y += dy - cameraOffset[1]
 
         if self.distanciaAlJugador > self.minAtackDistance:
             self.current_state = "chasing"
@@ -253,5 +272,5 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
     def die(self,world, player,cameraOffset,enemies_group):
         enemies_group.remove(self)
 
-    def kill(self):
+    def hit(self, damage):
         self.current_state = "die"  

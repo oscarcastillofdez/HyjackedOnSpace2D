@@ -34,7 +34,6 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
 
             self.shield = Shield(self.shieldImage)
             self.applyShield = False
-            self.coolDown = 30
 
             self.grenadeImg = pygame.image.load(PLAYER_PATH + "grenade.png")
             self.grenadeVelocity = 5
@@ -66,7 +65,7 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             return self.player.getInteractuableText()
                 
         def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
-            self.coolDown -= 1
+            self.shootCooldown -= 1
             return self.player.update(world, dt, enemies_group, interactuableGroup, cameraOffset)
         
         def deflect(self, direction, newBulletImage, velocidadBala):
@@ -84,12 +83,12 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
         def cover(self):
             self.player.cover()
 
-        def heal(self):
-            self.player.heal()
+        def heal(self,healingPower):
+            self.player.heal(healingPower)
 
         def launchGrenade(self, direction, grenades_group):
-            if self.coolDown <= 0:
-                self.coolDown = 30
+            if self.shootCooldown <= 0:
+                self.shootCooldown = self.shootCooldown
                 grenade = Grenade(self.grenadeImg, direction, self.grenadeVelocity, self.player.position().x, self.player.position().y)
                 grenades_group.add(grenade)
 
