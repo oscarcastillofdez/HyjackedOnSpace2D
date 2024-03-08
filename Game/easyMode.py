@@ -5,39 +5,45 @@ class EasyMode():
         self.meleeEnemyDamage = 1
         self.shooterEnemyDamage = 1
         self.flyingEnemyDamage = 1
-        self.barnacleEnemyDamage = 2
+        self.barnacleEnemyDamage = 1
         self.rayEnemyDamage = 1
 
-        self.meleeEnemyHealth = 1
-        self.shoooterEnemyHealth = 1
-        self.flyingEnemyHealth = 1
+        self.meleeEnemyHealth = 3
+        self.shoooterEnemyHealth = 2
+        self.flyingEnemyHealth = 2
         self.barnacleEnemyHealth = 1
 
-        self.enemyChaseTime = 120
-        self.enemyShootCooldown = 30
+        self.playerHittedCooldown = 65
+
+        self.enemyChaseTime = 100
+        self.enemyShootCooldown = 40
 
         self.enemyMinChasingSpeed = 2
-        self.enemyMaxChasingSpeed = 4
+        self.enemyMaxChasingSpeed = 2
         self.enemyMinPatrollingSpeed = 1
         self.enemyMaxPatrollingSpeed = 1
 
-        self.rayEnemyMinHidingTime = 60
-        self.rayEnemyMaxHidingTime = 120
+        self.rayEnemyMinHidingTime = 90
+        self.rayEnemyMaxHidingTime = 140
         self.rayEnemyMinChasingTime = 60
         self.rayEnemyMaxChasingTime = 120
 
-        self.enemyBulletSpeed = 10
+        self.enemyBulletSpeed = 8
 
-        self.flyingEnemyMaxViewDistance = 600
+        self.flyingEnemyMaxViewDistance = 400
         self.enemyMinAttackDistance = 300
 
-        self.playerBulletSpeed = 10
+        self.playerBulletSpeed = 12
         self.playerBulletDamage = 1
-        self.playerGrenadeDamage = 1
-        self.playerShootCooldown = 15
+        self.playerGrenadeDamage = 3
+        self.playerShootGrenadeCooldown = 25
+        self.playerShootCooldown = 12
         self.healthPickupHealingPower = 3
 
-        self.maxEnemyCountOnComputerSecuence = 15
+        self.maxEnemyCountOnComputerSecuence = 10
+        self.countdownOnComputerScene = 30
+        self.spawnDelayOnComputerScene = 60
+
     
     def getMeleeEnemyDamage(self):
         return self.meleeEnemyDamage
@@ -101,12 +107,24 @@ class EasyMode():
     
     def getPlayerGrenadeDamage(self):
         return self.playerGrenadeDamage
+
+    def getPlayerShootGrenadeCooldown(self):
+        return self.playerShootGrenadeCooldown
     
     def getMaxEnemyCountOnComputerSecuence(self):
-        return self.getMaxEnemyCountOnComputerSecuence
+        return self.maxEnemyCountOnComputerSecuence
     
     def getPlayerShootCooldown(self):
         return self.playerShootCooldown
     
     def getHealthPickupHealingPower(self):
         return self.healthPickupHealingPower
+    
+    def getPlayerHittedCooldown(self):
+        return self.playerHittedCooldown
+    
+    def getCountdownOnComputerScene(self):
+        return self.countdownOnComputerScene
+    
+    def getSpawnDelayOnComputerScene(self):
+        return self.spawnDelayOnComputerScene

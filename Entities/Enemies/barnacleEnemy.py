@@ -21,6 +21,9 @@ class BarnacleEnemy(pygame.sprite.Sprite, Entity):
 
         self.damage = dificulty.getBarnacleEnemyDamage()
 
+        # Atributos de vida
+        self.health = dificulty.getBarnacleEnemyHealth()
+
         self.states = {"patrolling": self.patrol,
                        "chasing": self.chase,
                        "attacking": self.attack,
@@ -58,6 +61,8 @@ class BarnacleEnemy(pygame.sprite.Sprite, Entity):
         #pygame.draw.rect(screen, (255,255,255), self.verticalRect)
         screen.blit(self.tongueImage, self.tongueRect)
 
-    def hit(self,damage):
-        self.current_state = "die"    
+    def hit(self, damage):
+        self.health -= damage
+        if self.health <= 0:
+            self.current_state = "die"
     

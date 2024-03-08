@@ -11,7 +11,7 @@ import random
 
 
 class Player(PlayerAbstract):
-        def __init__(self, x, y,uiHearts, uiText,UiCounter, dificulty):
+        def __init__(self, x, y,uiHearts, uiText, dificulty):
             super().__init__(x, y, dificulty)
             self.dificulty = dificulty
             # Imagenes - patron estado
@@ -34,8 +34,6 @@ class Player(PlayerAbstract):
 
             self.addObserver(uiText)
             self.addObserver(uiHearts)
-
-            self.uiCounter = UiCounter
 
         def change_state(self):
             self.state.done = False
@@ -90,7 +88,7 @@ class Player(PlayerAbstract):
             
             if interactsWith and not self.interactedOnce:
                 self.interactedOnce = True
-                interactsWith.interact(self.uiCounter)
+                interactsWith.interact()
                 
         def interact(self, interactuableGroup):
             interactsWith = pygame.sprite.spritecollideany(self, interactuableGroup)

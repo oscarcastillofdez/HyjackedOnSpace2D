@@ -12,7 +12,7 @@ from Entities.bullet import Bullet
 
 class PlayerWithShield(PlayerAbstract):
         def __init__(self, player, ui):
-            super().__init__(player.position().x, player.position().y)
+            super().__init__(player.position().x, player.position().y,player.getDificulty())
             self.player = player
 
             # Imagenes

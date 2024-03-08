@@ -11,7 +11,7 @@ from Constants.constants import *
 
 class PlayerWithPistol(PlayerAbstract):
     def __init__(self, player):
-        super().__init__(player.position().x, player.position().y, player.dificulty)
+        super().__init__(player.position().x, player.position().y, player.getDificulty())
         self.player = player
 
         # Shoot - Variables disparo

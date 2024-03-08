@@ -22,7 +22,6 @@ class Level1(Scene):
         self.dificulty = dificulty
         self.enemies_group = pygame.sprite.Group()
         self.randomEnemyFactory = RandomEnemyFactory()
-        self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty)
         self.interactiveGroup = pygame.sprite.Group()
 
         self.healthPickUps = pygame.sprite.Group()
@@ -33,19 +32,20 @@ class Level1(Scene):
         self.front_animations_group = pygame.sprite.Group()
         self.gunPickups = pygame.sprite.Group()
 
-        self.world = World(self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.dificulty)
-        self.world.inicialOffset((2600,220))
-
         self.uiText = UIText()
         self.uiHearts = UIHearts()
         self.uiEnergy = UIEnergy()
         self.uiCounter = UICounter()
 
-        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.uiCounter, self.dificulty)
+        self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter)
+        self.world = World(self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.dificulty)
+        self.world.inicialOffset((2600,220))
+
+        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.dificulty)
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
-        self.interactiveGroup.update(self.cameraOffset, self.player)
+        self.interactiveGroup.update(self.cameraOffset)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
         self.destructibles_group.update(self.cameraOffset)
@@ -95,7 +95,7 @@ class Level1(Scene):
     def update(self, dt):
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)
         self.enemies_group.update(dt, self.world, self.player, self.cameraOffset,self.enemies_group)
-        self.interactiveGroup.update(self.cameraOffset, self.player)
+        self.interactiveGroup.update(self.cameraOffset)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.grenades_group.update(self.cameraOffset, dt, self.world, self.enemies_group, self.destructibles_group, self.grenades_group,self.back_animations_group)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)

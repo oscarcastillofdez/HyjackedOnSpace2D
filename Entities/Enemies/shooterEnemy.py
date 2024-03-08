@@ -45,6 +45,9 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.velocidadBala = dificulty.getEnemyBulletSpeed()
         self.bulletDamage = dificulty.getShooterEnemyDamage()
 
+        # Atributos de vida
+        self.health = dificulty.getShooterEnemyHealth()
+
         # Atributos de control de estados
         self.chaseTime = dificulty.getEnemyChaseTime()
         self.onlyChase = onlyChase
@@ -273,4 +276,6 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         enemies_group.remove(self)
 
     def hit(self, damage):
-        self.current_state = "die"  
+        self.health -= damage
+        if self.health <= 0:
+            self.current_state = "die"  

@@ -35,6 +35,10 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         self.viewDirection = 1
         
         self.damage = dificulty.getMeleeEnemyDamage()
+
+        # Atributos de vida
+        self.health = dificulty.getMeleeEnemyHealth()
+
         # Atributos de control de estados
         self.chaseTime = dificulty.getEnemyChaseTime()
         self.onlyChase = onlyChase
@@ -208,7 +212,9 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
     def die(self,world, player,cameraOffset,enemies_group):
         enemies_group.remove(self)
 
-    def hit(self,damage):
-        self.current_state = "die"  
+    def hit(self, damage):
+        self.health -= damage
+        if self.health <= 0:
+            self.current_state = "die"  
 
     

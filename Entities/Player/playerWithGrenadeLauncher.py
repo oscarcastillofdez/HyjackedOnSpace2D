@@ -13,7 +13,7 @@ from Entities.grenade import Grenade
 class PlayerWithGrenadeLauncher(PlayerAbstract):
         def __init__(self, player):
             print("BBBBBBBBBBBBB")
-            super().__init__(player.position().x, player.position().y)
+            super().__init__(player.position().x, player.position().y, player.getDificulty())
             self.player = player
 
             # Imagenes
@@ -38,6 +38,8 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             self.grenadeImg = pygame.image.load(PLAYER_PATH + "grenade.png")
             self.grenadeVelocity = 5
             self.disparosList = []
+            self.shootCooldown = self.shootCooldownConst
+
 
 
         def move_left(self):
@@ -88,8 +90,8 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
 
         def launchGrenade(self, direction, grenades_group):
             if self.shootCooldown <= 0:
-                self.shootCooldown = self.shootCooldown
-                grenade = Grenade(self.grenadeImg, direction, self.grenadeVelocity, self.player.position().x, self.player.position().y)
+                self.shootCooldown = self.shootGrenadeCooldownConst
+                grenade = Grenade(self.grenadeImg, direction, self.grenadeVelocity, self.player.position().x, self.player.position().y, self.grenadeDamage)
                 grenades_group.add(grenade)
 
         def doInteract(self, interactuableGroup):

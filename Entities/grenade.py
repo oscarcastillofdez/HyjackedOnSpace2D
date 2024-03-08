@@ -18,9 +18,9 @@ class GrenadeDamageArea(pygame.sprite.Sprite):
             
 
 class Grenade(pygame.sprite.Sprite):
-    def __init__(self, image, direction, velocidad, x, y) -> None:
+    def __init__(self, image, direction, velocidad, x, y, damage) -> None:
         pygame.sprite.Sprite.__init__(self)
-
+        self.damage = damage
         self.damageArea = GrenadeDamageArea(image,x,y)
 
         self.velocidad = velocidad
@@ -60,15 +60,14 @@ class Grenade(pygame.sprite.Sprite):
         back_animations.add(self.grenadeExplosion)
 
         destructibles = pygame.sprite.spritecollide(self.damageArea, destructibles_group, False)
-        pygame.sprite.spritecollide(self.damageArea, enemies_group, False)
-
-        print(destructibles)
+        enemies = pygame.sprite.spritecollide(self.damageArea, enemies_group, False)
 
         for destructible in destructibles:
-            print("AQUI LLEGA")
-            print(destructible)
             destructible.destroy(back_animations,world)
             destructibles_group.remove(destructible)
+
+        for enemy in enemies:
+            enemy.hit(self.damage)
         
         grenades_group.remove(self)
 

@@ -48,6 +48,9 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.velocidadBala = dificulty.getEnemyBulletSpeed()
         self.bulletDamage = dificulty.getFlyingEnemyDamage()
 
+        # Atributos de vida
+        self.health = dificulty.getFlyingEnemyHealth()
+
         # Atributos de control de estados
         self.onlyChase = onlyChase
         self.chaseTime = dificulty.getEnemyChaseTime()
@@ -56,10 +59,10 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
                        "attacking": Attack(self),
                        "die": Die(self)}
 
-        self.states = {"patrolling": self.patrol,
-                       "chasing": self.chase,
-                       "attacking": self.attack,
-                       "die": self.die}
+        # self.states = {"patrolling": self.patrol,
+        #                "chasing": self.chase,
+        #                "attacking": self.attack,
+        #                "die": self.die}
         
         self.state_name = "patrolling"
         self.current_state = self.states["patrolling"]
@@ -253,5 +256,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
     def die(self,world, player,cameraOffset,enemies_group):
         enemies_group.remove(self)
         
-    def hit(self,damage):
-        self.current_state = "die"  
+    def hit(self, damage):
+        self.health -= damage
+        if self.health <= 0:
+            self.current_state = "die"
