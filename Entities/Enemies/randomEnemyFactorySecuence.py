@@ -1,6 +1,7 @@
 from pygame import Rect
 
 from Entities.Enemies.barnacleEnemy import BarnacleEnemy
+from Entities.Enemies.rayEnemy import RayEnemy
 from Entities.Enemies.shooterEnemy import ShooterEnemy
 
 from .enemyFactory import EnemyFactory

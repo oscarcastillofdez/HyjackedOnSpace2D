@@ -38,7 +38,7 @@ class Spritesheet():
             for columna in range(num_columnas):
                 x = columna * sprite_ancho
                 y = fila * sprite_alto
-                sprite = self.sprite_sheet.subsurface(pygame.Rect(x, y, sprite_ancho, sprite_alto))
+                sprite = pygame.transform.scale(self.sprite_sheet.subsurface(pygame.Rect(x, y, sprite_ancho, sprite_alto)), self.scale)
                 sprites.append(sprite)
 
         return sprites
