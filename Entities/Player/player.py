@@ -117,18 +117,17 @@ class Player(PlayerAbstract):
 
             cameraOffsetX, cameraOffsetY = cameraOffset
 
-            self.interact(interactuableGroup)
-            self.hitCooldown -= 1
+            
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
                 self.velY = -10
 
             # Calculo del movimiento horizontal
+            
             (self.left_mov, left_movement) = move_horizontal(self.moving_left, self.left_mov, dt)
             (self.right_mov, right_movement) = move_horizontal(self.moving_right, self.right_mov, dt)
             horizontal_movement = floor(right_movement - left_movement)
-
             self.currentVelocity = horizontal_movement
 
             # Calculo del movimiento vertical
@@ -153,6 +152,11 @@ class Player(PlayerAbstract):
             dx = horizontal_movement
 
             self.inAir = True
+
+            if self.grabbed:
+                dx = 0
+                dy = -self.dragSpeed
+                print(dy)
 
             # Se calculan las colisiones en ambos ejes
             tileHitBoxList = world.getTilesList()
@@ -239,6 +243,9 @@ class Player(PlayerAbstract):
 
             if self.state.done:
                 self.change_state(self.state.next_state)
+
+            self.interact(interactuableGroup)
+            self.hitCooldown -= 1
             
             return (cameraOffsetX + shakingX, cameraOffsetY + shakingY)
 
@@ -285,6 +292,15 @@ class Player(PlayerAbstract):
         def getShieldHp(self):
             return 0
 
+        def setGrabbed(self, dy, barnacleRect):
+            self.grabbed = True
+            self.dragSpeed = dy
+            self.rect.x = barnacleRect.x
 
+        def unSetGrabbed(self):
+            self.grabbed = False
+            self.dragSpeed = 0
+        
+                
 
             

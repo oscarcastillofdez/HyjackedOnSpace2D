@@ -42,7 +42,8 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         self.onlyChase = onlyChase
         self.states = {"patrolling": self.patrol,
                        "chasing": self.chase,
-                       "attacking": self.attack}
+                       "attacking": self.attack,
+                       "die": self.die}
         self.current_state = "patrolling"
         if onlyChase:
             self.current_state = "chasing"
@@ -50,7 +51,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         
 
 
-    def update(self, dt, world, player,cameraOffset):
+    def update(self, dt, world, player,cameraOffset,enemies_group):
         # self.time += dt
         # if self.time > 100:
         #     self.index += 1
@@ -58,7 +59,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         #         self.index=0
         #     self.image = self.sprites[self.index]
 
-        self.states[self.current_state](world, player, cameraOffset) # Llama al estado correspondiente (patrol, chase o attack)
+        self.states[self.current_state](world, player, cameraOffset,enemies_group) # Llama al estado correspondiente (patrol, chase o attack)
         self.player_in_sight(world, player) # Controla la vision con el jugador
 
     def player_in_sight(self, world, player):
@@ -76,7 +77,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
     def drawBullets(self, screen):
         pass
     
-    def patrol(self, world, player,cameraOffset):
+    def patrol(self, world, player,cameraOffset,enemies_group):
         # Calculo del movimiento
         dy = 0
 
@@ -129,7 +130,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         self.rect.x += self.patrollingSpeed - cameraOffset[0]
         self.rect.y += dy - cameraOffset[1]
     
-    def chase(self, world, player,cameraOffset):
+    def chase(self, world, player,cameraOffset,enemies_group):
         # Calculo del movimiento
         self.jumpDelay -= 1
         self.chaseTime -= 1
@@ -203,8 +204,14 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         if self.rect.colliderect(player.position()):
             self.current_state = "attacking"
     
-    def attack(self, world, player,cameraOffset):
+    def attack(self, world, player,cameraOffset,enemies_group):
         player.hit()
         self.current_state = "chasing"
+
+    def die(self,world, player,cameraOffset,enemies_group):
+        enemies_group.remove(self)
+
+    def kill(self):
+        self.current_state = "die"  
 
     

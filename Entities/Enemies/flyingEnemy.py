@@ -6,6 +6,8 @@ import math
 from Entities.Enemies.EnemyStates.patrol import Patrol
 from Entities.Enemies.EnemyStates.chase import Chase
 from Entities.Enemies.EnemyStates.attack import Attack
+from Entities.Enemies.EnemyStates.die import Die
+
 from Game.spritesheet import Spritesheet
 from Constants.constants import *
 
@@ -50,7 +52,13 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.chaseTime = 120
         self.states = {"patrolling": Patrol(self),
                        "chasing": Chase(self),
-                       "attacking": Attack(self)}
+                       "attacking": Attack(self),
+                       "die": Die(self)}
+
+        self.states = {"patrolling": self.patrol,
+                       "chasing": self.chase,
+                       "attacking": self.attack,
+                       "die": self.die}
         
         self.state_name = "patrolling"
         self.current_state = self.states["patrolling"]
@@ -77,7 +85,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             return True
 
                 
-    def update(self, dt, world, player, cameraOffset):
+    def update(self, dt, world, player, cameraOffset,enemies_group):
         self.time += 1
         if self.time > 6:
             self.time = 0
@@ -92,12 +100,12 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
                 self.disparosList.remove(disparo)
                 del disparo
 
-        self.states[self.state_name].update(dt, world, player, cameraOffset)
+        self.states[self.state_name].update(dt, world, player, cameraOffset,enemies_group)
         self.player_in_sight(world, player)
         if self.current_state.done:
             self.change_state()
 
-    def patrol(self, world, player, cameraOffset):
+    def patrol(self, world, player, cameraOffset,enemies_group):
         # Comportamiento cuando está patrullando
         dy = 0
 
@@ -144,7 +152,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.rect.y += dy - cameraOffset[1]
 
     
-    def chase(self, world, player,cameraOffset):
+    def chase(self, world, player,cameraOffset,enemies_group):
         self.chaseTime -= 1
 
         if self.chaseTime <= 0 and not self.onlyChase:
@@ -182,8 +190,8 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             self.current_state.next_state = "attacking"
             self.current_state.done = True
     
-    def attack(self, world, player,cameraOffset):
-        # Disparar cada x segundos
+    def attack(self, world, player,cameraOffset,enemies_group):
+        # Disparar cada x segundos,
         self.shootCooldown -= 1
         if self.shootCooldown <= 0:
             self.shootCooldown = 30
@@ -223,7 +231,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             # Si la en la linea de vision se interpone un obstaculo, no se puede ver al jugador
             tileHitBoxList = world.getTilesList()
             destructibleHitBoxList = world.getDestructiblesList()
-            
+
             for tile in tileHitBoxList:
                 if tile.clipline((self.lineStart, (player.position().centerx, player.position().centery))):
                     return False
@@ -240,3 +248,9 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             self.chaseTime = 120
             self.current_state.next_state = "chasing"
             self.current_state.done = True
+
+    def die(self,world, player,cameraOffset,enemies_group):
+        enemies_group.remove(self)
+        
+    def kill(self):
+        self.current_state = "die"  

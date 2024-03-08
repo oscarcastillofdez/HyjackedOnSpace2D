@@ -95,3 +95,9 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
 
         def doInteract(self, interactuableGroup):
             self.player.doInteract(interactuableGroup)    
+        
+        def setGrabbed(self, dy,barnacleRect):
+            self.player.setGrabbed(dy,barnacleRect)
+
+        def unSetGrabbed(self):
+            self.player.unSetGrabbed()

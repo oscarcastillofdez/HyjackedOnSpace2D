@@ -110,3 +110,9 @@ class PlayerWithPistol(PlayerAbstract):
     
     def getCurrentVelocity(self):
         return self.player.getCurrentVelocity()
+    
+    def setGrabbed(self, dy,barnacleRect):
+        self.player.setGrabbed(dy,barnacleRect)
+
+    def unSetGrabbed(self):
+        self.player.unSetGrabbed()

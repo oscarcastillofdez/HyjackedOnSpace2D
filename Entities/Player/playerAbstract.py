@@ -22,6 +22,9 @@ class PlayerAbstract():
         self.jumping = False
         self.hold_jump = False
         self.pressed_jump = 0
+        self.grabbed = False
+        self.dragSpeed = 0
+
         
         #Vida
         self.maxHealthPoints = 3
@@ -32,7 +35,7 @@ class PlayerAbstract():
         self.arma = None
         self.uiElementsList = []
         self.interactuableText = ""
-    
+        
     def change_state(self):
         pass
 
@@ -84,3 +87,8 @@ class PlayerAbstract():
     
     def heal(self):
         pass
+    
+    
+
+
+    

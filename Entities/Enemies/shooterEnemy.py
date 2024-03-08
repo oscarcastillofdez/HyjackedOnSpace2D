@@ -51,7 +51,8 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.onlyChase = onlyChase
         self.states = {"patrolling": self.patrol,
                        "chasing": self.chase,
-                       "attacking": self.attack}
+                       "attacking": self.attack,
+                       "die": self.die}
         self.current_state = "patrolling"
         if onlyChase:
             self.current_state = "chasing"
@@ -76,7 +77,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
             return True
         
 
-    def update(self, dt, world, player,cameraOffset):
+    def update(self, dt, world, player,cameraOffset, enemies_group):
         # self.time += dt
         # if self.time > 100:
         #     self.index += 1
@@ -90,7 +91,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
                 self.disparosList.remove(disparo)
                 del disparo
 
-        self.states[self.current_state](world, player, cameraOffset)
+        self.states[self.current_state](world, player, cameraOffset,enemies_group)
         self.player_in_sight(world, player)
 
     def player_in_sight(self, world, player):
@@ -111,7 +112,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
             self.chaseTime = 120
             self.current_state = "chasing"
     
-    def patrol(self, world, player,cameraOffset):
+    def patrol(self,world, player,cameraOffset,enemies_group):
         # Comportamiento cuando está patrullando
         dy = 0
 
@@ -162,7 +163,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.rect.x += self.patrollingSpeed - cameraOffset[0]
         self.rect.y += dy - cameraOffset[1]
     
-    def chase(self, world, player,cameraOffset):
+    def chase(self,world, player,cameraOffset,enemies_group):
         self.jumpDelay -= 1
         self.chaseTime -= 1
 
@@ -232,7 +233,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         if self.distanciaAlJugador < self.minAtackDistance:
             self.current_state = "attacking"
     
-    def attack(self, world, player,cameraOffset):
+    def attack(self,world, player,cameraOffset,enemies_group):
         # Disparar cada x segundos
         self.shootCooldown -= 1
         if self.shootCooldown <= 0:
@@ -250,4 +251,8 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         for disparo in self.disparosList:
             disparo.draw(screen)
 
-    
+    def die(self,world, player,cameraOffset,enemies_group):
+        enemies_group.remove(self)
+
+    def kill(self):
+        self.current_state = "die"  

@@ -2,7 +2,16 @@
     "activeFile": "",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
+        "datosNivel.json": {
+            "scale": 0.1102294921875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 4799.078626799556,
+                "y": 2408.611295681063
+            }
+        }
     },
     "openFiles": [
     ],

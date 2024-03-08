@@ -33,7 +33,8 @@ class Bullet():
         objetoColision = pygame.sprite.spritecollide(self, enemies_group, False)
 
         for objeto in objetoColision:
-            enemies_group.remove(objeto)
+            objeto.kill()
+            #enemies_group.remove(objeto)
             return True
         
         tileList = world.getTilesList()

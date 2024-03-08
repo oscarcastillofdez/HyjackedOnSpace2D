@@ -19,7 +19,7 @@ class Computer(pygame.sprite.Sprite):
         self.activeSecuence = False
         self.spawnDelay = 60
         self.observers = []
-        self.countdown = 5
+        self.countdown = 60
         self.previousTime = 0
         self.timeElapsed = 0
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(x,y,enemies_group)
