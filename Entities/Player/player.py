@@ -76,10 +76,10 @@ class Player(PlayerAbstract):
         def getHp(self):
             return self.healthPoints
         
-        def hit(self):
+        def hit(self, damage):
             if self.hitCooldown < 0:
-                self.standing = self.hitImage 
-                self.healthPoints -= 1
+                self.standing = self.hitImage
+                self.healthPoints -= damage
                 self.hitCooldown = 60
                 self.notify()
             return True

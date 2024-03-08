@@ -1,4 +1,5 @@
 import pygame
+from Entities.Enemies.randomEnemyFactorySecuence import RandomEnemyFactorySecuence
 from Game.Scenes.scene import Scene
 from Entities.Player.player import Player
 import Game.Scenes.game_over as game_over
@@ -15,12 +16,13 @@ from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
 
 
 class Level1(Scene):
-    def __init__(self, director):
+    def __init__(self, director, dificulty):
         super(Level1, self).__init__(director)
         self.cameraOffset = (2600,220)
-        
-        self.randomEnemyFactory = RandomEnemyFactory()
+        self.dificulty = dificulty
         self.enemies_group = pygame.sprite.Group()
+        self.randomEnemyFactory = RandomEnemyFactory()
+        self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty)
         self.interactiveGroup = pygame.sprite.Group()
 
         self.healthPickUps = pygame.sprite.Group()
@@ -31,7 +33,7 @@ class Level1(Scene):
         self.front_animations_group = pygame.sprite.Group()
         self.gunPickups = pygame.sprite.Group()
 
-        self.world = World(self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups)
+        self.world = World(self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups)
         self.world.inicialOffset((2600,220))
 
         self.uiText = UIText()

@@ -96,8 +96,8 @@ class PlayerWithPistol(PlayerAbstract):
     def position(self):
         return self.player.position()
     
-    def hit(self):
-        return self.player.hit()
+    def hit(self, damage):
+        return self.player.hit(damage)
     
     def cover(self):
         self.player.cover()

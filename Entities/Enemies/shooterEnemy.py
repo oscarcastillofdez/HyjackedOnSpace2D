@@ -8,7 +8,7 @@ import math
 import random
 
 class ShooterEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y,onlyChase):
+    def __init__(self,x,y,dificulty, onlyChase):
         pygame.sprite.Sprite.__init__(self)
         # Otros objetos
         self.collisionHandler = CollisionHandler()
@@ -28,26 +28,25 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.moved = 0
         self.velY = 0
         self.jumpDelay = 0
-        self.patrollingSpeed = 1
-        self.chasingSpeed = random.randint(2, 4)
+        self.patrollingSpeed = dificulty.getEnemyPatrollingSpeed()
+        self.chasingSpeed = dificulty.getEnemyChasingSpeed()
 
         # Atributos de control de vision
         self.visionLine = pygame.Rect(self.rect.centerx, self.rect.y, 500, 50) 
         self.viewDirection = 1
-        self.minAtackDistance = 300 # Distancia directa hacia el jugador (diagonal)
+        self.minAtackDistance = dificulty.getEnemyMinAttackDistance() # Distancia directa hacia el jugador (diagonal)
         self.distanciaAlJugador = 0
 
         # Atributos de control de disparo
-        self.shootCooldown = 60
+        self.shootCooldown = dificulty.getEnemyShootCooldown()
         self.disparosList = []
         self.disparoImg = pygame.image.load('Assets/Images/Entities/Player/lazer_24.png')
         self.angle = 0
-        self.velocidadBala = 10
-
-
+        self.velocidadBala = dificulty.getEnemyBulletSpeed()
+        self.bulletDamage = dificulty.getShooterEnemyDamage()
 
         # Atributos de control de estados
-        self.chaseTime = 120
+        self.chaseTime = dificulty.getEnemyChaseTime()
         self.onlyChase = onlyChase
         self.states = {"patrolling": self.patrol,
                        "chasing": self.chase,
@@ -60,7 +59,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         
     def checkBulletCollision2(self, world, player, disparo):
         if disparo.bulletPosition().colliderect(player.position()):
-            if player.hit():
+            if player.hit(self.bulletDamage):
                 return True
             else:
                 #player.deflect(self.angle + 180, self.disparoImg, self.velocidadBala)

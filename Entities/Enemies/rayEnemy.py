@@ -6,7 +6,7 @@ from Entities.Enemies.entity import Entity
 from Game.spritesheet import Spritesheet
 
 class RayEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y, onlyChase) -> None:
+    def __init__(self,x,y, dificulty, onlyChase) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.spriteList = Spritesheet(ENEMIES_PATH + 'Ray/Ray_spritesheet.png', (64,256)).cargar_sprites(16,78)
         #self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Ray/Ray_spritesheet.png'), (64,64))
@@ -17,8 +17,10 @@ class RayEnemy(pygame.sprite.Sprite, Entity):
         self.rect.x = x
         self.rect.y = y
 
-        self.hidingTime = random.randint(60, 120)
-        self.chasingTime = random.randint(60, 120)
+        self.hidingTime = dificulty.getRayEnemyHidingTime()
+        self.chasingTime = dificulty.getRayEnemyChasingTime()
+
+        self.damage = dificulty.getRayEnemyDamage()
 
         self.states = {"patrolling": self.patrol,
                        "chasing": self.chase,
@@ -29,8 +31,6 @@ class RayEnemy(pygame.sprite.Sprite, Entity):
     def update(self, dt, world, player,cameraOffset, enemies_group):
         self.rect.x -= cameraOffset[0]
         self.rect.y -= cameraOffset[1]
-
-        
 
         self.states[self.current_state](world, player, cameraOffset, enemies_group) # Llama al estado correspondiente (patrol, chase o attack)
 
@@ -56,7 +56,7 @@ class RayEnemy(pygame.sprite.Sprite, Entity):
             self.current_state = "attacking"
     
     def attack(self, world, player,cameraOffset,enemies_group):
-        player.hit() 
+        player.hit(self.damage) 
         self.current_state = "chasing"
     
     def drawBullets(self,screen):

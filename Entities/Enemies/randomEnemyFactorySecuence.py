@@ -12,10 +12,11 @@ import random
 from Constants.constants import *
 
 class RandomEnemyFactorySecuence(EnemyFactory):
-    def __init__(self,x,y, enemiesGroup) -> None:
+    def __init__(self,enemiesGroup, dificulty) -> None:
         self.enemiesGroup = enemiesGroup
+        self.dificulty = dificulty
 
-        self.spawnArea = Rect(x,y,500,500)
+        self.spawnArea = Rect(0,0,500,500)
         
         self.enemySpawnRate = 100
         self.maxEnemyCount = 15
@@ -26,18 +27,16 @@ class RandomEnemyFactorySecuence(EnemyFactory):
         spawnPointX = random.randrange(self.spawnArea.x, self.spawnArea.x + 500)
         spawnPointY = random.randrange(self.spawnArea.y, self.spawnArea.y + 500)
         
-        
-
         selectEnemy = random.randint(0, 3)
         if selectEnemy == 0:
-            en = BarnacleEnemy(spawnPointX, spawnPointY, True)
+            en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True)
             self.enemiesGroup.add(en)
         elif selectEnemy == 1:
-            en = BarnacleEnemy(spawnPointX, spawnPointY, True)
+            en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True)
             self.enemiesGroup.add(en)
         elif selectEnemy == 2:
-            en = BarnacleEnemy(spawnPointX, spawnPointY, True)
+            en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True)
             self.enemiesGroup.add(en)
         elif selectEnemy == 3:
-            en = BarnacleEnemy(spawnPointX, spawnPointY, True)
+            en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True)
             self.enemiesGroup.add(en)

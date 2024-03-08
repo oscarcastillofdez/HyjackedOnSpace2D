@@ -13,7 +13,7 @@ from Constants.constants import *
 
 from Entities.bullet import Bullet
 class FlyingEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y, onlyChase) -> None:
+    def __init__(self,x,y, dificulty, onlyChase) -> None:
         pygame.sprite.Sprite.__init__(self)
         # Otros objetos
         self.collisionHandler = CollisionHandler()
@@ -29,27 +29,28 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
 
         # Atributos de movimiento
         self.moved = 0
-        self.patrollingSpeed = 1
-        self.chasingSpeed = 4
+        self.patrollingSpeed = dificulty.getEnemyPatrollingSpeed()
+        self.chasingSpeed = dificulty.getEnemyChasingSpeed()
         self.velY = 0
         
         # Atributos de control de vision
         self.viewDirection = 1
-        self.maxViewDistance = 600 # Distancia directa hacia el jugador (diagonal)
-        self.minAtackDistance = 300 # Distancia directa hacia el jugador (diagonal)
+        self.maxViewDistance = dificulty.getFlyingEnemyMaxViewDistance() # Distancia directa hacia el jugador (diagonal)
+        self.minAtackDistance = dificulty.getEnemyMinAttackDistance() # Distancia directa hacia el jugador (diagonal)
         self.distanciaAlJugador = 0
         self.angle = 0
         self.lineStart = (self.rect.centerx, self.rect.centery)
 
         # Atributos de control de disparo
         self.disparoImg = pygame.image.load('Assets/Images/Entities/Player/lazer_24.png')
-        self.shootCooldown = 60
+        self.shootCooldown = dificulty.getEnemyShootCooldown()
         self.disparosList = []
-        self.velocidadBala = 10
+        self.velocidadBala = dificulty.getEnemyBulletSpeed()
+        self.bulletDamage = dificulty.getFlyingEnemyDamage()
 
         # Atributos de control de estados
         self.onlyChase = onlyChase
-        self.chaseTime = 120
+        self.chaseTime = dificulty.getEnemyChaseTime()
         self.states = {"patrolling": Patrol(self),
                        "chasing": Chase(self),
                        "attacking": Attack(self),
@@ -68,7 +69,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             
     def checkBulletCollision2(self, world, player, disparo):
         if disparo.bulletPosition().colliderect(player.position()):
-            if player.hit():
+            if player.hit(self.bulletDamage):
                 return True
             else:
                 #player.deflect(self.angle + 180, self.disparoImg, self.velocidadBala)

@@ -7,7 +7,7 @@ import math
 import random
 
 class MeleeEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y,onlyChase):
+    def __init__(self,x,y, dificulty, onlyChase):
         pygame.sprite.Sprite.__init__(self)
         # Otros objetos
         self.collisionHandler = CollisionHandler()
@@ -22,23 +22,21 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        
 
         # Atributos de movimiento
         self.moved = 0
         self.velY = 0
         self.jumpDelay = 0
-        self.patrollingSpeed = 1
-        self.chasingSpeed = random.randint(2, 4)
-
+        self.patrollingSpeed = dificulty.getEnemyPatrollingSpeed()
+        self.chasingSpeed = dificulty.getEnemyChasingSpeed()
 
         # Atributos de control de vision
         self.visionLine = pygame.Rect(self.rect.centerx, self.rect.y, 500, 50) 
         self.viewDirection = 1
-
-
+        
+        self.damage = dificulty.getMeleeEnemyDamage()
         # Atributos de control de estados
-        self.chaseTime = 120
+        self.chaseTime = dificulty.getEnemyChaseTime()
         self.onlyChase = onlyChase
         self.states = {"patrolling": self.patrol,
                        "chasing": self.chase,
@@ -48,7 +46,6 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         if onlyChase:
             self.current_state = "chasing"
 
-        
 
 
     def update(self, dt, world, player,cameraOffset,enemies_group):
@@ -161,7 +158,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         platformHitBoxList = world.getPlatformsList()
         destructibleHitBoxList = world.getDestructiblesList()
 
-        tileCollisions = self.collisionHandler.checkCollisions(self, tileHitBoxList, self.patrollingSpeed, dy)
+        tileCollisions = self.collisionHandler.checkCollisions(self, tileHitBoxList, self.moved, dy)
         platformCollisions = self.collisionHandler.checkCollisions(self, platformHitBoxList, self.patrollingSpeed, dy)
         destructibleCollisions = self.collisionHandler.checkCollisions(self, destructibleHitBoxList, self.patrollingSpeed, dy)
 
@@ -205,7 +202,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
             self.current_state = "attacking"
     
     def attack(self, world, player,cameraOffset,enemies_group):
-        player.hit()
+        player.hit(self.damage)
         self.current_state = "chasing"
 
     def die(self,world, player,cameraOffset,enemies_group):

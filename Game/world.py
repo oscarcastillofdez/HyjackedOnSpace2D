@@ -11,7 +11,7 @@ from Entities.pistol import Pistol
 
 
 class World():
-        def __init__(self, enemies, enemyFactory, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups):
+        def __init__(self, enemies, enemyFactory, enemyFactorySecuence, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups):
             self.tile_list = []
             self.platform_list = []
             self.background_list = []
@@ -24,6 +24,8 @@ class World():
             self.gunPickups = gunPickups
             self.interactiveGroup = interactives
             self.enemyFactory = enemyFactory
+            self.enemyFactorySecuence = enemyFactorySecuence
+
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
             pistola2 = pygame.image.load(PLAYER_PATH + '/pistol2.png')
             pistola3 = pygame.image.load(PLAYER_PATH + '/pistol3.png')
@@ -165,7 +167,7 @@ class World():
                     self.enemies.add(en)
 
                 elif tile == 6:
-                    computer = Computer(mapaX * tileWidth, mapaY * tileHeight, self.enemies)
+                    computer = Computer(mapaX * tileWidth, mapaY * tileHeight, self.enemyFactorySecuence)
                     self.interactiveGroup.add(computer)
                     print("A")
 

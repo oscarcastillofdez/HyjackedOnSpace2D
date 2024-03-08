@@ -7,7 +7,7 @@ import threading
 from math import floor
 
 class Computer(pygame.sprite.Sprite):
-    def __init__(self,x,y,enemies_group):
+    def __init__(self,x,y,enemy_factory):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(pygame.image.load(INTERACTIVES_PATH + 'ibm5150.png'),(64,64))
         self.rect = self.image.get_rect()
@@ -22,7 +22,7 @@ class Computer(pygame.sprite.Sprite):
         self.countdown = 60
         self.previousTime = 0
         self.timeElapsed = 0
-        self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(x,y,enemies_group)
+        self.randomEnemyFactorySecuence = enemy_factory
     
     def getCounter(self):
         return str(self.countdown)

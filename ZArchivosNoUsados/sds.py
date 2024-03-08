@@ -10,6 +10,7 @@ text = font.render(str(counter), True, (0, 128, 0))
 
 time_delay = 1000
 timer_event = pygame.USEREVENT+1
+pygame.time.set_timer(timer_event, time_delay)
 
 # main application loop
 run = True

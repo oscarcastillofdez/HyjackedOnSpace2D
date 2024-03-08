@@ -4,10 +4,9 @@ from Constants.constants import ENEMIES_PATH
 from Entities.Enemies.entity import Entity
 
 class BarnacleEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y, onlyChase) -> None:
+    def __init__(self,x,y, dificulty, onlyChase) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Barnacle.png'), (64,64))
-
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -19,6 +18,8 @@ class BarnacleEnemy(pygame.sprite.Sprite, Entity):
         self.tongueRect.y = self.rect.y
         self.tongueRect.width = 10
         self.tongueRect.height = 400
+
+        self.damage = dificulty.getBarcleEnemyDamage()
 
         self.states = {"patrolling": self.patrol,
                        "chasing": self.chase,
@@ -51,7 +52,7 @@ class BarnacleEnemy(pygame.sprite.Sprite, Entity):
 
     def attack(self, world, player,cameraOffset,enemies_group):
         player.setGrabbed(0,self.rect)
-        player.hit()
+        player.hit(self.damage)
     
     def drawBullets(self,screen):
         #pygame.draw.rect(screen, (255,255,255), self.verticalRect)

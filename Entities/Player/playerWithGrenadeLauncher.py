@@ -53,8 +53,8 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
         def getHp(self):
             return self.player.getHp()
         
-        def hit(self):
-            return self.player.hit()
+        def hit(self, damage):
+            return self.player.hit(damage)
             
         def getShieldHp(self):
             return self.player.getShieldHp()

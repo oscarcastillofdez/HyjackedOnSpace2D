@@ -1,4 +1,6 @@
 import pygame
+
+from Game.Scenes.dificultySelector import DificultySelector
 from .scene import Scene
 from .level1 import Level1
 
@@ -21,7 +23,8 @@ class Menu(Scene):
     
     def handle_action(self):
         if self.active_index == 0:
-            scene = Level1(self.director)
+            #scene = Level1(self.director)
+            scene = DificultySelector(self.director)
             self.director.stackScene(scene)
         elif self.active_index == 1:
             print("OPCIONES NO INCORPORADAS GENIO")
