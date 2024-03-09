@@ -44,7 +44,7 @@ class Menu(Scene):
                 joy = pygame.joystick.Joystick(event.device_index)
                 joysticks[joy.get_instance_id()] = joy
                 print(f"Joystick {joy.get_instance_id()} connected")
-                scene = PerifericSelector(self.director, joy.get_instance_id())
+                scene = PerifericSelector(self.director, joy.get_name())
                 self.director.changeScene(scene)
             if event.type == pygame.JOYDEVICEREMOVED:
                 del joysticks[event.instance_id]

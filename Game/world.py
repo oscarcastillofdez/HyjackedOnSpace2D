@@ -236,7 +236,9 @@ class World():
             background = pygame.image.load(LVLS_PATH + nivel + '/background.png')
 
             backgroundRect = background.get_rect()
-            #self.background_list.append((background, backgroundRect))
+
+            self.background_list.append((background, backgroundRect))
+
             self.loadMap(map, compression, columns, tileHeight, tileWidth, textures, mapWidth)
             self.loadPlatforms(platforms, compression, columns, tileHeight, tileWidth, textures, mapWidth)
             self.loadEntities(entities, compression, columns, tileHeight, tileWidth, mapWidth)

@@ -51,47 +51,79 @@ class Level1(Scene):
         self.destructibles_group.update(self.cameraOffset)
         self.gunPickups.update(self.cameraOffset)
 
+    def manageJoystick(self, joystick):
+        if joystick.get_axis(0) < -0.5:
+            self.player.move_left()
+        if joystick.get_axis(0) > 0.5:
+            self.player.move_right()
+        if joystick.get_button(2):
+            self.player.jump()
+        if joystick.get_axis(2) > 0.5 and joystick.get_axis(3) < -0.5:
+            self.player.shoot(45)
+        if joystick.get_axis(2) < -0.5 and joystick.get_axis(3) < -0.5:
+            self.player.shoot(135)
+        if joystick.get_axis(2) > 0.5 and joystick.get_axis(3) > 0.5:
+            self.player.shoot(315)
+        if joystick.get_axis(2) < -0.5 and joystick.get_axis(3) > 0.5:
+            self.player.shoot(225)
+        if joystick.get_axis(2) > 0.5:
+            self.player.shoot(0)
+        if joystick.get_axis(2) < -0.5:
+            self.player.shoot(180)
+        if joystick.get_axis(3) < -0.5:
+            self.player.shoot(90)
+        if joystick.get_axis(3) > 0.5:
+            self.player.shoot(270)
+        if joystick.get_button(3):
+            self.player.cover()
+        if joystick.get_button(4):
+            self.player.launchGrenade(135,self.grenades_group)
+        if joystick.get_button(5):
+            self.player.launchGrenade(45,self.grenades_group)
+        if joystick.get_button(0):
+            self.player.doInteract(self.interactiveGroup)
+        # if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
+        #     self.player.idle()
+        # if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+        #     self.player.stopShooting()
 
     def events(self, events, keys, joysticks):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
-            #if event.type == pygame.JOYBUTTONDOWN:
-                #if event.button == 2:
-                    #self.player.jump() # Lanzar evento K_SPACE
-                    #pygame.event.post()
-        for joystick in joysticks.values():
-            joystick.get_numhats()
 
-        if keys[pygame.K_a] or joystick.get_axis(0) < -0.5:
+        for joystick in joysticks.values():
+            self.manageJoystick(joystick)
+        
+        if keys[pygame.K_a]:
             self.player.move_left()
-        if keys[pygame.K_d] or joystick.get_axis(0) > 0.5:
+        if keys[pygame.K_d]:
             self.player.move_right()
-        if keys[pygame.K_SPACE] or joystick.get_button(2):
+        if keys[pygame.K_SPACE]:
             self.player.jump()
-        if (keys[pygame.K_RIGHT] and keys[pygame.K_UP]) or (joystick.get_axis(2) > 0.5 and joystick.get_axis(3) < -0.5):
+        if keys[pygame.K_RIGHT] and keys[pygame.K_UP]:
             self.player.shoot(45)
-        if (keys[pygame.K_LEFT] and keys[pygame.K_UP]) or (joystick.get_axis(2) < -0.5 and joystick.get_axis(3) < -0.5):
+        if keys[pygame.K_LEFT] and keys[pygame.K_UP]:
             self.player.shoot(135)
-        if (keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]) or (joystick.get_axis(2) > 0.5 and joystick.get_axis(3) > 0.5):
+        if keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
             self.player.shoot(315)
-        if (keys[pygame.K_LEFT] and keys[pygame.K_DOWN]) or (joystick.get_axis(2) < -0.5 and joystick.get_axis(3) > 0.5):
+        if keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
             self.player.shoot(225)
-        if keys[pygame.K_RIGHT] or joystick.get_axis(2) > 0.5:
+        if keys[pygame.K_RIGHT]:
             self.player.shoot(0)
-        if keys[pygame.K_LEFT] or joystick.get_axis(2) < -0.5:
+        if keys[pygame.K_LEFT]:
             self.player.shoot(180)
-        if keys[pygame.K_UP] or joystick.get_axis(3) < -0.5:
+        if keys[pygame.K_UP]:
             self.player.shoot(90)
-        if keys[pygame.K_DOWN] or joystick.get_axis(3) > 0.5:
+        if keys[pygame.K_DOWN]:
             self.player.shoot(270)
-        if keys[pygame.K_f] or joystick.get_button(3):
+        if keys[pygame.K_f]:
             self.player.cover()
-        if keys[pygame.K_g] or joystick.get_button(4):
+        if keys[pygame.K_g]:
             self.player.launchGrenade(135,self.grenades_group)
-        if keys[pygame.K_h] or joystick.get_button(5):
+        if keys[pygame.K_h]:
             self.player.launchGrenade(45,self.grenades_group)
-        if keys[pygame.K_e] or joystick.get_button(0):
+        if keys[pygame.K_e]:
             self.player.doInteract(self.interactiveGroup)
         if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
             self.player.idle()

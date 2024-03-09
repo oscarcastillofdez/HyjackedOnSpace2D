@@ -1,6 +1,7 @@
 {
-    "activeFile": "",
+    "activeFile": "datosNivelB.json",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
@@ -14,16 +15,26 @@
         },
         "datosNivelB.json": {
             "scale": 0.26446614583333333,
-            "selectedLayer": 0,
+            "selectedLayer": 3,
             "viewCenter": {
                 "x": 1922.7413716705234,
-                "y": 803.5054896361577
+                "y": 799.7242873319875
             }
+        },
+        "datosTexturas.json": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
     "openFiles": [
+        "datosNivelB.json",
+        "datosNivel.json",
+        "datosTexturas.json"
     ],
     "project": "Nivel1.tiled-project",
     "recentFiles": [
+        "datosTexturas.json",
+        "datosNivel.json",
+        "datosNivelB.json"
     ]
 }

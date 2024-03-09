@@ -1,3 +1,4 @@
+from collections import defaultdict
 import pygame
 from Constants.constants import *
 from .Scenes.splash import Splash
@@ -20,7 +21,9 @@ class Game():
         self.done = False
 
         # Lista de joysticks conectados
+        #self.joysticks = defaultdict(list)
         self.joysticks = {}
+
 
 
     

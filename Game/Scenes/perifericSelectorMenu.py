@@ -9,11 +9,11 @@ from .scene import Scene
 from .level1 import Level1
 
 class PerifericSelector(Scene):
-    def __init__(self,director, joystickId):
+    def __init__(self,director, joystickName):
         super(PerifericSelector, self).__init__(director)
         self.active_index = 0
-        self.text1 = "Se ha detectado un nuevo joystick." + str(joystickId)
-        self.text2 = "La configuración ha cambiado automaticamente."
+        self.text1 = "Se ha detectado un nuevo mando:"
+        self.text2 = joystickName
         self.text3 = "Pulsa cualquier boton para continuar."
 
         self.options = ["Ok"]
