@@ -63,7 +63,6 @@ class Level1(Scene):
         for joystick in joysticks.values():
             joystick.get_numhats()
 
-
         if keys[pygame.K_a] or joystick.get_axis(0) < -0.5:
             self.player.move_left()
         if keys[pygame.K_d] or joystick.get_axis(0) > 0.5:
@@ -86,13 +85,13 @@ class Level1(Scene):
             self.player.shoot(90)
         if keys[pygame.K_DOWN] or joystick.get_axis(3) > 0.5:
             self.player.shoot(270)
-        if keys[pygame.K_f]:
+        if keys[pygame.K_f] or joystick.get_button(3):
             self.player.cover()
-        if keys[pygame.K_g]:
+        if keys[pygame.K_g] or joystick.get_button(4):
             self.player.launchGrenade(135,self.grenades_group)
-        if keys[pygame.K_h]:
+        if keys[pygame.K_h] or joystick.get_button(5):
             self.player.launchGrenade(45,self.grenades_group)
-        if keys[pygame.K_e]:
+        if keys[pygame.K_e] or joystick.get_button(0):
             self.player.doInteract(self.interactiveGroup)
         if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
             self.player.idle()

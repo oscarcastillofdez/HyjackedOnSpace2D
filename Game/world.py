@@ -170,7 +170,6 @@ class World():
                 elif tile == 6:
                     computer = Computer(mapaX * tileWidth, mapaY * tileHeight, self.enemyFactorySecuence)
                     self.interactiveGroup.add(computer)
-                    print("A")
 
                 elif tile == 7:
                     textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth,tileHeight)
