@@ -52,32 +52,39 @@ class Level1(Scene):
         self.gunPickups.update(self.cameraOffset)
 
 
-    def events(self, events, keys):
+    def events(self, events, keys, joysticks):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
-    
-        if keys[pygame.K_a]:
+            #if event.type == pygame.JOYBUTTONDOWN:
+                #if event.button == 2:
+                    #self.player.jump() # Lanzar evento K_SPACE
+                    #pygame.event.post()
+        for joystick in joysticks.values():
+            joystick.get_numhats()
+
+
+        if keys[pygame.K_a] or joystick.get_axis(0) < -0.5:
             self.player.move_left()
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d] or joystick.get_axis(0) > 0.5:
             self.player.move_right()
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] or joystick.get_button(2):
             self.player.jump()
-        if keys[pygame.K_RIGHT] and keys[pygame.K_UP]:
+        if (keys[pygame.K_RIGHT] and keys[pygame.K_UP]) or (joystick.get_axis(2) > 0.5 and joystick.get_axis(3) < -0.5):
             self.player.shoot(45)
-        if keys[pygame.K_LEFT] and keys[pygame.K_UP]:
+        if (keys[pygame.K_LEFT] and keys[pygame.K_UP]) or (joystick.get_axis(2) < -0.5 and joystick.get_axis(3) < -0.5):
             self.player.shoot(135)
-        if keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
+        if (keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]) or (joystick.get_axis(2) > 0.5 and joystick.get_axis(3) > 0.5):
             self.player.shoot(315)
-        if keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
+        if (keys[pygame.K_LEFT] and keys[pygame.K_DOWN]) or (joystick.get_axis(2) < -0.5 and joystick.get_axis(3) > 0.5):
             self.player.shoot(225)
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT] or joystick.get_axis(2) > 0.5:
             self.player.shoot(0)
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] or joystick.get_axis(2) < -0.5:
             self.player.shoot(180)
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] or joystick.get_axis(3) < -0.5:
             self.player.shoot(90)
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_DOWN] or joystick.get_axis(3) > 0.5:
             self.player.shoot(270)
         if keys[pygame.K_f]:
             self.player.cover()

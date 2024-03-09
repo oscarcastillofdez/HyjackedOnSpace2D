@@ -12,7 +12,7 @@ class GameOver(Scene):
         instructions_center = (self.screen_rect.center[0], self.screen_rect.center[1] + 50)
         self.instructions_rect = self.instructions.get_rect(center=instructions_center)
 
-    def events(self, events, keys):
+    def events(self, events, keys, joysticks):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()

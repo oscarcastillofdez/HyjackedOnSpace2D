@@ -49,7 +49,7 @@ class Gameplay(Scene):
         self.gunPickups.update(self.cameraOffset)
 
 
-    def events(self, event, keys):
+    def events(self, event, keys, joysticks):
         if event.type == pygame.QUIT:
                 self.director.endApplication()
     
