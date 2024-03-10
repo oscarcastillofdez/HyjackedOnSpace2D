@@ -91,16 +91,14 @@ class Level1(Scene):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
-
+    
         for joystick in joysticks.values():
             self.manageJoystick(joystick)
         
-        if keys[pygame.K_a]:
-            self.player.move_left()
-        if keys[pygame.K_d]:
-            self.player.move_right()
-        if keys[pygame.K_SPACE]:
-            self.player.jump()
+        if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+            self.player.stopShooting()
+        if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
+            self.player.idle()
         if keys[pygame.K_RIGHT] and keys[pygame.K_UP]:
             self.player.shoot(45)
         if keys[pygame.K_LEFT] and keys[pygame.K_UP]:
@@ -117,6 +115,12 @@ class Level1(Scene):
             self.player.shoot(90)
         if keys[pygame.K_DOWN]:
             self.player.shoot(270)
+        if keys[pygame.K_a]:
+            self.player.move_left()
+        if keys[pygame.K_d]:
+            self.player.move_right()
+        if keys[pygame.K_SPACE]:
+            self.player.jump()
         if keys[pygame.K_f]:
             self.player.cover()
         if keys[pygame.K_g]:
@@ -125,10 +129,6 @@ class Level1(Scene):
             self.player.launchGrenade(45,self.grenades_group)
         if keys[pygame.K_e]:
             self.player.doInteract(self.interactiveGroup)
-        if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
-            self.player.idle()
-        if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
-            self.player.stopShooting()
 
     def update(self, dt):
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.cameraOffset)

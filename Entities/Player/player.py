@@ -20,6 +20,8 @@ class Player(PlayerAbstract):
                 "RUN": Run(False),
                 "JUMP": Jump(False)
             }
+            """"RUN": Run(False),
+                "JUMP": Jump(False)"""
             self.anim = 0
                 # State para empezar
             self.state_name = "IDLE"
@@ -58,13 +60,13 @@ class Player(PlayerAbstract):
             self.moving_left = True
             self.state.done = True
             self.state.left = True
-            self.state.next_state = self.state.posibleNexts["RUN_LEFT"]
+            self.state.next_state = self.state.posibleNexts["RUN"]
 
         def move_right(self):
             self.moving_right = True
             self.state.done = True
             self.state.left = False
-            self.state.next_state = self.state.posibleNexts["RUN_RIGHT"]
+            self.state.next_state = self.state.posibleNexts["RUN"]
 
         def jump(self):
             self.jumping = True
@@ -106,17 +108,7 @@ class Player(PlayerAbstract):
         
 
         def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
-            if self.anim > 6:
-                self.standing = self.state.next_sprite()
-                self.anim = 0
-            self.anim += 1
-
-            if self.state.done:
-                self.change_state()
-
             cameraOffsetX, cameraOffsetY = cameraOffset
-
-            
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
@@ -202,6 +194,8 @@ class Player(PlayerAbstract):
                     dy = platformHitBoxList[platformIndex].top - self.rect.bottom
                     self.velY = 0
                     self.inAir = False
+                    """ self.state.done = True
+                    self.state.next_state = self.state.posibleNexts["STOP-JUMP"]"""
             
             cameraOffsetX = 0
             cameraOffsetY = 0
@@ -241,10 +235,15 @@ class Player(PlayerAbstract):
             self.jumping = False
 
             if self.state.done:
-                self.change_state(self.state.next_state)
+                self.change_state()
 
             self.interact(interactuableGroup)
             self.hitCooldown -= 1
+
+            if self.anim > 6:
+                self.standing = self.state.next_sprite(self.direction)
+                self.anim = 0
+            self.anim += 1
             
             return (cameraOffsetX + shakingX, cameraOffsetY + shakingY)
 

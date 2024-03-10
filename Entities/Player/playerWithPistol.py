@@ -1,10 +1,8 @@
 import pygame
 from .player import Player
-from .PlayerStates.idle import Idle
-from .PlayerStates.run import Run
-from .PlayerStates.run_shooting import RunShootingRight, RunShootingLeft
-from .PlayerStates.jump import Jump
-from .PlayerStates.shoot import Shoot
+from .PlayerStates.idle import Idle, IdleShoot
+from .PlayerStates.run import Run, RunShoot, RunShootDiagUp, RunShootDiagDown, RunShootDown, RunShootUp
+from .PlayerStates.jump import Jump, JumpShoot
 from .playerAbstract import PlayerAbstract
 from Entities.bullet import Bullet
 from Constants.constants import *
@@ -22,12 +20,29 @@ class PlayerWithPistol(PlayerAbstract):
 
         # Imagenes
         self.states = {
-            "IDLE": Idle(False),
-            "RUNR": Run(True),
-            "RUNL": Run(True),
-            "RUNSHOOTR": RunShootingRight(),
-            "RUNSHOOTL": RunShootingLeft()
+            "IDLE": Idle(True),
+            "RUN": Run(True),
+            "JUMP": Jump(True),
+            "IDLE-SHOOT": IdleShoot(),
+            "JUMP-SHOOT": JumpShoot(),
+            "RUN-SHOOT": RunShoot()
         }
+        """
+            "IDLE": Idle(False),
+            "RUN": Run(True),
+            "RUN-SHOOT": RunShoot(),
+            "RUN-SHOOT-DIAG-UP": RunShootDiagUp(),
+            "RUN-SHOOT-DIAG-DOWN": RunShootDiagDown(),
+            "RUN-SHOOT-DOWN": RunShootDown(),
+            "RUN-SHOOT-UP" : RunShootUp(),
+            "IDLE-SHOOT": IdleShoot(),
+            "IDLE-SHOOT-UP": IdleShoot(),
+            "IDLE-SHOOT-DOWN": IdleShoot(),
+            "IDLE-SHOOT-DIAG-UP": IdleShoot(),
+            "IDLE-SHOOT-DIAG-DOWN": IdleShoot(),
+            "JUMP-SHOOT": JumpShoot(),
+            "JUMP": Jump(True)
+        """
 
         self.anim = 0
         self.state_name = "IDLE"
@@ -36,13 +51,19 @@ class PlayerWithPistol(PlayerAbstract):
         self.deadImage = pygame.transform.rotate(self.standing,90)
         self.hitImage = pygame.transform.rotate(self.standing,90)
     
+
+    def changeStates(self):
+        self.player.states= self.states
+
     def idle(self):
-        self.state.done = True
-        self.state.next_state = self.state.posibleNexts["IDLE"]
+        self.player.state.done = True
+        self.player.state.next_state = self.player.state.posibleNexts["IDLE"]
 
     def stopShooting(self):
-        self.state.done = True
-        self.state.next_state = self.state.posibleNexts["STOP-SHOOT"]
+        self.player.direction == None
+        self.player.state.done = True
+        self.player.state.next_state = self.player.state.posibleNexts["STOP-SHOOT"]
+        pass
 
     def move_left(self):
         self.player.move_left()
@@ -75,8 +96,10 @@ class PlayerWithPistol(PlayerAbstract):
         self.player.deflect(direction,bulletImage,velocidadBala)
 
     def shoot(self, direction):
-        self.state.done = True
-        self.state.next_state = "RUNSHOOTR"
+        self.player.direction = direction
+        self.player.state.done = True
+        self.player.state.next_state = self.player.state.posibleNexts["SHOOT"]
+
         if self.shootCooldown <= 0:
             self.shootCooldown = self.shootCooldownConst
             disparo = Bullet(self.disparoImg, direction, self.bulletSpeed, self.player.position().x, self.player.position().y)
@@ -86,7 +109,7 @@ class PlayerWithPistol(PlayerAbstract):
     def draw(self, screen):
         self.player.draw(screen)
 
-        print(self.disparosList)
+        #print(self.disparosList)
         for disparo in self.disparosList:
             disparo.draw(screen)
 

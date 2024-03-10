@@ -16,7 +16,7 @@ class pState(object):
     def get_initial(self):
         return self.animation[0]
     
-    def next_sprite(self):
+    def next_sprite(self, direction):
         self.sprite_index += 1
         if self.sprite_index == len(self.animation):
             self.sprite_index = 0

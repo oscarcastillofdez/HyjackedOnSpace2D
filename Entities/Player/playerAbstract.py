@@ -41,6 +41,9 @@ class PlayerAbstract():
         self.shootGrenadeCooldownConst = dificulty.getPlayerShootGrenadeCooldown()
         self.grenadeDamage = dificulty.getPlayerGrenadeDamage()
         
+        self.direction = 0
+    
+
     def change_state(self):
         pass
 
