@@ -3,9 +3,9 @@ from Constants.constants import *
 from Game.Scenes.scene import Scene
 from Entities.Player.player import Player
 import Game.Scenes.game_over as game_over
-import Game.Scenes.level2 as lvl2
-#import Game.Scenes.level3 as lvl3
-#import Game.Scenes.level4 as lvl4
+import Game.Scenes.level1 as lvl1
+import Game.Scenes.level3 as lvl3
+import Game.Scenes.level4 as lvl4
 from Game.world import World
 from UI.ui import Ui
 from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
@@ -18,9 +18,9 @@ from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
 
 
-class Level1(Scene):
+class Level2(Scene):
     def __init__(self, director, offset):
-        super(Level1, self).__init__(director)
+        super(Level2, self).__init__(director)
         self.cameraOffset = offset
         
         self.randomEnemyFactory = RandomEnemyFactory()
@@ -36,7 +36,7 @@ class Level1(Scene):
         self.gunPickups = pygame.sprite.Group()
         self.triggerGroup = pygame.sprite.Group()
 
-        self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup)
+        self.world = World("Lvl2", self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup)
         self.world.inicialOffset(self.cameraOffset)
 
         self.uiText = UIText()
@@ -54,6 +54,7 @@ class Level1(Scene):
         self.destructibles_group.update(self.cameraOffset)
         self.gunPickups.update(self.cameraOffset)
         self.triggerGroup.update(self.cameraOffset)
+                
 
 
     def events(self, events, keys):
@@ -118,8 +119,14 @@ class Level1(Scene):
         for trigger in self.triggerGroup:
             text = trigger.update(self.cameraOffset)
             if text != "":
-                if text == "lvl2":
-                    scene = lvl2.Level2(self.director, LVL1_TO_LVL2)
+                if text == "lvl1":
+                    scene = lvl1.Level1(self.director, LVL2_TO_LVL1)
+                    self.director.changeScene(scene)
+                if text == "lvl3":
+                    scene = lvl3.Level3(self.director, LVL2_TO_LVL3)
+                    self.director.changeScene(scene)
+                if text == "lvl4":
+                    scene = lvl4.Level4(self.director, LVL2_TO_LVL4)
                     self.director.changeScene(scene)
 
         #if self.player.checkInteractuable(self.world):

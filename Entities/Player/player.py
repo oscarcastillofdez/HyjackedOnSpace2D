@@ -101,12 +101,17 @@ class Player(PlayerAbstract):
             elif self.interactuableText != "":
                 self.interactuableText = ""
                 self.notify()
+        
+        def interactTrigger(self, triggerGroup):
+            interactsWith = pygame.sprite.spritecollideany(self, triggerGroup)
+            if interactsWith:
+                interactsWith.interact()
             
         def getInteractuableText(self):
             return self.interactuableText
         
 
-        def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
+        def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
             if self.anim > 6:
                 self.standing = self.state.next_sprite()
                 self.anim = 0
@@ -118,6 +123,7 @@ class Player(PlayerAbstract):
             cameraOffsetX, cameraOffsetY = cameraOffset
 
             self.interact(interactuableGroup)
+            self.interactTrigger(triggerGroup)
             self.hitCooldown -= 1
 
             keys = pygame.key.get_pressed()

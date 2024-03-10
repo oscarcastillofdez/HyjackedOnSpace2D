@@ -1,0 +1,55 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "lvlData.json",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "lvlData.json": {
+            "scale": 0.33814062500000003,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1598.4473915253452,
+                "y": 959.6599048103137
+            }
+        },
+        "lvlData2.json": {
+            "scale": 0.33814062500000003,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1601.4047410008777,
+                "y": 962.617254285846
+            }
+        },
+        "lvlData3.json": {
+            "scale": 0.25,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 4794,
+                "y": 3194
+            }
+        },
+        "texturas.json": {
+            "scaleInDock": 1
+        }
+    },
+    "last.imagePath": "/home/oscarcastillo/Curso23-24/2ndCuatri/CIIE/Assets/Images/World/Lvl3",
+    "map.height": 60,
+    "map.lastUsedFormat": "json",
+    "map.width": 100,
+    "openFiles": [
+        "lvlData3.json",
+        "lvlData.json",
+        "lvlData2.json"
+    ],
+    "project": "nivel3.tiled-project",
+    "recentFiles": [
+        "lvlData3.json",
+        "lvlData2.json",
+        "lvlData.json"
+    ],
+    "tileset.lastUsedFormat": "json"
+}

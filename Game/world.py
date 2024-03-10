@@ -8,29 +8,30 @@ from Constants.constants import *
 from Entities.health import Health
 from Entities.grenadeLauncher import GrenadeLauncher
 from Entities.pistol import Pistol
+import Interactives.trigger as Trigger
 
 
 class World():
-        def __init__(self, enemies, enemyFactory, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups):
+        def __init__(self, lvl, enemies, enemyFactory, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups,triggerGroup):
             self.tile_list = []
             self.platform_list = []
             self.background_list = []
             self.destructibleTile_list = []
             self.gun_list = []
-            self.interactuableList = []
             self.enemies = enemies
             self.healthPickUps = healthPickUps
             self.destructibles_group = destructibles_group
             self.gunPickups = gunPickups
             self.interactiveGroup = interactives
             self.enemyFactory = enemyFactory
+            self.triggerGroup = triggerGroup
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
             pistola2 = pygame.image.load(PLAYER_PATH + '/pistol2.png')
             pistola3 = pygame.image.load(PLAYER_PATH + '/pistol3.png')
             ordenador = pygame.image.load(INTERACTIVES_PATH + '/ibm5150.png')
 
             self.shieldImage = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/plasma_shield.png'), (45,45))
-            self.cargarNivel("Lvl1")
+            self.cargarNivel(lvl)
 
 
         def inicialOffset(self, cameraOffset):
@@ -167,7 +168,6 @@ class World():
                 elif tile == 6:
                     computer = Computer(mapaX * tileWidth, mapaY * tileHeight, self.enemies)
                     self.interactiveGroup.add(computer)
-                    print("A")
 
                 elif tile == 7:
                     textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth,tileHeight)
@@ -177,10 +177,34 @@ class World():
                     self.destructibles_group.add(en)
 
                 elif tile == 40:
-                    textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth*6, tileHeight)
-                    texture = pygame.image.load("Assets/Images/Desorden/pruebasTrigger.png")
-                    self.background_list.append((texture, textureRect))
+                    trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth*6, tileHeight, "lvl1")
+                    self.triggerGroup.add(trigger)
+                elif tile == 41: 
+                    trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth, tileHeight*4, "lvl1")
+                    self.triggerGroup.add(trigger)
+                elif tile == 42:
+                    trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth*6, tileHeight, "lvl2")
+                    self.triggerGroup.add(trigger)
+                elif tile == 43: 
+                    trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth, tileHeight*4, "lvl2")
+                    self.triggerGroup.add(trigger)
+                elif tile == 44:
+                    trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth*6, tileHeight, "lvl3")
+                    self.triggerGroup.add(trigger)
+                elif tile == 45: 
+                    trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth, tileHeight*4, "lvl3")
+                    self.triggerGroup.add(trigger)
+                elif tile == 46:
+                    trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth*6, tileHeight, "lvl4")
+                    self.triggerGroup.add(trigger)
+                elif tile == 47: 
+                    trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth, tileHeight*4, "lvl4")
+                    self.triggerGroup.add(trigger)
+                elif tile == 48:
+                    trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth, tileHeight*4, "lvl2Vent")
+                    self.triggerGroup.add(trigger)
                     
+
 
                 # Se actualiza la posicion del mapa
                 mapaX += 1
@@ -208,7 +232,7 @@ class World():
 
             # Cargar el json con los datos del nivel
 
-            with open(LVLS_PATH + nivel + '/datosNivelB.json', 'r') as file:
+            with open(LVLS_PATH + nivel + '/lvlData.json', 'r') as file:
                 nivelData = file.read()
             nivelData = json.loads(nivelData)
             mapaNivel1 = nivelData['layers'][1]
