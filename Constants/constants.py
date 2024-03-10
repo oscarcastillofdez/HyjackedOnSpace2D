@@ -17,6 +17,7 @@ PLAYER_PATH = "Assets/Images/Entities/Player/"
 PLAYER_SPRITES_PATH = PLAYER_PATH + "PlayerSprites/"
 INTERACTIVES_PATH = "Assets/Images/Interactives/"
 ENEMIES_PATH = "Assets/Images/Entities/Enemies/"
+FLYING_ENEMY_PATH = 'Assets/Images/Entities/Enemies/aliens.png'
 UI_PATH = "Assets/Images/Ui/"
 ANIMATIONS_PATH = "Assets/Images/Animations/"
 

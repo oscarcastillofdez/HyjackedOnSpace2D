@@ -24,8 +24,6 @@ class Game():
         #self.joysticks = defaultdict(list)
         self.joysticks = {}
 
-
-
     
     def loop(self, scene):
         self.escena_done = False

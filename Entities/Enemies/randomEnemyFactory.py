@@ -8,8 +8,11 @@ class RandomEnemyFactory(EnemyFactory):
     def __init__(self) -> None:
         pass
     
-    def createEnemy(self, columna, fila):
-        return FlyingEnemy(columna, fila, False)
+    def createEnemy(self, columna, fila, dificulty):
+        return FlyingEnemy(columna, fila, dificulty, False)
+    
+    def createFlyingEnemy(self, columna, fila, dificulty):
+        return FlyingEnemy(columna, fila, dificulty, False)
     
     def createEnemy2(self, columna, fila, hitBox):
         return WallDestructible(columna, fila, hitBox)

@@ -114,10 +114,8 @@ class Player(PlayerAbstract):
             
         def getInteractuableText(self):
             return self.interactuableText
-        
 
         def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
-
             cameraOffsetX, cameraOffsetY = cameraOffset
 
             self.interact(interactuableGroup)
@@ -161,7 +159,6 @@ class Player(PlayerAbstract):
             if self.grabbed:
                 dx = 0
                 dy = -self.dragSpeed
-                print(dy)
 
             # Se calculan las colisiones en ambos ejes
             tileHitBoxList = world.getTilesList()
@@ -174,7 +171,7 @@ class Player(PlayerAbstract):
             tileIndex = auxRect.collidelist(tileHitBoxList)
             tileIndex2 = auxRect2.collidelist(tileHitBoxList)
 
-            platformIndex = auxRect.collidelist(platformHitBoxList)
+            platformIndex = auxRect2.collidelist(platformHitBoxList)
 
             destructibleIndex = auxRect.collidelist(destructibleHitBoxList)
             destructibleIndex2 = auxRect2.collidelist(destructibleHitBoxList)

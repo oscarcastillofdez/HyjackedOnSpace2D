@@ -10,8 +10,9 @@ from Entities.Enemies.EnemyStates.die import Die
 
 from Game.spritesheet import Spritesheet
 from Constants.constants import *
-
 from Entities.bullet import Bullet
+
+
 class FlyingEnemy(pygame.sprite.Sprite, Entity):
     def __init__(self,x,y, dificulty, onlyChase) -> None:
         pygame.sprite.Sprite.__init__(self)
@@ -20,10 +21,9 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         
         # Atributos de posicion e imagen
         #self.sprites = Spritesheet('Assets/Images/Entities/32bitsspritesheet.png',(120,120)).get_animation(0,0,223,223,30)
-        self.image = pygame.image.load('Assets/Images/Entities/Player/lazer_24.png')
         self.index = 0
         self.time = 0
-        self.rect = self.image.get_rect()
+        self.rect = pygame.Rect(0,0,120,120)
         self.rect.x = x
         self.rect.y = y - 100
 
@@ -54,10 +54,11 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         # Atributos de control de estados
         self.onlyChase = onlyChase
         self.chaseTime = dificulty.getEnemyChaseTime()
-        self.states = {"patrolling": Patrol(self),
-                       "chasing": Chase(self),
-                       "attacking": Attack(self),
-                       "die": Die(self)}
+
+        self.states = {"patrolling": Patrol(FLYING_ENEMY_PATH, self),
+                       "chasing": Chase(FLYING_ENEMY_PATH, self),
+                       "attacking": Attack(FLYING_ENEMY_PATH, self),
+                       "die": Die(FLYING_ENEMY_PATH, self)}
 
         # self.states = {"patrolling": self.patrol,
         #                "chasing": self.chase,
@@ -66,9 +67,12 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         
         self.state_name = "patrolling"
         self.current_state = self.states["patrolling"]
+
         if onlyChase:
             self.state_name = "chasing"
             self.current_state = self.states["chasing"]
+        
+        self.image = self.current_state.get_initial()
             
     def checkBulletCollision2(self, world, player, disparo):
         if disparo.bulletPosition().colliderect(player.position()):
@@ -90,6 +94,10 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
 
                 
     def update(self, dt, world, player, cameraOffset,enemies_group):
+        if self.viewDirection > 0:
+            self.current_state.left = False
+        else:
+            self.current_state.left = True
         self.time += 1
         if self.time > 6:
             self.time = 0
@@ -217,8 +225,13 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
     def change_state(self):
         self.state_name = self.current_state.next_state
         self.current_state.done = False
+        left = self.current_state.left
 
         self.current_state = self.states[self.state_name]
+        if left:
+            self.current_state.left = True
+        else:
+            self.current_state.left = False
 
     # Lógica para determinar si el jugador está dentro del rango de visión
     def player_in_sight(self, world, player):
