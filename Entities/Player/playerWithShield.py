@@ -12,7 +12,7 @@ from Entities.bullet import Bullet
 
 class PlayerWithShield(PlayerAbstract):
         def __init__(self, player, ui):
-            super().__init__(player.position().x, player.position().y)
+            super().__init__(player.position().x, player.position().y,player.getDificulty())
             self.player = player
 
             # Imagenes
@@ -53,9 +53,9 @@ class PlayerWithShield(PlayerAbstract):
         def getHp(self):
             return self.player.getHp()
         
-        def hit(self):
+        def hit(self, damage):
             if not self.applyShield or self.shield.getShieldHp() <= 0:
-                return self.player.hit()
+                return self.player.hit(damage)
             else:
                 self.shield.deflect(self.shieldHitImage)
                 
@@ -110,8 +110,8 @@ class PlayerWithShield(PlayerAbstract):
         def cover(self):
             self.applyShield = True
 
-        def heal(self):
-            self.player.heal()
+        def heal(self,healingPower):
+            self.player.heal(healingPower)
             
         def launchGrenade(self, direction, grenades_group):
             self.player.launchGrenade(direction, grenades_group)
@@ -121,3 +121,9 @@ class PlayerWithShield(PlayerAbstract):
         
         def doInteract(self, interactuableGroup):
             self.player.doInteract(interactuableGroup)
+        
+        def setGrabbed(self, dy,barnacleRect):
+            self.player.setGrabbed(dy,barnacleRect)
+
+        def unSetGrabbed(self):
+            self.player.unSetGrabbed()

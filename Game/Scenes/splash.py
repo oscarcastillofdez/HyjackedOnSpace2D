@@ -21,7 +21,7 @@ class Splash(Scene):
 
     def update(self, dt):
         self.time_active += dt
-        if self.time_active >= 1000:
+        if self.time_active >= 0:
             scene = Menu(self.director)
             self.director.changeScene(scene)
     

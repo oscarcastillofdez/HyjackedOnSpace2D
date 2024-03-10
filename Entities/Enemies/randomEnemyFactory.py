@@ -1,7 +1,7 @@
 from .enemyFactory import EnemyFactory
 from .flyingEnemy import FlyingEnemy
 from .wallDestructible import WallDestructible
-from .enemy import Enemy
+from .meleeEnemy import MeleeEnemy
 
 
 class RandomEnemyFactory(EnemyFactory):

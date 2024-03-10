@@ -4,8 +4,9 @@ from Constants.constants import *
 from MovementAndCollisions.aux_functions import *
 
 class PlayerAbstract():
-    def __init__(self,x,y):
+    def __init__(self,x,y, dificulty):
         # Posicion
+        self.dificulty = dificulty
         self.rect = pygame.Rect(0,0,50,94)
         self.rect.x = x
         self.rect.y = y
@@ -22,17 +23,27 @@ class PlayerAbstract():
         self.jumping = False
         self.hold_jump = False
         self.pressed_jump = 0
+        self.grabbed = False
+        self.dragSpeed = 0
         
         #Vida
         self.maxHealthPoints = 3
         self.healthPoints = self.maxHealthPoints
-        self.hitCooldown = 60
+        self.hitCooldown = dificulty.getPlayerHittedCooldown()
         
         #Armas
         self.arma = None
         self.uiElementsList = []
         self.interactuableText = ""
+        self.bulletDamage = dificulty.getPlayerBulletDamage()
+        self.bulletSpeed = dificulty.getPlayerBulletSpeed()
+        self.shootCooldownConst = dificulty.getPlayerShootCooldown()
+        self.shootGrenadeCooldownConst = dificulty.getPlayerShootGrenadeCooldown()
+        self.grenadeDamage = dificulty.getPlayerGrenadeDamage()
+        
+        self.direction = 0
     
+
     def change_state(self):
         pass
 
@@ -84,3 +95,10 @@ class PlayerAbstract():
     
     def heal(self):
         pass
+    
+    def getDificulty(self):
+        return self.dificulty
+    
+
+
+    

@@ -1,3 +1,4 @@
+from collections import defaultdict
 import pygame
 from Constants.constants import *
 from .Scenes.splash import Splash
@@ -18,6 +19,13 @@ class Game():
 
         # Variable para salir del juego
         self.done = False
+
+        # Lista de joysticks conectados
+        #self.joysticks = defaultdict(list)
+        self.joysticks = {}
+
+
+
     
     def loop(self, scene):
         self.escena_done = False
@@ -29,8 +37,8 @@ class Game():
             dt = self.clock.tick(self.fps)
 
             # Eventos
-            scene.events(pygame.event.get(), pygame.key.get_pressed())
-
+            scene.events(pygame.event.get(), pygame.key.get_pressed(), self.joysticks)
+            
             # Actualizamos escena
             scene.update(dt)
 

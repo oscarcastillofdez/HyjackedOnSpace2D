@@ -7,5 +7,5 @@ class Attack(pState):
         self.animation = Spritesheet('Assets/Images/Entities/aliens.png',(120,120)).get_animation(0,48,24,24,4,(80,80,80))
         self.entity = entity
     
-    def update(self, dt, world, player, cameraOffset):
-        self.entity.attack(world, player, cameraOffset)
+    def update(self, dt, world, player, cameraOffset, enemies_group):
+        self.entity.attack(world, player, cameraOffset,enemies_group)

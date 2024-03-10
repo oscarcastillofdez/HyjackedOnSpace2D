@@ -1,70 +1,78 @@
 import pygame
+
+from Game.collisionHandler import CollisionHandler
 from .entity import Entity
 import math
 from Entities.Enemies.EnemyStates.patrol import Patrol
 from Entities.Enemies.EnemyStates.chase import Chase
 from Entities.Enemies.EnemyStates.attack import Attack
+from Entities.Enemies.EnemyStates.die import Die
+
 from Game.spritesheet import Spritesheet
 from Constants.constants import *
 
 from Entities.bullet import Bullet
 class FlyingEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y, onlyChase) -> None:
+    def __init__(self,x,y, dificulty, onlyChase) -> None:
         pygame.sprite.Sprite.__init__(self)
-        self.onlyChase = onlyChase
-        self.time = 0
+        # Otros objetos
+        self.collisionHandler = CollisionHandler()
+        
+        # Atributos de posicion e imagen
         #self.sprites = Spritesheet('Assets/Images/Entities/32bitsspritesheet.png',(120,120)).get_animation(0,0,223,223,30)
         self.image = pygame.image.load('Assets/Images/Entities/Player/lazer_24.png')
         self.index = 0
-
+        self.time = 0
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y - 100
-        self.patrollingchasingSpeed = 1
-        #self.image_orig = pygame.transform.scale(pygame.image.load('Assets/Images/Desorden/pj.png'), (120, 120))
-        self.moved = 0
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
-        self.inAir = True
-        self.velY = 0
-        self.chasingSpeed = 4
-        self.viewDirection = 1
-        self.chaseTime = 120
-        self.maxViewDistance = 600 # Distancia directa hacia el jugador (diagonal)
-        self.minAtackDistance = 300 # Distancia directa hacia el jugador (diagonal)
-        self.distanciaAlJugador = 0
 
-        self.shootCooldown = 60
-        self.disparoImg = pygame.image.load('Assets/Images/Entities/Player/lazer_24.png')
-        self.disparosList = []
+        # Atributos de movimiento
+        self.moved = 0
+        self.patrollingSpeed = dificulty.getEnemyPatrollingSpeed()
+        self.chasingSpeed = dificulty.getEnemyChasingSpeed()
+        self.velY = 0
+        
+        # Atributos de control de vision
+        self.viewDirection = 1
+        self.maxViewDistance = dificulty.getFlyingEnemyMaxViewDistance() # Distancia directa hacia el jugador (diagonal)
+        self.minAtackDistance = dificulty.getEnemyMinAttackDistance() # Distancia directa hacia el jugador (diagonal)
+        self.distanciaAlJugador = 0
         self.angle = 0
-        self.velocidadBala = 10
-        
-        # Maxima y minima altura que puede volar respecto a su posicion rect.y de respawn
-        self.maxFlyingHeight = 10
-        self.minFlyingHeight = -5
-        
-        # Define los estados posibles
+        self.lineStart = (self.rect.centerx, self.rect.centery)
+
+        # Atributos de control de disparo
+        self.disparoImg = pygame.image.load('Assets/Images/Entities/Player/lazer_24.png')
+        self.shootCooldown = dificulty.getEnemyShootCooldown()
+        self.disparosList = []
+        self.velocidadBala = dificulty.getEnemyBulletSpeed()
+        self.bulletDamage = dificulty.getFlyingEnemyDamage()
+
+        # Atributos de vida
+        self.health = dificulty.getFlyingEnemyHealth()
+
+        # Atributos de control de estados
+        self.onlyChase = onlyChase
+        self.chaseTime = dificulty.getEnemyChaseTime()
         self.states = {"patrolling": Patrol(self),
                        "chasing": Chase(self),
-                       "attacking": Attack(self)}
+                       "attacking": Attack(self),
+                       "die": Die(self)}
+
+        # self.states = {"patrolling": self.patrol,
+        #                "chasing": self.chase,
+        #                "attacking": self.attack,
+        #                "die": self.die}
         
         self.state_name = "patrolling"
-        # Inicializa el estado actual
         self.current_state = self.states["patrolling"]
-
         if onlyChase:
             self.state_name = "chasing"
-            
             self.current_state = self.states["chasing"]
             
-
-        self.lineStart = (self.rect.centerx, self.rect.centery)
-        #self.disparoImg = pygame.image.load('Assets/img/lazer_1.png')
-
     def checkBulletCollision2(self, world, player, disparo):
         if disparo.bulletPosition().colliderect(player.position()):
-            if player.hit():
+            if player.hit(self.bulletDamage):
                 return True
             else:
                 #player.deflect(self.angle + 180, self.disparoImg, self.velocidadBala)
@@ -81,7 +89,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             return True
 
                 
-    def update(self, dt, world, player, cameraOffset):
+    def update(self, dt, world, player, cameraOffset,enemies_group):
         self.time += 1
         if self.time > 6:
             self.time = 0
@@ -96,20 +104,19 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
                 self.disparosList.remove(disparo)
                 del disparo
 
-        self.states[self.state_name].update(dt, world, player, cameraOffset)
+        self.states[self.state_name].update(dt, world, player, cameraOffset,enemies_group)
         self.player_in_sight(world, player)
         if self.current_state.done:
             self.change_state()
 
-    def patrol(self, world, player, cameraOffset):
+    def patrol(self, world, player, cameraOffset,enemies_group):
         # Comportamiento cuando está patrullando
         dy = 0
 
-        self.inAir = True
         self.moved += 1
         if self.moved >= 400:
             self.viewDirection = -self.viewDirection
-            self.patrollingchasingSpeed = -self.patrollingchasingSpeed
+            self.patrollingSpeed = -self.patrollingSpeed
             self.moved = 0
         
         # Se calculan las colisiones en ambos ejes
@@ -117,49 +124,39 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         platformHitBoxList = world.getPlatformsList()
         destructibleHitBoxList = world.getDestructiblesList()
 
-        auxRect = pygame.Rect(self.rect.x + self.patrollingchasingSpeed, self.rect.y, self.width, self.height)
-        auxRect2 = pygame.Rect(self.rect.x, self.rect.y + dy, self.width, self.height)
-        
-        tileIndex = auxRect.collidelist(tileHitBoxList)
-        tileIndex2 = auxRect2.collidelist(tileHitBoxList)
+        tileCollisions = self.collisionHandler.checkCollisions(self, tileHitBoxList, self.patrollingSpeed, dy)
+        platformCollisions = self.collisionHandler.checkCollisions(self, platformHitBoxList, self.patrollingSpeed, dy)
+        destructibleCollisions = self.collisionHandler.checkCollisions(self, destructibleHitBoxList, self.patrollingSpeed, dy)
 
-        platformIndex = auxRect.collidelist(platformHitBoxList)
-
-        destructibleIndex = auxRect.collidelist(destructibleHitBoxList)
-        destructibleIndex2 = auxRect2.collidelist(destructibleHitBoxList)
-
-        if tileIndex >= 0 or destructibleIndex >= 0:
-            self.patrollingchasingSpeed = -self.patrollingchasingSpeed
+        if tileCollisions[0] >= 0 or destructibleCollisions[0] >= 0:
+            self.patrollingSpeed = -self.patrollingSpeed
             self.viewDirection = -self.viewDirection
 
-        if tileIndex2 >= 0:
+        if tileCollisions[1] >= 0:
             if self.velY < 0: #Saltando
-                dy = tileHitBoxList[tileIndex2].bottom - self.rect.top
+                dy = tileHitBoxList[tileCollisions[1]].bottom - self.rect.top
                 self.velY = 0
             elif self.velY >= 0: #Cayendo
-                dy = tileHitBoxList[tileIndex2].top - self.rect.bottom
+                dy = tileHitBoxList[tileCollisions[1]].top - self.rect.bottom
                 self.velY = 0
-                self.inAir = False
-        if destructibleIndex2 >= 0:
+        if destructibleCollisions[1] >= 0:
             if self.velY < 0: #Saltando
-                dy = destructibleHitBoxList[destructibleIndex2].bottom - self.rect.top
+                dy = destructibleHitBoxList[destructibleCollisions[1]].bottom - self.rect.top
                 self.velY = 0
             elif self.velY >= 0: #Cayendo
-                dy = destructibleHitBoxList[destructibleIndex2].top - self.rect.bottom
+                dy = destructibleHitBoxList[destructibleCollisions[1]].top - self.rect.bottom
                 self.velY = 0
-                self.inAir = False
 
-        if platformHitBoxList[platformIndex].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-            if self.velY >= 0 and (self.rect.bottom - platformHitBoxList[platformIndex].top) < 10: #Cayendo
-                dy = platformHitBoxList[platformIndex].top - self.rect.bottom
+        if platformHitBoxList[platformCollisions[0]].colliderect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height):
+            if self.velY >= 0 and (self.rect.bottom - platformHitBoxList[platformCollisions[0]].top) < 10: #Cayendo
+                dy = platformHitBoxList[platformCollisions[0]].top - self.rect.bottom
                 self.velY = 0
-                self.inAir = False
         
-        self.rect.x += self.patrollingchasingSpeed - cameraOffset[0]
+        self.rect.x += self.patrollingSpeed - cameraOffset[0]
         self.rect.y += dy - cameraOffset[1]
 
     
-    def chase(self, world, player,cameraOffset):
+    def chase(self, world, player,cameraOffset,enemies_group):
         self.chaseTime -= 1
 
         if self.chaseTime <= 0 and not self.onlyChase:
@@ -179,7 +176,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         tileHitBoxList = world.getTilesList()
         destructibleHitBoxList = world.getDestructiblesList()
 
-        auxRect = pygame.Rect(self.rect.x - self.moved, self.rect.y, self.width, self.height)
+        auxRect = pygame.Rect(self.rect.x - self.moved, self.rect.y, self.rect.width, self.rect.height)
         
         tileIndex = auxRect.collidelist(tileHitBoxList)
 
@@ -196,10 +193,9 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         if self.distanciaAlJugador < self.minAtackDistance:
             self.current_state.next_state = "attacking"
             self.current_state.done = True
-
     
-    def attack(self, world, player,cameraOffset):
-        # Disparar cada x segundos
+    def attack(self, world, player,cameraOffset,enemies_group):
+        # Disparar cada x segundos,
         self.shootCooldown -= 1
         if self.shootCooldown <= 0:
             self.shootCooldown = 30
@@ -232,15 +228,19 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.distanciaAlJugador = math.sqrt((dx**2) + (dy**2))
         self.angle = -math.degrees(math.atan2(dy, dx))
 
-        self.lineStart = (self.rect.centerx, self.rect.centery)
+        self.lineStart = (self.rect.x, self.rect.y)
         
-
         # Si no hay ningun obstaculo, y player.position() es < self.maxViewDistance, se puede ver. 
         if self.distanciaAlJugador < self.maxViewDistance:
             # Si la en la linea de vision se interpone un obstaculo, no se puede ver al jugador
             tileHitBoxList = world.getTilesList()
             destructibleHitBoxList = world.getDestructiblesList()
+
             for tile in tileHitBoxList:
+                if tile.clipline((self.lineStart, (player.position().centerx, player.position().centery))):
+                    return False
+                
+            for tile in destructibleHitBoxList:
                 if tile.clipline((self.lineStart, (player.position().centerx, player.position().centery))):
                     return False
         else:
@@ -252,3 +252,11 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             self.chaseTime = 120
             self.current_state.next_state = "chasing"
             self.current_state.done = True
+
+    def die(self,world, player,cameraOffset,enemies_group):
+        enemies_group.remove(self)
+        
+    def hit(self, damage):
+        self.health -= damage
+        if self.health <= 0:
+            self.current_state = "die"

@@ -1,5 +1,6 @@
 import pygame
 from Constants.constants import *
+from Entities.Enemies.randomEnemyFactorySecuence import RandomEnemyFactorySecuence
 from Game.Scenes.scene import Scene
 from Entities.Player.player import Player
 import Game.Scenes.game_over as game_over
@@ -19,12 +20,12 @@ from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
 
 
 class Level1(Scene):
-    def __init__(self, director, offset):
+    def __init__(self, director, offset, dificulty):
         super(Level1, self).__init__(director)
         self.cameraOffset = offset
-        
-        self.randomEnemyFactory = RandomEnemyFactory()
+        self.dificulty = dificulty
         self.enemies_group = pygame.sprite.Group()
+        self.randomEnemyFactory = RandomEnemyFactory()
         self.interactiveGroup = pygame.sprite.Group()
 
         self.healthPickUps = pygame.sprite.Group()
@@ -36,37 +37,74 @@ class Level1(Scene):
         self.gunPickups = pygame.sprite.Group()
         self.triggerGroup = pygame.sprite.Group()
 
-        self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup)
-        self.world.inicialOffset(self.cameraOffset)
-
         self.uiText = UIText()
         self.uiHearts = UIHearts()
         self.uiEnergy = UIEnergy()
         self.uiCounter = UICounter()
+        self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter)
 
-        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.uiCounter)
+        self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
+        self.world.inicialOffset(self.cameraOffset)
+
+        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.dificulty)
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter)
         
-        self.enemies_group.update(1, self.world, self.player, self.cameraOffset)
-        self.interactiveGroup.update(self.cameraOffset, self.player)
+        self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
+        self.interactiveGroup.update(self.cameraOffset)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
         self.destructibles_group.update(self.cameraOffset)
         self.gunPickups.update(self.cameraOffset)
         self.triggerGroup.update(self.cameraOffset)
 
+    def manageJoystick(self, joystick):
+        if joystick.get_axis(0) < -0.5:
+            self.player.move_left()
+        if joystick.get_axis(0) > 0.5:
+            self.player.move_right()
+        if joystick.get_button(2):
+            self.player.jump()
+        if joystick.get_axis(2) > 0.5 and joystick.get_axis(3) < -0.5:
+            self.player.shoot(45)
+        if joystick.get_axis(2) < -0.5 and joystick.get_axis(3) < -0.5:
+            self.player.shoot(135)
+        if joystick.get_axis(2) > 0.5 and joystick.get_axis(3) > 0.5:
+            self.player.shoot(315)
+        if joystick.get_axis(2) < -0.5 and joystick.get_axis(3) > 0.5:
+            self.player.shoot(225)
+        if joystick.get_axis(2) > 0.5:
+            self.player.shoot(0)
+        if joystick.get_axis(2) < -0.5:
+            self.player.shoot(180)
+        if joystick.get_axis(3) < -0.5:
+            self.player.shoot(90)
+        if joystick.get_axis(3) > 0.5:
+            self.player.shoot(270)
+        if joystick.get_button(3):
+            self.player.cover()
+        if joystick.get_button(4):
+            self.player.launchGrenade(135,self.grenades_group)
+        if joystick.get_button(5):
+            self.player.launchGrenade(45,self.grenades_group)
+        if joystick.get_button(0):
+            self.player.doInteract(self.interactiveGroup)
+        # if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
+        #     self.player.idle()
+        # if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+        #     self.player.stopShooting()
 
-    def events(self, events, keys):
+    def events(self, events, keys, joysticks):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
     
-        if keys[pygame.K_a]:
-            self.player.move_left()
-        if keys[pygame.K_d]:
-            self.player.move_right()
-        if keys[pygame.K_SPACE]:
-            self.player.jump()
+        for joystick in joysticks.values():
+            self.manageJoystick(joystick)
+        
+        if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+            self.player.stopShooting()
+        if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
+            self.player.idle()
         if keys[pygame.K_RIGHT] and keys[pygame.K_UP]:
             self.player.shoot(45)
         if keys[pygame.K_LEFT] and keys[pygame.K_UP]:
@@ -83,6 +121,12 @@ class Level1(Scene):
             self.player.shoot(90)
         if keys[pygame.K_DOWN]:
             self.player.shoot(270)
+        if keys[pygame.K_a]:
+            self.player.move_left()
+        if keys[pygame.K_d]:
+            self.player.move_right()
+        if keys[pygame.K_SPACE]:
+            self.player.jump()
         if keys[pygame.K_f]:
             self.player.cover()
         if keys[pygame.K_g]:
@@ -91,15 +135,11 @@ class Level1(Scene):
             self.player.launchGrenade(45,self.grenades_group)
         if keys[pygame.K_e]:
             self.player.doInteract(self.interactiveGroup)
-        if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
-            self.player.idle()
-        if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
-            self.player.stopShooting()
 
     def update(self, dt):
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.triggerGroup, self.cameraOffset)
-        self.enemies_group.update(dt, self.world, self.player, self.cameraOffset)
-        self.interactiveGroup.update(self.cameraOffset, self.player)
+        self.enemies_group.update(dt, self.world, self.player, self.cameraOffset,self.enemies_group)
+        self.interactiveGroup.update(self.cameraOffset)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.grenades_group.update(self.cameraOffset, dt, self.world, self.enemies_group, self.destructibles_group, self.grenades_group,self.back_animations_group)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
@@ -119,7 +159,7 @@ class Level1(Scene):
             text = trigger.update(self.cameraOffset)
             if text != "":
                 if text == "lvl2":
-                    scene = lvl2.Level2(self.director, LVL1_TO_LVL2)
+                    scene = lvl2.Level2(self.director, LVL1_TO_LVL2, self.dificulty)
                     self.director.changeScene(scene)
 
         #if self.player.checkInteractuable(self.world):
@@ -146,7 +186,8 @@ class Level1(Scene):
             animation.draw(surface)
 
         #self.text.draw(surface)
-        
+        for enemy in self.enemies_group:
+            enemy.drawBullets(surface)
         #for enemy in self.enemies_group:
         #     #pygame.draw.rect(surface, (255,0,0), enemy.visionLine)
         #     #print(enemy.lineStart)

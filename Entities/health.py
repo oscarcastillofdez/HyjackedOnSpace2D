@@ -3,7 +3,7 @@ from Game.spritesheet import Spritesheet
 from Constants.constants import *
 
 class Health(pygame.sprite.Sprite):
-    def __init__(self, x, y) -> None:
+    def __init__(self, x, y, dificulty) -> None:
         pygame.sprite.Sprite.__init__(self)
         
         self.spritesheet = Spritesheet(INTERACTIVES_PATH + 'healing_pickup.png', (100,100))
@@ -15,12 +15,13 @@ class Health(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.healingPower = dificulty.getHealthPickupHealingPower()
 
         self.iconNumber = 0
     
     def update(self, player, cameraOffset, healingGroup):
         if self.rect.colliderect(player.position()):
-            player.heal()
+            player.heal(self.healingPower)
             healingGroup.remove(self)
         
         self.iconNumber += 1

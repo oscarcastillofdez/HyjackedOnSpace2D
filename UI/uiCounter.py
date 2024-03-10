@@ -17,7 +17,7 @@ class UICounter():
         counter = observable.getCounter()
         if counter == "0":
             counter = ""
-        self.setInteractualeText(counter, "black")
+        self.setInteractualeText(counter, (255,255,255))
         
     def draw(self, screen):
         screen.blit(self.surfaceText, (self.posX, self.posY))

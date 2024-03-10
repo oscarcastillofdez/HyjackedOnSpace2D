@@ -1,6 +1,6 @@
 import pygame
 import json
-from Entities.Enemies.enemy import *
+from Entities.Enemies.meleeEnemy import *
 from Entities.Player.playerWithPistol import *
 from Entities.shieldPickup import ShieldPickup
 from Interactives.computer import Computer
@@ -12,19 +12,22 @@ import Interactives.trigger as Trigger
 
 
 class World():
-        def __init__(self, lvl, enemies, enemyFactory, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups,triggerGroup):
+        def __init__(self, lvl, enemies, enemyFactory, enemyFactorySecuence, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups,triggerGroup, dificulty):
             self.tile_list = []
             self.platform_list = []
             self.background_list = []
             self.destructibleTile_list = []
             self.gun_list = []
             self.enemies = enemies
+            self.dificulty = dificulty
             self.healthPickUps = healthPickUps
             self.destructibles_group = destructibles_group
             self.gunPickups = gunPickups
             self.interactiveGroup = interactives
             self.enemyFactory = enemyFactory
             self.triggerGroup = triggerGroup
+            self.enemyFactorySecuence = enemyFactorySecuence
+
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
             pistola2 = pygame.image.load(PLAYER_PATH + '/pistol2.png')
             pistola3 = pygame.image.load(PLAYER_PATH + '/pistol3.png')
@@ -158,7 +161,7 @@ class World():
                     self.gunPickups.add(grenadeLauncher)
 
                 elif tile == 4:
-                    health = Health(mapaX * tileWidth, mapaY * tileHeight)
+                    health = Health(mapaX * tileWidth, mapaY * tileHeight, self.dificulty)
                     self.healthPickUps.add(health)
 
                 elif tile == 5:
@@ -166,7 +169,7 @@ class World():
                     self.enemies.add(en)
 
                 elif tile == 6:
-                    computer = Computer(mapaX * tileWidth, mapaY * tileHeight, self.enemies)
+                    computer = Computer(mapaX * tileWidth, mapaY * tileHeight, self.enemyFactorySecuence)
                     self.interactiveGroup.add(computer)
 
                 elif tile == 7:
@@ -258,7 +261,9 @@ class World():
             background = pygame.image.load(LVLS_PATH + nivel + '/background.png')
 
             backgroundRect = background.get_rect()
+
             self.background_list.append((background, backgroundRect))
+
             self.loadMap(map, compression, columns, tileHeight, tileWidth, textures, mapWidth)
             self.loadPlatforms(platforms, compression, columns, tileHeight, tileWidth, textures, mapWidth)
             self.loadEntities(entities, compression, columns, tileHeight, tileWidth, mapWidth)

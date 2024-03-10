@@ -23,4 +23,6 @@ class Pistol(pygame.sprite.Sprite):
             return True
 
     def getPlayerWithIt(self, player,ui):
-        return PlayerWithPistol(player)
+        newPlayer = PlayerWithPistol(player)
+        newPlayer.changeStates()
+        return newPlayer

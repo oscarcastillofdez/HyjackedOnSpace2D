@@ -12,14 +12,16 @@ class GameOver(Scene):
         instructions_center = (self.screen_rect.center[0], self.screen_rect.center[1] + 50)
         self.instructions_rect = self.instructions.get_rect(center=instructions_center)
 
-    def events(self, events, keys):
+    def events(self, events, keys, joysticks):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
-        if keys[pygame.K_RETURN]:  
+        for joystick in joysticks.values():
+            joystick.get_numhats()
+        if keys[pygame.K_RETURN] or joystick.get_button(9):  
             scene = menu.Menu(self.director)
             self.director.changeScene(scene)
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] or joystick.get_button(2):
             self.director.finishScene()
         if keys[pygame.K_ESCAPE]:
             self.director.endApplication()

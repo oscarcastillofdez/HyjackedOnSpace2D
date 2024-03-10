@@ -11,14 +11,17 @@ import random
 
 
 class Player(PlayerAbstract):
-        def __init__(self, x, y,uiHearts, uiText,UiCounter):
-            super().__init__(x, y)
+        def __init__(self, x, y,uiHearts, uiText, dificulty):
+            super().__init__(x, y, dificulty)
+            self.dificulty = dificulty
             # Imagenes - patron estado
             self.states = {
                 "IDLE": Idle(False),
                 "RUN": Run(False),
                 "JUMP": Jump(False)
             }
+            """"RUN": Run(False),
+                "JUMP": Jump(False)"""
             self.anim = 0
                 # State para empezar
             self.state_name = "IDLE"
@@ -33,8 +36,6 @@ class Player(PlayerAbstract):
 
             self.addObserver(uiText)
             self.addObserver(uiHearts)
-
-            self.uiCounter = UiCounter
 
         def change_state(self):
             self.state.done = False
@@ -59,13 +60,13 @@ class Player(PlayerAbstract):
             self.moving_left = True
             self.state.done = True
             self.state.left = True
-            self.state.next_state = self.state.posibleNexts["RUN_LEFT"]
+            self.state.next_state = self.state.posibleNexts["RUN"]
 
         def move_right(self):
             self.moving_right = True
             self.state.done = True
             self.state.left = False
-            self.state.next_state = self.state.posibleNexts["RUN_RIGHT"]
+            self.state.next_state = self.state.posibleNexts["RUN"]
 
         def jump(self):
             self.jumping = True
@@ -76,10 +77,10 @@ class Player(PlayerAbstract):
         def getHp(self):
             return self.healthPoints
         
-        def hit(self):
+        def hit(self, damage):
             if self.hitCooldown < 0:
-                self.standing = self.hitImage 
-                self.healthPoints -= 1
+                self.standing = self.hitImage
+                self.healthPoints -= damage
                 self.hitCooldown = 60
                 self.notify()
             return True
@@ -89,7 +90,7 @@ class Player(PlayerAbstract):
             
             if interactsWith and not self.interactedOnce:
                 self.interactedOnce = True
-                interactsWith.interact(self.uiCounter)
+                interactsWith.interact()
                 
         def interact(self, interactuableGroup):
             interactsWith = pygame.sprite.spritecollideany(self, interactuableGroup)
@@ -112,13 +113,6 @@ class Player(PlayerAbstract):
         
 
         def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
-            if self.anim > 6:
-                self.standing = self.state.next_sprite()
-                self.anim = 0
-            self.anim += 1
-
-            if self.state.done:
-                self.change_state()
 
             cameraOffsetX, cameraOffsetY = cameraOffset
 
@@ -131,10 +125,10 @@ class Player(PlayerAbstract):
                 self.velY = -10
 
             # Calculo del movimiento horizontal
+            
             (self.left_mov, left_movement) = move_horizontal(self.moving_left, self.left_mov, dt)
             (self.right_mov, right_movement) = move_horizontal(self.moving_right, self.right_mov, dt)
             horizontal_movement = floor(right_movement - left_movement)
-
             self.currentVelocity = horizontal_movement
 
             # Calculo del movimiento vertical
@@ -159,6 +153,11 @@ class Player(PlayerAbstract):
             dx = horizontal_movement
 
             self.inAir = True
+
+            if self.grabbed:
+                dx = 0
+                dy = -self.dragSpeed
+                print(dy)
 
             # Se calculan las colisiones en ambos ejes
             tileHitBoxList = world.getTilesList()
@@ -205,6 +204,8 @@ class Player(PlayerAbstract):
                     dy = platformHitBoxList[platformIndex].top - self.rect.bottom
                     self.velY = 0
                     self.inAir = False
+                    """ self.state.done = True
+                    self.state.next_state = self.state.posibleNexts["STOP-JUMP"]"""
             
             cameraOffsetX = 0
             cameraOffsetY = 0
@@ -244,7 +245,15 @@ class Player(PlayerAbstract):
             self.jumping = False
 
             if self.state.done:
-                self.change_state(self.state.next_state)
+                self.change_state()
+
+            self.interact(interactuableGroup)
+            self.hitCooldown -= 1
+
+            if self.anim > 6:
+                self.standing = self.state.next_sprite(self.direction)
+                self.anim = 0
+            self.anim += 1
             
             return (cameraOffsetX + shakingX, cameraOffsetY + shakingY)
 
@@ -276,11 +285,12 @@ class Player(PlayerAbstract):
         def deflect(self, direction, bulletImage, velocidadBala):
             print("No se puede dar este caso")
 
-        def heal(self):
-            if self.healthPoints < self.maxHealthPoints:
-                self.healthPoints += 1
-                self.notify()
-                
+        def heal(self, healingPower):
+            self.healthPoints += healingPower
+            if self.healthPoints >= self.maxHealthPoints:
+                self.healthPoints = self.maxHealthPoints
+            self.notify()
+            
         def launchGrenade(self, direction,grenades_group):
             print("No tengo lanza grandas")
                 
@@ -291,6 +301,15 @@ class Player(PlayerAbstract):
         def getShieldHp(self):
             return 0
 
+        def setGrabbed(self, dy, barnacleRect):
+            self.grabbed = True
+            self.dragSpeed = dy
+            self.rect.x = barnacleRect.x
 
+        def unSetGrabbed(self):
+            self.grabbed = False
+            self.dragSpeed = 0
+        
+                
 
             

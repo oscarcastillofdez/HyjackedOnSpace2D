@@ -13,7 +13,7 @@ from Entities.grenade import Grenade
 class PlayerWithGrenadeLauncher(PlayerAbstract):
         def __init__(self, player):
             print("BBBBBBBBBBBBB")
-            super().__init__(player.position().x, player.position().y)
+            super().__init__(player.position().x, player.position().y, player.getDificulty())
             self.player = player
 
             # Imagenes
@@ -34,11 +34,12 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
 
             self.shield = Shield(self.shieldImage)
             self.applyShield = False
-            self.coolDown = 30
 
             self.grenadeImg = pygame.image.load(PLAYER_PATH + "grenade.png")
             self.grenadeVelocity = 5
             self.disparosList = []
+            self.shootCooldown = self.shootCooldownConst
+
 
 
         def move_left(self):
@@ -53,8 +54,8 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
         def getHp(self):
             return self.player.getHp()
         
-        def hit(self):
-            return self.player.hit()
+        def hit(self, damage):
+            return self.player.hit(damage)
             
         def getShieldHp(self):
             return self.player.getShieldHp()
@@ -66,7 +67,7 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             return self.player.getInteractuableText()
                 
         def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
-            self.coolDown -= 1
+            self.shootCooldown -= 1
             return self.player.update(world, dt, enemies_group, interactuableGroup, cameraOffset)
         
         def deflect(self, direction, newBulletImage, velocidadBala):
@@ -84,14 +85,20 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
         def cover(self):
             self.player.cover()
 
-        def heal(self):
-            self.player.heal()
+        def heal(self,healingPower):
+            self.player.heal(healingPower)
 
         def launchGrenade(self, direction, grenades_group):
-            if self.coolDown <= 0:
-                self.coolDown = 30
-                grenade = Grenade(self.grenadeImg, direction, self.grenadeVelocity, self.player.position().x, self.player.position().y)
+            if self.shootCooldown <= 0:
+                self.shootCooldown = self.shootGrenadeCooldownConst
+                grenade = Grenade(self.grenadeImg, direction, self.grenadeVelocity, self.player.position().x, self.player.position().y, self.grenadeDamage)
                 grenades_group.add(grenade)
 
         def doInteract(self, interactuableGroup):
             self.player.doInteract(interactuableGroup)    
+        
+        def setGrabbed(self, dy,barnacleRect):
+            self.player.setGrabbed(dy,barnacleRect)
+
+        def unSetGrabbed(self):
+            self.player.unSetGrabbed()
