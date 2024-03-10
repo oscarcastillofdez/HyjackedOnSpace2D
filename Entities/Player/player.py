@@ -37,6 +37,10 @@ class Player(PlayerAbstract):
             self.addObserver(uiText)
             self.addObserver(uiHearts)
 
+
+        def changeStates(self):
+            pass
+
         def change_state(self):
             self.state.done = False
             self.state_name = self.state.next_state

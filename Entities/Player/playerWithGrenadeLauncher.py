@@ -1,7 +1,7 @@
 import pygame
-from .PlayerStates.idle import Idle
-from .PlayerStates.run import Run
-from .PlayerStates.jump import Jump
+from .PlayerStates.idle import Idle, IdleShoot
+from .PlayerStates.run import Run, RunShoot
+from .PlayerStates.jump import Jump, JumpShoot
 from math import floor
 from Constants.constants import *
 from MovementAndCollisions.aux_functions import *
@@ -16,16 +16,18 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             super().__init__(player.position().x, player.position().y, player.getDificulty())
             self.player = player
 
-            # Imagenes
             self.states = {
-                "IDLE": Idle(False),
-                "RUNR": Run(True),
-                "RUNL": Run(True),
+                "IDLE": Idle(True),
+                "RUN": Run(True),
+                "JUMP": Jump(True),
+                "IDLE-SHOOT": IdleShoot(),
+                "JUMP-SHOOT": JumpShoot(),
+                "RUN-SHOOT": RunShoot()
             }
-            # Imagenes
-            self.anim = 0 
-            self.current_state = self.states["IDLE"]
-            self.standing = self.current_state.get_initial()
+            self.anim = 0
+            self.state_name = "IDLE"
+            self.state = self.states[self.state_name]
+            self.standing = self.player.standing
             self.deadImage = pygame.transform.rotate(self.standing,90)
             self.hitImage = pygame.transform.rotate(self.standing,90)
 
@@ -39,8 +41,6 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             self.grenadeVelocity = 5
             self.disparosList = []
             self.shootCooldown = self.shootCooldownConst
-
-
 
         def move_left(self):
             self.player.move_left()
@@ -66,9 +66,9 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
         def getInteractuableText(self):
             return self.player.getInteractuableText()
                 
-        def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
+        def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
             self.shootCooldown -= 1
-            return self.player.update(world, dt, enemies_group, interactuableGroup, cameraOffset)
+            return self.player.update(world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset)
         
         def deflect(self, direction, newBulletImage, velocidadBala):
             self.player.deflect(direction, newBulletImage, velocidadBala)

@@ -97,9 +97,6 @@ class Level1(Scene):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
-    
-        for joystick in joysticks.values():
-            self.manageJoystick(joystick)
         
         if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
             self.player.stopShooting()
@@ -135,6 +132,9 @@ class Level1(Scene):
             self.player.launchGrenade(45,self.grenades_group)
         if keys[pygame.K_e]:
             self.player.doInteract(self.interactiveGroup)
+
+        for joystick in joysticks.values():
+            self.manageJoystick(joystick)
 
     def update(self, dt):
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.triggerGroup, self.cameraOffset)

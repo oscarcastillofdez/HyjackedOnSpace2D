@@ -41,8 +41,14 @@ class PlayerAbstract():
         self.shootGrenadeCooldownConst = dificulty.getPlayerShootGrenadeCooldown()
         self.grenadeDamage = dificulty.getPlayerGrenadeDamage()
         
+        # Sprites
         self.direction = 0
+        self.state = None
+        self.states = None
     
+    # Metodo para cambiar los estados cuando se coge un arma diferente
+    def changeStates(self):
+        self.player.states= self.states
 
     def change_state(self):
         pass
