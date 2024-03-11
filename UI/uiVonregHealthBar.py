@@ -24,8 +24,6 @@ class UIVonregHealthBar():
     def update(self, observable):
         self.currentHealth = observable.getHp()
         self.targetHealth = observable.getTargetHealth()
-        print("AAAAAAAA")
-        print(self.currentHealth)
 
     def draw(self, screen):
         if self.show:

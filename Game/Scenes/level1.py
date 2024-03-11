@@ -17,6 +17,7 @@ from UI.uiEnergy import UIEnergy
 from UI.uiCounter import UICounter
 from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
+from UI.uiVonregHealthBar import UIVonregHealthBar
 
 
 class Level1(Scene):
@@ -25,7 +26,6 @@ class Level1(Scene):
         self.cameraOffset = offset
         self.dificulty = dificulty
         self.enemies_group = pygame.sprite.Group()
-        self.randomEnemyFactory = RandomEnemyFactory()
         self.interactiveGroup = pygame.sprite.Group()
 
         self.healthPickUps = pygame.sprite.Group()
@@ -41,13 +41,15 @@ class Level1(Scene):
         self.uiHearts = UIHearts()
         self.uiEnergy = UIEnergy()
         self.uiCounter = UICounter()
+        self.healthBar = UIVonregHealthBar()
+        self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter)
 
         self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
         self.world.inicialOffset(self.cameraOffset)
 
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.dificulty)
-        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter)
+        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
         self.interactiveGroup.update(self.cameraOffset)
@@ -97,6 +99,9 @@ class Level1(Scene):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
+    
+        for joystick in joysticks.values():
+            self.manageJoystick(joystick)
         
         if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
             self.player.stopShooting()
@@ -132,9 +137,6 @@ class Level1(Scene):
             self.player.launchGrenade(45,self.grenades_group)
         if keys[pygame.K_e]:
             self.player.doInteract(self.interactiveGroup)
-
-        for joystick in joysticks.values():
-            self.manageJoystick(joystick)
 
     def update(self, dt):
         self.cameraOffset = self.player.update(self.world, dt, self.enemies_group, self.interactiveGroup, self.triggerGroup, self.cameraOffset)

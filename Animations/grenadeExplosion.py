@@ -10,7 +10,7 @@ class GrenadeExplosion(Animation):
         
         i = 1
         for x in range(15):
-            self.explosionSpriteList.append((ANIMATIONS_PATH + '/explosion3/expl'+ str(i) +'.png', 50))
+            self.explosionSpriteList.append((ANIMATIONS_PATH + '/explosion3/resized/expl'+ str(i) +'.png', 50))
             i += 1
         
         super().__init__(self.explosionSpriteList, False)

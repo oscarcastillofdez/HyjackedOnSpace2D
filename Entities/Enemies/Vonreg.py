@@ -2,19 +2,33 @@ import math
 from random import randint
 import pygame
 from Constants.constants import ENEMIES_PATH, PLAYER_PATH
+from Entities.Enemies.EnemyStates.attack import Attack
+from Entities.Enemies.EnemyStates.chase import Chase
+from Entities.Enemies.EnemyStates.die import Die
+from Entities.Enemies.EnemyStates.patrol import Patrol
 
 from Entities.Enemies.entity import Entity
 from Entities.grenade import Grenade
+from Game.spritesheet import Spritesheet
 from UI.uiVonregHealthBar import UIVonregHealthBar
 
 class Vonreg(pygame.sprite.Sprite, Entity):
     def __init__(self,x,y,grenadesGroup, dificulty, healthBar) -> None:
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Barnacle.png'), (64,64))
+        #self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Barnacle.png'), (64,64))
+        self.spritesheet = Spritesheet(ENEMIES_PATH + 'Vonreg/Vonreg_spritesheet.png', (200,200))
+        self.spritesIdle = self.spritesheet.get_animation(0,100,100,100,8)
+        self.spritesAtackMelee = self.spritesheet.get_animation(0,400,100,100,7)
+        self.spritesDie = self.spritesheet.get_animation(0,800,100,100,4)
+
+        self.image = self.spritesIdle[0]
 
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.index = 0
+
+        self.spriteChangeCountDown = 6
 
         self.grenadeImage = pygame.image.load(PLAYER_PATH + "grenade.png")
 
@@ -27,7 +41,6 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         # Atributos de vida
         self.maxHealth = 300
         self.currentHealth = self.maxHealth
-
 
         self.healthChangeSpeed = 5
         self.targetHealth = self.maxHealth
@@ -42,10 +55,10 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         self.grenadesGroup = grenadesGroup
         self.meleeDamage = 1
         self.distanceDamage = 1
-        self.grenadeVelocityPlatform = 9 # Velocidad de granada para alcanzar la plataforma
-        self.grenadeAnglePlatform = 65 # Angulo de disparo para alcanzar la plataforma
+        self.grenadeVelocityPlatform = 8 # Velocidad de granada para alcanzar la plataforma
+        self.grenadeAnglePlatform = 45 # Angulo de disparo para alcanzar la plataforma
         self.grenadeVelocitySuelo = 8 # Velocidad de granada para alcanzar el suelo
-        self.grenadeAngleSuelo = 45 # Angulo de granada para disparar alcanzar el suelo
+        self.grenadeAngleSuelo = 15 # Angulo de granada para disparar alcanzar el suelo
         self.selectPlaceToShoot = randint(0,1) # Selecciona aleatoriamente si disparar arriba o abajo
         self.shootGrenadeCooldownConst = 60
         self.shootCooldown = self.shootGrenadeCooldownConst
@@ -55,6 +68,7 @@ class Vonreg(pygame.sprite.Sprite, Entity):
                        "attackingMelee": self.attackingMelee,
                        "attackingDistance": self.attackingDistance,
                        "die": self.die}
+        
         self.current_state = "chasing"
 
     def notify(self):
@@ -71,22 +85,36 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         self.rect.x -= cameraOffset[0]
         self.rect.y -= cameraOffset[1]
 
+
         self.shootCooldown -= 1
+        self.spriteChangeCountDown -= 1
+
+        if self.spriteChangeCountDown == 0:
+            self.spriteChangeCountDown = 6
+            self.index += 1
+            
 
         if self.currentHealth > self.targetHealth:
             self.currentHealth -= self.healthChangeSpeed
             self.notify()
             if self.targetHealth < 0:
+                self.index = 0
                 self.current_state = "die"
 
         self.states[self.current_state](world, player, cameraOffset, enemies_group) # Llama al estado correspondiente (patrol, chase o attack)
         self.player_in_sight(world, player)
 
     def patrol(self, world, player,cameraOffset,enemies_group):
-        pass
+        self.current_state.next()
     
     def chase(self, world, player,cameraOffset,enemies_group):
-        pass
+        if self.index >= len(self.spritesIdle):
+            self.index = 0
+        self.image = self.spritesIdle[self.index]
+        if self.distanciaAlJugador >= self.minMeleeAtackDistance:
+            self.index = 0
+            self.current_state = "attackingDistance"
+        
 
     def die(self,world, player,cameraOffset,enemies_group):
         if self.currentHealth <= 0:
@@ -95,19 +123,32 @@ class Vonreg(pygame.sprite.Sprite, Entity):
             enemies_group.remove(self)
     
     def attackingMelee(self, world, player,cameraOffset,enemies_group):
-        player.hit(self.meleeDamage)
+        if self.index >= len(self.spritesAtackMelee):
+            self.index = 0
+        self.image = self.spritesAtackMelee[self.index]
+        if self.index == len(self.spritesAtackMelee) -1 :
+            player.hit(self.meleeDamage)
+        if self.distanciaAlJugador >= self.minMeleeAtackDistance:
+            self.index = 0
+            self.current_state = "attackingDistance"
     
     def attackingDistance(self, world, player,cameraOffset,enemies_group):
-        
+        if self.index >= len(self.spritesIdle):
+            self.index = 0
+        self.image = self.spritesIdle[self.index]
         if self.shootCooldown <= 0:
             self.shootCooldown = self.shootGrenadeCooldownConst
             self.selectPlaceToShoot = randint(0,1)
             if self.selectPlaceToShoot: # 1 -> Plataforma, 0 -> Suelo
-                grenade = Grenade(self.grenadeImage, self.grenadeAnglePlatform, self.grenadeVelocityPlatform, self.rect.x, self.rect.y, self.distanceDamage, self, player)
+                grenade = Grenade(self.grenadeImage, self.grenadeAnglePlatform, self.grenadeVelocityPlatform, self.rect.centerx, self.rect.y, self.distanceDamage, self, player)
                 self.grenadesGroup.add(grenade)
             else:
-                grenade = Grenade(self.grenadeImage, self.grenadeAngleSuelo, self.grenadeVelocitySuelo, self.rect.x, self.rect.y, self.distanceDamage, self, player)
+                grenade = Grenade(self.grenadeImage, self.grenadeAngleSuelo, self.grenadeVelocitySuelo, self.rect.centerx, self.rect.y, self.distanceDamage, self, player)
                 self.grenadesGroup.add(grenade)
+        
+        if self.distanciaAlJugador < self.minMeleeAtackDistance:
+            self.index = 0
+            self.current_state = "attackingMelee"
 
     # Lógica para determinar si el jugador está dentro del rango de visión
     def player_in_sight(self, world, player):
@@ -119,10 +160,6 @@ class Vonreg(pygame.sprite.Sprite, Entity):
 
         self.lineStart = (self.rect.x, self.rect.y)
         
-        if self.distanciaAlJugador < self.minMeleeAtackDistance:
-            self.current_state = "attackingMelee"
-        else:
-            self.current_state = "attackingDistance"
             
     def drawBullets(self,screen):
         pass

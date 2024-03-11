@@ -7,19 +7,22 @@ class GrenadeDamageArea(pygame.sprite.Sprite):
         def __init__(self, image, x, y):
             pygame.sprite.Sprite.__init__(self)
             self.rect = image.get_rect(center=(100, 10000))
-            self.rect.width = image.get_width() * 3
-            self.rect.height = image.get_height() * 3
+            self.rect.width = image.get_width() * 4
+            self.rect.height = image.get_height() * 1.5
             self.rect.x = x
-            self.rect.y = y
+            self.rect.y = y - 200
 
         def update(self,x,y):
             self.rect.x = x - self.rect.width / 2
-            self.rect.y = y - self.rect.height / 2
+            self.rect.y = y - self.rect.height / 2 - 50
             
 
 class Grenade(pygame.sprite.Sprite):
-    def __init__(self, image, direction, velocidad, x, y, damage) -> None:
+    def __init__(self, image, direction, velocidad, x, y, damage, parent, player) -> None:
         pygame.sprite.Sprite.__init__(self)
+        self.parent = parent
+        self.player = player
+
         self.damage = damage
         self.damageArea = GrenadeDamageArea(image,x,y)
 
@@ -32,8 +35,6 @@ class Grenade(pygame.sprite.Sprite):
         
         self.gravity = 1.5
         self.timePassed = 0
-
-        self.damage = 2
 
         self.image = image
         self.despawnTime = 120
@@ -66,9 +67,14 @@ class Grenade(pygame.sprite.Sprite):
             destructible.destroy(back_animations,world)
             destructibles_group.remove(destructible)
 
-        for enemy in enemies:
-            enemy.hit(self.damage)
-        
+        # Si no la lanzo un enemigo, la lanzo el jugador: Haz daño a enemigos cercanos
+        if not enemies_group.has(self.parent):
+            for enemy in enemies:
+                enemy.hit(self.damage)
+        else: # Si no la lanzo el jugador, la lanzo un enemigo: Haz daño al jugador si esta en el area de explosion
+            if self.damageArea.rect.colliderect(self.player.position()):
+                self.player.hit(self.damage)
+            
         grenades_group.remove(self)
 
     def move(self, cameraOffset, dt, world):
@@ -78,10 +84,11 @@ class Grenade(pygame.sprite.Sprite):
         self.timePassed += dt/100
         #self.velocidad = self.velocidadX + (self.velocidadY - self.gravity*self.timePassed)
         
-        dx = self.velocidadX*self.timePassed
-        dy = self.velocidadY*self.timePassed - (0.5*self.gravity*self.timePassed**2)
+        dx = (self.velocidadX*self.timePassed) * dt/100
+        dy = (self.velocidadY*self.timePassed - (0.5*self.gravity*self.timePassed**2)) * dt/100
 
         tileList = world.getTilesList()
+        platformHitBoxList = world.getPlatformsList()
         destructibleHitBoxList = world.getDestructiblesList()
 
         auxRect = pygame.Rect(self.rect.x - dx, self.rect.y, self.rect.width, self.rect.height)
@@ -92,20 +99,25 @@ class Grenade(pygame.sprite.Sprite):
 
         destructibleIndex = auxRect.collidelist(destructibleHitBoxList)
         destructibleIndex2 = auxRect2.collidelist(destructibleHitBoxList)
+        
+        platformIndex = auxRect.collidelist(platformHitBoxList)
+        platformIndex2 = auxRect2.collidelist(platformHitBoxList)
 
-        if tileIndex >= 0 or destructibleIndex >= 0:
+
+        if tileIndex >= 0 or destructibleIndex >= 0 or platformIndex >= 0:
             dx = 0
             self.velocidadX = 0
             self.velocidadY = 0
         
-        if tileIndex2 >= 0 or destructibleIndex2 >= 0:
+        if tileIndex2 >= 0 or destructibleIndex2 >= 0 or platformIndex2 >= 0:
             self.velocidadX = 0
             self.velocidadY = 0
             self.gravity = 0
             dy = 0
 
-        self.rect.x -= dx + cameraOffsetX
-        self.rect.y -= dy + cameraOffsetY
+        self.rect.x -= (dx + cameraOffsetX)
+        self.rect.y -= (dy + cameraOffsetY)
+
 
         self.damageArea.update(self.rect.x, self.rect.y)
 
@@ -127,7 +139,7 @@ class Grenade(pygame.sprite.Sprite):
     def checkIfExploded(self):
         return self.exploded
     
-    #def draw(self, screen):
-        #pygame.draw.rect(screen, (255,255,255), self.damageArea.rect)
+    def draw(self, screen):
+        pygame.draw.rect(screen, (255,255,255), self.damageArea.rect)
         
         

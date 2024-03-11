@@ -38,7 +38,7 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             self.applyShield = False
 
             self.grenadeImg = pygame.image.load(PLAYER_PATH + "grenade.png")
-            self.grenadeVelocity = 5
+            self.grenadeVelocity = 8
             self.disparosList = []
             self.shootCooldown = self.shootCooldownConst
 
@@ -91,7 +91,7 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
         def launchGrenade(self, direction, grenades_group):
             if self.shootCooldown <= 0:
                 self.shootCooldown = self.shootGrenadeCooldownConst
-                grenade = Grenade(self.grenadeImg, direction, self.grenadeVelocity, self.player.position().x, self.player.position().y, self.grenadeDamage)
+                grenade = Grenade(self.grenadeImg, direction, self.grenadeVelocity, self.player.position().x, self.player.position().y, self.grenadeDamage, self, self)
                 grenades_group.add(grenade)
 
         def doInteract(self, interactuableGroup):
