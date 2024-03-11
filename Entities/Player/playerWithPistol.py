@@ -52,9 +52,6 @@ class PlayerWithPistol(PlayerAbstract):
         self.hitImage = pygame.transform.rotate(self.standing,90)
     
 
-    def changeStates(self):
-        self.player.states= self.states
-
     def idle(self):
         self.player.state.done = True
         self.player.state.next_state = self.player.state.posibleNexts["IDLE"]
@@ -80,8 +77,8 @@ class PlayerWithPistol(PlayerAbstract):
     def interact(self, interactuableGroup):
         self.player.interact(interactuableGroup)
 
-    def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset):
-        cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, cameraOffset)
+    def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset):
+        cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset)
         self.shootCooldown -= 1
         
         for disparo in self.disparosList:

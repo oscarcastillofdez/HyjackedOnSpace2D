@@ -73,8 +73,8 @@ class PlayerWithShield(PlayerAbstract):
         def getInteractuableText(self):
             return self.player.getInteractuableText()
                 
-        def update(self, world, dt, enemies_group, interactuableGroup, cameraOffset) -> tuple:
-            cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, cameraOffset)
+        def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
+            cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset)
             self.coolDown -= 1
 
             for shot in self.deflectedShotsList:

@@ -165,7 +165,7 @@ class World():
                     self.healthPickUps.add(health)
 
                 elif tile == 5:
-                    en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight)
+                    en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight, self.dificulty)
                     self.enemies.add(en)
 
                 elif tile == 6:
@@ -207,8 +207,6 @@ class World():
                     trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth, tileHeight*4, "lvl2Vent")
                     self.triggerGroup.add(trigger)
                     
-
-
                 # Se actualiza la posicion del mapa
                 mapaX += 1
                 if mapaX >= mapWidth:
@@ -230,9 +228,7 @@ class World():
         def getDestructiblesList(self):
             return self.destructibleTile_list
         
-        
         def cargarNivel(self, nivel):
-
             # Cargar el json con los datos del nivel
 
             with open(LVLS_PATH + nivel + '/lvlData.json', 'r') as file:

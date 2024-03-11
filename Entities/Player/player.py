@@ -37,6 +37,9 @@ class Player(PlayerAbstract):
             self.addObserver(uiText)
             self.addObserver(uiHearts)
 
+
+        
+
             #Dash (luego se mueve)
             self.dashing = False
             self.dashCooldown = 0
@@ -44,6 +47,9 @@ class Player(PlayerAbstract):
             self.dashDuration = 0
             self.lookingUp = False
             self.lookingDown = False
+
+        def changeStates(self):
+            pass
 
         def change_state(self):
             self.state.done = False
@@ -134,10 +140,8 @@ class Player(PlayerAbstract):
             
         def getInteractuableText(self):
             return self.interactuableText
-        
 
         def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
-
             cameraOffsetX, cameraOffsetY = cameraOffset
 
             self.interact(interactuableGroup)
@@ -214,7 +218,6 @@ class Player(PlayerAbstract):
             if self.grabbed:
                 dx = 0
                 dy = -self.dragSpeed
-                print(dy)
 
             # Se calculan las colisiones en ambos ejes
             tileHitBoxList = world.getTilesList()
