@@ -64,8 +64,11 @@ class World():
             (cameraOffsetX,cameraOffsetY) = cameraOffset
 
             for background in self.background_list:
-                background[1].x -= cameraOffsetX
-                background[1].y -= cameraOffsetY
+                #background[1].x -= cameraOffsetX
+                #background[1].y -= cameraOffsetY
+                offsetX =- cameraOffsetX
+                offsetY =- cameraOffsetY
+                background[1].move_ip(offsetX,offsetY)
                 screen.blit(background[0], background[1])
 
             for tile in self.tile_list:
@@ -165,7 +168,7 @@ class World():
                     self.healthPickUps.add(health)
 
                 elif tile == 5:
-                    en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight, self.dificulty)
+                    en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight, self.dificulty,self.gunPickups)
                     self.enemies.add(en)
 
                 elif tile == 6:
@@ -234,11 +237,11 @@ class World():
             with open(LVLS_PATH + nivel + '/lvlData.json', 'r') as file:
                 nivelData = file.read()
             nivelData = json.loads(nivelData)
-            mapaNivel1 = nivelData['layers'][1]
+            levelData = nivelData['layers'][1]
             platforms = nivelData['layers'][2]['data']
             entities = nivelData['layers'][3]['data']
-            map = mapaNivel1['data']
-            mapWidth = mapaNivel1['width']
+            map = levelData['data']
+            mapWidth = levelData['width']
             compression = nivelData['compressionlevel']
 
             # Cargar el json con los datos de las texturas

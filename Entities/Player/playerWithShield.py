@@ -93,8 +93,8 @@ class PlayerWithShield(PlayerAbstract):
                 disparo = Bullet(newBulletImage, direction, velocidadBala, self.player.position().x, self.player.position().y)
                 self.deflectedShotsList.append(disparo)
 
-        def shoot(self, direction):
-            self.player.shoot(direction)
+        def shoot(self, direction, bullets_group):
+            self.player.shoot(direction,bullets_group)
 
         def draw(self, screen):
             self.player.draw(screen)

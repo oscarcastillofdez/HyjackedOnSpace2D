@@ -17,7 +17,7 @@ from UI.uiEnergy import UIEnergy
 from UI.uiCounter import UICounter
 from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
-from UI.uiVonregHealthBar import UIVonregHealthBar
+from UI.uiBossHealthBar import UIBossHealthBar
 
 
 class Level1(Scene):
@@ -41,7 +41,7 @@ class Level1(Scene):
         self.uiHearts = UIHearts()
         self.uiEnergy = UIEnergy()
         self.uiCounter = UICounter()
-        self.healthBar = UIVonregHealthBar()
+        self.healthBar = UIBossHealthBar()
         self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter)
 
@@ -67,21 +67,21 @@ class Level1(Scene):
         if joystick.get_button(2):
             self.player.jump()
         if joystick.get_axis(2) > 0.5 and joystick.get_axis(3) < -0.5:
-            self.player.shoot(45)
+            self.player.shoot(45,self.bullets_group)
         if joystick.get_axis(2) < -0.5 and joystick.get_axis(3) < -0.5:
-            self.player.shoot(135)
+            self.player.shoot(135,self.bullets_group)
         if joystick.get_axis(2) > 0.5 and joystick.get_axis(3) > 0.5:
-            self.player.shoot(315)
+            self.player.shoot(315,self.bullets_group)
         if joystick.get_axis(2) < -0.5 and joystick.get_axis(3) > 0.5:
-            self.player.shoot(225)
+            self.player.shoot(225,self.bullets_group)
         if joystick.get_axis(2) > 0.5:
-            self.player.shoot(0)
+            self.player.shoot(0,self.bullets_group)
         if joystick.get_axis(2) < -0.5:
-            self.player.shoot(180)
+            self.player.shoot(180,self.bullets_group)
         if joystick.get_axis(3) < -0.5:
-            self.player.shoot(90)
+            self.player.shoot(90,self.bullets_group)
         if joystick.get_axis(3) > 0.5:
-            self.player.shoot(270)
+            self.player.shoot(270,self.bullets_group)
         if joystick.get_button(3):
             self.player.cover()
         if joystick.get_button(4):
@@ -108,21 +108,21 @@ class Level1(Scene):
         if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
             self.player.idle()
         if keys[pygame.K_RIGHT] and keys[pygame.K_UP]:
-            self.player.shoot(45)
+            self.player.shoot(45, self.bullets_group)
         if keys[pygame.K_LEFT] and keys[pygame.K_UP]:
-            self.player.shoot(135)
+            self.player.shoot(135,self.bullets_group)
         if keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
-            self.player.shoot(315)
+            self.player.shoot(315,self.bullets_group)
         if keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
-            self.player.shoot(225)
+            self.player.shoot(225,self.bullets_group)
         if keys[pygame.K_RIGHT]:
-            self.player.shoot(0)
+            self.player.shoot(0,self.bullets_group)
         if keys[pygame.K_LEFT]:
-            self.player.shoot(180)
+            self.player.shoot(180,self.bullets_group)
         if keys[pygame.K_UP]:
-            self.player.shoot(90)
+            self.player.shoot(90,self.bullets_group)
         if keys[pygame.K_DOWN]:
-            self.player.shoot(270)
+            self.player.shoot(270,self.bullets_group)
         if keys[pygame.K_a]:
             self.player.move_left()
         if keys[pygame.K_d]:
@@ -144,6 +144,7 @@ class Level1(Scene):
         self.interactiveGroup.update(self.cameraOffset)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.grenades_group.update(self.cameraOffset, dt, self.world, self.enemies_group, self.destructibles_group, self.grenades_group,self.back_animations_group)
+        self.bullets_group.update(self.cameraOffset, dt, self.world, self.enemies_group, self.destructibles_group, self.bullets_group, self.back_animations_group)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
         self.destructibles_group.update(self.cameraOffset)
         self.gunPickups.update(self.cameraOffset)
@@ -177,6 +178,7 @@ class Level1(Scene):
         self.interactiveGroup.draw(surface)
         self.healthPickUps.draw(surface)
         self.grenades_group.draw(surface)
+        self.bullets_group.draw(surface)
         self.gunPickups.draw(surface)
         self.triggerGroup.draw(surface)
 

@@ -1,13 +1,12 @@
 import pygame
 from Constants.constants import *
 
-class UIVonregHealthBar():
+class UIBossHealthBar():
     def __init__(self) -> None:
         self.currentHealth = 0
         self.healthBarLength = SCREEN_WIDTH - 100
-        self.healthRatio = 300 / self.healthBarLength
-
-        
+        self.maxHP = 1
+        self.healthRatio = self.maxHP / self.healthBarLength
 
         self.posX = 40
         self.posY = SCREEN_HEIGTH - 50
@@ -18,12 +17,16 @@ class UIVonregHealthBar():
         self.transitionWidth = self.healthBarRect.width
         self.transitionColor = (255,0,0)
 
-        self.show = True
+        self.show = False
 
     
     def update(self, observable):
         self.currentHealth = observable.getHp()
         self.targetHealth = observable.getTargetHealth()
+
+    def setMaxHp(self, hp):
+        self.maxHP = hp
+        self.healthRatio = self.maxHP / self.healthBarLength
 
     def draw(self, screen):
         if self.show:

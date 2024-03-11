@@ -5,15 +5,16 @@
     },
     "activeFile": "lvlData.json",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "lvlData.json": {
-            "scale": 0.5,
-            "selectedLayer": 0,
+            "scale": 0.41,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 811,
-                "y": 2227
+                "x": 1221.9512195121952,
+                "y": 1847.560975609756
             }
         },
         "texturas.json": {

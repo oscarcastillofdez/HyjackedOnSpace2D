@@ -17,7 +17,7 @@ class Shield():
 
         
     def update(self, player):
-        self.shieldRect.x = player.position().x - 30
+        self.shieldRect.x = player.position().x - 45
         self.shieldRect.y = player.position().y - 37
 
         if self.energy < 11:

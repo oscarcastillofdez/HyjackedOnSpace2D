@@ -12,10 +12,7 @@ class PlayerWithPistol(PlayerAbstract):
         super().__init__(player.position().x, player.position().y, player.getDificulty())
         self.player = player
 
-        # Shoot - Variables disparo
-        self.disparosList = []
         self.shootCooldown = self.shootCooldownConst
-        #self.velocidadBala = 10
         self.disparoImg = pygame.image.load(PLAYER_PATH + 'lazer_1.png')
 
         # Imagenes
@@ -81,34 +78,24 @@ class PlayerWithPistol(PlayerAbstract):
         cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset)
         self.shootCooldown -= 1
         
-        for disparo in self.disparosList:
-            disparo.update(cameraOffset)
-            if disparo.checkBulletCollision(world, enemies_group, self.bulletDamage) or disparo.checkDespawnTime():
-                self.disparosList.remove(disparo)
-                del disparo
-        
         return cameraOffset
             
     def deflect(self, direction, bulletImage, velocidadBala):
         self.player.deflect(direction,bulletImage,velocidadBala)
 
-    def shoot(self, direction):
+    def shoot(self, direction, bullets_group):
         self.player.direction = direction
         self.player.state.done = True
         self.player.state.next_state = self.player.state.posibleNexts["SHOOT"]
 
         if self.shootCooldown <= 0:
             self.shootCooldown = self.shootCooldownConst
-            disparo = Bullet(self.disparoImg, direction, self.bulletSpeed, self.player.position().x, self.player.position().y)
-            self.disparosList.append(disparo)
+            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().centerx - 40, self.player.position().top - 40, self, self)
+            bullets_group.add(disparo)
             
 
     def draw(self, screen):
         self.player.draw(screen)
-
-        #print(self.disparosList)
-        for disparo in self.disparosList:
-            disparo.draw(screen)
 
     def doInteract(self, interactuableGroup):
         self.player.doInteract(interactuableGroup)

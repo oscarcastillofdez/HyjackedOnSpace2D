@@ -1,6 +1,7 @@
 import pygame
 
 from Constants.constants import *
+from Game.Scenes.level4 import Level4
 from Game.easyMode import EasyMode
 from Game.hardMode import HardMode
 from Game.mediumMode import MediumMode
@@ -27,7 +28,7 @@ class DificultySelector(Scene):
     def handle_action(self):
         if self.active_index == 0:
             dificulty = EasyMode()
-            scene = Level1(self.director, INIT_OFFSET, dificulty)
+            scene = Level4(self.director, INIT_OFFSET, dificulty)
             self.director.stackScene(scene)
         elif self.active_index == 1:
             dificulty = MediumMode()

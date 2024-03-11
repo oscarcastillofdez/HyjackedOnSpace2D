@@ -1,7 +1,9 @@
 {
+    "activeFile": "lvlData.json",
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "datosNivelB.json": {
             "scale": 0.26446614583333333,
@@ -16,16 +18,17 @@
         },
         "lvlData.json": {
             "scale": 0.26446614583333333,
-            "selectedLayer": 3,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 1918.9601693663533,
-                "y": 799.7242873319875
+                "x": 1907.6165624538426,
+                "y": 788.380680419477
             }
         }
     },
     "openFiles": [
         "lvlData.json"
     ],
+    "project": "Nivel1.tiled-project",
     "recentFiles": [
         "lvlData.json",
         "datosNivelB.json"

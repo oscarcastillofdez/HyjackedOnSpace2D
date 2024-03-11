@@ -203,7 +203,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
             self.current_state.done = True
     
     def attack(self, world, player,cameraOffset,enemies_group):
-        # Disparar cada x segundos,
+        # Disparar cada 30 frames,
         self.shootCooldown -= 1
         if self.shootCooldown <= 0:
             self.shootCooldown = 30

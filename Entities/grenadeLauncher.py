@@ -6,7 +6,7 @@ class GrenadeLauncher(pygame.sprite.Sprite):
     def __init__(self,x,y) -> None:
         pygame.sprite.Sprite.__init__(self)
         
-        self.image = pygame.image.load(INTERACTIVES_PATH + "grenade_launcher_grey.png")
+        self.image = pygame.transform.scale2x(pygame.image.load(INTERACTIVES_PATH + "grenade_launcher_grey.png"))
 
         self.rect = self.image.get_rect()
         self.rect.x = x

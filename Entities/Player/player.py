@@ -258,7 +258,7 @@ class Player(PlayerAbstract):
             
             return (cameraOffsetX + shakingX, cameraOffsetY + shakingY)
 
-        def shoot(self, direction):
+        def shoot(self, direction, bulletsGroup):
             print("No tengo arma")
 
         def draw(self, screen):

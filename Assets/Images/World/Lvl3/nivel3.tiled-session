@@ -7,21 +7,22 @@
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "lvlData.json": {
             "scale": 0.33814062500000003,
-            "selectedLayer": 0,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1598.4473915253452,
-                "y": 959.6599048103137
+                "x": 1494.940159881706,
+                "y": 829.5365278868812
             }
         },
         "lvlData2.json": {
             "scale": 0.33814062500000003,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1601.4047410008777,
-                "y": 962.617254285846
+                "x": 1598.4473915253454,
+                "y": 962.6172542858461
             }
         },
         "lvlData3.json": {

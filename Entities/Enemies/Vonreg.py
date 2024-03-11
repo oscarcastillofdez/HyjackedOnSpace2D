@@ -9,11 +9,11 @@ from Entities.Enemies.EnemyStates.patrol import Patrol
 
 from Entities.Enemies.entity import Entity
 from Entities.grenade import Grenade
+from Entities.grenadeLauncher import GrenadeLauncher
 from Game.spritesheet import Spritesheet
-from UI.uiVonregHealthBar import UIVonregHealthBar
 
 class Vonreg(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y,grenadesGroup, dificulty, healthBar) -> None:
+    def __init__(self,x,y,grenadesGroup, dificulty, healthBar, gunPickups) -> None:
         pygame.sprite.Sprite.__init__(self)
         #self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Barnacle.png'), (64,64))
         self.spritesheet = Spritesheet(ENEMIES_PATH + 'Vonreg/Vonreg_spritesheet.png', (200,200))
@@ -27,13 +27,14 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         self.rect.x = x
         self.rect.y = y
         self.index = 0
+        self.gunPickups = gunPickups
 
         self.spriteChangeCountDown = 6
 
         self.grenadeImage = pygame.image.load(PLAYER_PATH + "grenade.png")
 
         # Atributos de vision
-        self.distanciaAlJugador = 0
+        self.distanciaAlJugador = 100000
         self.minMeleeAtackDistance = 50
         self.angle = 0
         self.lineStart = (self.rect.centerx, self.rect.centery)
@@ -45,9 +46,12 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         self.healthChangeSpeed = 5
         self.targetHealth = self.maxHealth
 
+        self.deadDespawnCooldown = 1000
+
         # Atributos de interfaz
         self.observers = []
         self.healthBar = healthBar
+        self.healthBar.setMaxHp(self.maxHealth)
         self.observers.append(self.healthBar)
         self.notify()
 
@@ -67,9 +71,10 @@ class Vonreg(pygame.sprite.Sprite, Entity):
                        "chasing": self.chase,
                        "attackingMelee": self.attackingMelee,
                        "attackingDistance": self.attackingDistance,
-                       "die": self.die}
+                       "die": self.die,
+                       "dead": self.dead}
         
-        self.current_state = "chasing"
+        self.current_state = "patrolling"
 
     def notify(self):
         for observer in self.observers:
@@ -105,7 +110,11 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         self.player_in_sight(world, player)
 
     def patrol(self, world, player,cameraOffset,enemies_group):
-        self.current_state.next()
+        if self.distanciaAlJugador < 50:
+            print(self.distanciaAlJugador)
+            print("AAAAAAAAAAAAAAAAAAAA")
+            self.healthBar.togleShow()
+            self.current_state = "chasing"
     
     def chase(self, world, player,cameraOffset,enemies_group):
         if self.index >= len(self.spritesIdle):
@@ -117,9 +126,22 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         
 
     def die(self,world, player,cameraOffset,enemies_group):
+        
         if self.currentHealth <= 0:
-            self.healthBar.togleShow()
-            self.observers.remove(self.healthBar)
+            self.image = self.spritesDie[self.index]
+            if self.index >= len(self.spritesDie) -1 :
+                self.healthBar.togleShow()
+                self.observers.remove(self.healthBar)
+
+                # Al morir suelta el lanzagranadas
+                grenadeLauncher = GrenadeLauncher(self.rect.centerx, self.rect.centery)
+                self.gunPickups.add(grenadeLauncher)
+                self.current_state = "dead"
+
+                #enemies_group.remove(self)
+    def dead(self,world, player,cameraOffset,enemies_group):
+        self.deadDespawnCooldown -= 1
+        if self.deadDespawnCooldown <= 0:
             enemies_group.remove(self)
     
     def attackingMelee(self, world, player,cameraOffset,enemies_group):
@@ -159,6 +181,8 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         self.angle = -math.degrees(math.atan2(dy, dx))
 
         self.lineStart = (self.rect.x, self.rect.y)
+
+        
         
             
     def drawBullets(self,screen):

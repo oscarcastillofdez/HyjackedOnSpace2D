@@ -39,7 +39,6 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
 
             self.grenadeImg = pygame.image.load(PLAYER_PATH + "grenade.png")
             self.grenadeVelocity = 8
-            self.disparosList = []
             self.shootCooldown = self.shootCooldownConst
 
         def move_left(self):
@@ -73,8 +72,8 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
         def deflect(self, direction, newBulletImage, velocidadBala):
             self.player.deflect(direction, newBulletImage, velocidadBala)
 
-        def shoot(self, direction):
-            self.player.shoot(direction)
+        def shoot(self, direction, bullets_group):
+            self.player.shoot(direction,bullets_group)
 
         def draw(self, screen):
             self.player.draw(screen)

@@ -6,7 +6,7 @@ class Pistol(pygame.sprite.Sprite):
     def __init__(self,x,y) -> None:
         pygame.sprite.Sprite.__init__(self)
         
-        self.image = pygame.image.load(PLAYER_PATH + "pistol.png")
+        self.image = pygame.transform.scale(pygame.image.load(PLAYER_PATH + "pistol.png"), (64,45))
 
         self.rect = self.image.get_rect()
         self.rect.x = x
