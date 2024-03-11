@@ -4,7 +4,7 @@ from .PlayerStates.run import Run
 from .PlayerStates.jump import Jump
 from math import floor
 from Constants.constants import *
-from MovementAndCollisions.aux_functions import *
+from MovementAndCollisions.movement import *
 from .playerAbstract import PlayerAbstract
 from Entities.shield import Shield
 import random
@@ -36,6 +36,14 @@ class Player(PlayerAbstract):
 
             self.addObserver(uiText)
             self.addObserver(uiHearts)
+
+            #Dash (luego se mueve)
+            self.dashing = False
+            self.dashCooldown = 0
+            self.holdDash = False
+            self.dashDuration = 0
+            self.lookingUp = False
+            self.lookingDown = False
 
         def change_state(self):
             self.state.done = False
@@ -73,6 +81,22 @@ class Player(PlayerAbstract):
             if self.inAir:
                 self.state.done = True
                 self.state.next_state = self.state.posibleNexts["JUMP"]
+
+        def dash(self):
+            if self.dashCooldown == 0 and self.holdDash == False:
+                self.dashing = True
+                self.dashDuration = 0
+                self.dashCooldown = 100
+                self.holdDash = True 
+
+        def unDash(self):
+            self.holdDash = False
+        
+        def lookUp(self):
+            self.lookingUp = True
+
+        def lookDown(self):
+            self.lookingDown = True
 
         def getHp(self):
             return self.healthPoints
@@ -120,37 +144,70 @@ class Player(PlayerAbstract):
             self.interactTrigger(triggerGroup)
             self.hitCooldown -= 1
 
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_w]:
-                self.velY = -10
+            print(self.currentVelocity)
 
-            # Calculo del movimiento horizontal
+            normalMovement = True
             
-            (self.left_mov, left_movement) = move_horizontal(self.moving_left, self.left_mov, dt)
-            (self.right_mov, right_movement) = move_horizontal(self.moving_right, self.right_mov, dt)
-            horizontal_movement = floor(right_movement - left_movement)
-            self.currentVelocity = horizontal_movement
+            if self.dashing:
+                normalMovement = False
+                if self.dashDuration == 0:
+                    if self.moving_left and self.moving_right == False:
+                        self.currentVelocity = -DASH_SPEED
+                        self.left_mov = DASH_SPEED
+                        self.dashDuration = 1
+                    if self.moving_left == False and self.moving_right:
+                        self.currentVelocity = DASH_SPEED
+                        self.right_mov = DASH_SPEED
+                        self.dashDuration = 1
+                    if self.lookingUp and self.lookingDown == False:
+                        self.velY = -DASH_SPEED
+                        self.dashDuration = 1
+                    if self.lookingUp == False and self.lookingDown:
+                        self.velY = DASH_SPEED
+                        self.dashDuration = 1
+                    if self.dashDuration == 0:
+                        #Cancelar el dash
+                        self.dashCooldown = 0
+                        normalMovement = True
+                elif self.dashDuration > 0 and self.dashDuration <= DASH_DURATION:
+                    self.dashDuration += 1
+                else:
+                    self.dashing = False
+                    normalMovement = True
 
-            # Calculo del movimiento vertical
-            if self.jumping and self.inAir == False and self.pressed_jump == 0:
-                self.velY = -MIN_JUMP_HEIGHT
-                self.hold_jump = True
-            elif self.jumping == False or self.pressed_jump > MAX_JUMP_HEIGHT:
-                self.hold_jump = False
-            elif self.jumping and self.inAir and self.hold_jump:
-                self.velY = -MIN_JUMP_HEIGHT
-                self.pressed_jump += 1
 
-            # Para que al mantener el espacio solo salte una vez
-            if self.jumping == False:
-                self.pressed_jump = 0
+            if normalMovement:
 
-            # Se añade la gravedad al movimiento en y
-            self.velY += floor(GRAVITY * dt/1000)
-            if self.velY > MAX_FALL_VELOCITY:
-                 self.velY = MAX_FALL_VELOCITY
+                # Calculo del movimiento horizontal
+                
+                self.left_mov = move_horizontal(self.moving_left, self.left_mov, dt)
+                self.right_mov = move_horizontal(self.moving_right, self.right_mov, dt)
+                self.currentVelocity = self.right_mov - self.left_mov
+            
+
+                # Calculo del movimiento vertical
+                if self.jumping and self.inAir == False and self.pressed_jump == 0:
+                    self.velY = -MIN_JUMP_HEIGHT
+                    self.hold_jump = True
+                elif self.jumping == False or self.pressed_jump > MAX_JUMP_HEIGHT:
+                    self.hold_jump = False
+                elif self.jumping and self.inAir and self.hold_jump:
+                    self.velY = -MIN_JUMP_HEIGHT
+                    self.pressed_jump += 1
+
+                # Para que al mantener el espacio solo salte una vez
+                if self.jumping == False:
+                    self.pressed_jump = 0
+
+                # Se añade la gravedad al movimiento en y
+                self.velY += (GRAVITY * dt//1000)
+                if self.velY > MAX_FALL_VELOCITY:
+                     self.velY = MAX_FALL_VELOCITY
             dy = self.velY
-            dx = horizontal_movement
+            dx = self.currentVelocity
+
+            if self.dashCooldown > 0:
+                self.dashCooldown -= 1
 
             self.inAir = True
 
@@ -170,7 +227,7 @@ class Player(PlayerAbstract):
             tileIndex = auxRect.collidelist(tileHitBoxList)
             tileIndex2 = auxRect2.collidelist(tileHitBoxList)
 
-            platformIndex = auxRect.collidelist(platformHitBoxList)
+            platformIndex = auxRect2.collidelist(platformHitBoxList)
 
             destructibleIndex = auxRect.collidelist(destructibleHitBoxList)
             destructibleIndex2 = auxRect2.collidelist(destructibleHitBoxList)
@@ -200,12 +257,12 @@ class Player(PlayerAbstract):
                     self.inAir = False
 
             if platformHitBoxList[platformIndex].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                if self.velY >= 0 and (self.rect.bottom - platformHitBoxList[platformIndex].top) < 10: #Cayendo
-                    dy = platformHitBoxList[platformIndex].top - self.rect.bottom
-                    self.velY = 0
-                    self.inAir = False
-                    """ self.state.done = True
-                    self.state.next_state = self.state.posibleNexts["STOP-JUMP"]"""
+                if self.velY >= 0 and (self.rect.bottom - platformHitBoxList[platformIndex].top) < 15: #Cayendo
+                        dy = - (self.rect.bottom - platformHitBoxList[platformIndex].top)
+                        self.velY = 0
+                        self.inAir = False
+                        """ self.state.done = True
+                        self.state.next_state = self.state.posibleNexts["STOP-JUMP"]"""
             
             cameraOffsetX = 0
             cameraOffsetY = 0
@@ -229,6 +286,8 @@ class Player(PlayerAbstract):
             # Se reinician las variables de movimiento
             self.moving_left = False
             self.moving_right = False
+            self.lookingUp = False
+            self.lookingDown = False
 
             shakingX = 0
             shakingY = 0

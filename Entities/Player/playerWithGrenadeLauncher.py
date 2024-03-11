@@ -4,7 +4,7 @@ from .PlayerStates.run import Run
 from .PlayerStates.jump import Jump
 from math import floor
 from Constants.constants import *
-from MovementAndCollisions.aux_functions import *
+from MovementAndCollisions.movement import *
 from .playerAbstract import PlayerAbstract
 from Entities.shield import Shield
 from Entities.grenade import Grenade

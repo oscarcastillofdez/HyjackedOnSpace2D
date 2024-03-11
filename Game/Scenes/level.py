@@ -19,9 +19,9 @@ from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
 
 
-class Level1(Scene):
+class Level(Scene):
     def __init__(self, director, offset, dificulty):
-        super(Level1, self).__init__(director)
+        super(Level, self).__init__(director)
         self.cameraOffset = offset
         self.dificulty = dificulty
         self.enemies_group = pygame.sprite.Group()
@@ -42,20 +42,6 @@ class Level1(Scene):
         self.uiEnergy = UIEnergy()
         self.uiCounter = UICounter()
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter)
-
-        self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
-        self.world.inicialOffset(self.cameraOffset)
-
-        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.dificulty)
-        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter)
-        
-        self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
-        self.interactiveGroup.update(self.cameraOffset)
-        self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
-        self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
-        self.destructibles_group.update(self.cameraOffset)
-        self.gunPickups.update(self.cameraOffset)
-        self.triggerGroup.update(self.cameraOffset)
 
     def manageJoystick(self, joystick):
         if joystick.get_axis(0) < -0.5:
@@ -163,12 +149,6 @@ class Level1(Scene):
             scene = game_over.GameOver(self.director)
             self.director.changeScene(scene)
 
-        for trigger in self.triggerGroup:
-            text = trigger.update(self.cameraOffset)
-            if text != "":
-                if text == "lvl2":
-                    scene = lvl2.Level2(self.director, LVL1_TO_LVL2, self.dificulty)
-                    self.director.changeScene(scene)
 
         #if self.player.checkInteractuable(self.world):
             #self.text.showInteractuableText("Presiona E para interactuar.", "white")
