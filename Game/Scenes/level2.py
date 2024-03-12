@@ -18,7 +18,7 @@ from UI.uiEnergy import UIEnergy
 from UI.uiCounter import UICounter
 from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
-from UI.uiBossHealthBar import UIBossHealthBar
+from UI.uiHealthBar import UIBossHealthBar
 
 
 class Level2(Scene):

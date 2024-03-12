@@ -13,7 +13,7 @@ class PlayerWithPistol(PlayerAbstract):
         self.player = player
 
         self.shootCooldown = self.shootCooldownConst
-        self.disparoImg = pygame.image.load(PLAYER_PATH + 'lazer_1.png')
+        self.disparoImg = pygame.transform.scale(pygame.image.load(PLAYER_PATH + 'lazer_1.png'), (128,128))
 
         # Imagenes
         self.states = {
@@ -80,8 +80,8 @@ class PlayerWithPistol(PlayerAbstract):
         
         return cameraOffset
             
-    def deflect(self, direction, bulletImage, velocidadBala):
-        self.player.deflect(direction,bulletImage,velocidadBala)
+    def deflect(self, direction, bulletImage, velocidadBala, damage, posx, posy, bullets_group):
+        self.player.deflect(direction, bulletImage, velocidadBala, damage, posx, posy, bullets_group)
 
     def shoot(self, direction, bullets_group):
         self.player.direction = direction
@@ -90,7 +90,7 @@ class PlayerWithPistol(PlayerAbstract):
 
         if self.shootCooldown <= 0:
             self.shootCooldown = self.shootCooldownConst
-            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().centerx - 40, self.player.position().top - 40, self, self)
+            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().centerx - 40, self.player.position().top - 40, self, self, False)
             bullets_group.add(disparo)
             
 

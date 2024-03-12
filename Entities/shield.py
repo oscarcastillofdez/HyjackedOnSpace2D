@@ -1,6 +1,8 @@
 import threading
 import time
 
+import pygame
+
 class Shield(): 
     def __init__(self, image) -> None:
         self.originalImage = image
@@ -32,6 +34,8 @@ class Shield():
     
     def draw(self, screen):
         screen.blit(self.shieldImage, self.shieldRect)
+        #pygame.draw.rect(screen, (255,255,255), self.shieldRect)
+        
         
     def deflect(self, hitImage):
         self.shieldImage = hitImage

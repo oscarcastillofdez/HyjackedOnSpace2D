@@ -357,7 +357,6 @@ class Player(PlayerAbstract):
             print("No tengo lanza grandas")
                 
         def getCurrentVelocity(self):
-            print(self.currentVelocity)
             return self.currentVelocity
         
         def getShieldHp(self):

@@ -61,7 +61,7 @@ class BarnacleEnemy(pygame.sprite.Sprite, Entity):
         #pygame.draw.rect(screen, (255,255,255), self.verticalRect)
         screen.blit(self.tongueImage, self.tongueRect)
 
-    def hit(self, damage):
+    def hit(self, damage,deflected):
         self.health -= damage
         if self.health <= 0:
             self.current_state = "die"

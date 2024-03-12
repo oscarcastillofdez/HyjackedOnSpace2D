@@ -3,6 +3,7 @@ import sys
 
 from MovementAndCollisions.movement import *
 
+
 from Game.game import Game
 from Constants.constants import *
 
