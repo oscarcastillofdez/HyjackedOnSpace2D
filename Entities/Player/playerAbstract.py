@@ -45,6 +45,9 @@ class PlayerAbstract():
         self.direction = 0
         self.state = None
         self.states = None
+
+        # SoundEffects
+        self.jumpEffect = pygame.mixer.Sound('Assets/Audio/SoundEffects/JumpEffect.mp3')
     
     # Metodo para cambiar los estados cuando se coge un arma diferente
     def changeStates(self):

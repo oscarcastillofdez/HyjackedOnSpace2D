@@ -37,9 +37,6 @@ class Player(PlayerAbstract):
             self.addObserver(uiText)
             self.addObserver(uiHearts)
 
-
-        
-
             #Dash (luego se mueve)
             self.dashing = False
             self.dashCooldown = 0
@@ -85,6 +82,8 @@ class Player(PlayerAbstract):
         def jump(self):
             self.jumping = True
             if self.inAir:
+                self.jumpEffect.stop()
+                self.jumpEffect.play()
                 self.state.done = True
                 self.state.next_state = self.state.posibleNexts["JUMP"]
 
