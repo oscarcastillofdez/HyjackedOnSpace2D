@@ -1,37 +1,12 @@
 {
-    "activeFile": "lvlData.json",
+    "activeFile": "",
     "expandedProjectPaths": [
-        "."
     ],
     "fileStates": {
-        "datosNivelB.json": {
-            "scale": 0.26446614583333333,
-            "selectedLayer": 3,
-            "viewCenter": {
-                "x": 1922.7413716705234,
-                "y": 803.5054896361577
-            }
-        },
-        "datosTexturas.json": {
-            "scaleInDock": 1
-        },
-        "lvlData.json": {
-            "scale": 0.26446614583333333,
-            "selectedLayer": 2,
-            "viewCenter": {
-                "x": 1907.6165624538426,
-                "y": 788.380680419477
-            }
-        }
     },
     "openFiles": [
-        "lvlData.json"
     ],
-    "project": "Nivel1.tiled-project",
+    "project": "",
     "recentFiles": [
-        "lvlData.json",
-        "datosNivelB.json"
-        "datosNivelB.json",
-        "lvlData.json"
     ]
 }
