@@ -11,8 +11,11 @@ class Menu(Scene):
         super(Menu, self).__init__(director)
         self.active_index = 0
         self.options = ["Play", "Options", "Quit"]
-        self.music = pygame.mixer.Sound('Assets/Audio/MainMenu.mp3')
+        self.music = 'Assets/Audio/MainMenu.mp3'
+        # pygame.mixer.Sound('Assets/Audio/MainMenu.mp3')
     
+    def onStartup(self):
+        pygame.mixer.music.play(-1)
     # Funcion renderiza el texto del menu, pone azul la opcion que 
     # se esta seleccionando
     def render_text(self, index):

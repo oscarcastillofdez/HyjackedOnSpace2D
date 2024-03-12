@@ -29,6 +29,7 @@ class DificultySelector(Scene):
         if self.active_index == 0:
             dificulty = EasyMode()
             scene = Level4(self.director, INIT_OFFSET, dificulty)
+            scene.startup()
             self.director.stackScene(scene)
         elif self.active_index == 1:
             dificulty = MediumMode()

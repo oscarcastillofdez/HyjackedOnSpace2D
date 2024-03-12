@@ -46,6 +46,7 @@ class Game():
             # pygame.display.flip()
 
     def run(self):
+
         firstScene = Splash(self)
         self.pila.append(firstScene)
 
