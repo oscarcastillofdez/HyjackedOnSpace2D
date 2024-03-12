@@ -112,7 +112,6 @@ class Vonreg(pygame.sprite.Sprite, Entity):
     def patrol(self, world, player,cameraOffset,enemies_group):
         if self.distanciaAlJugador < 50:
             print(self.distanciaAlJugador)
-            print("AAAAAAAAAAAAAAAAAAAA")
             self.healthBar.togleShow()
             self.current_state = "chasing"
     
@@ -126,7 +125,6 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         
 
     def die(self,world, player,cameraOffset,enemies_group):
-        
         if self.currentHealth <= 0:
             self.image = self.spritesDie[self.index]
             if self.index >= len(self.spritesDie) -1 :
@@ -188,8 +186,7 @@ class Vonreg(pygame.sprite.Sprite, Entity):
     def drawBullets(self,screen):
         pass
     
-    def hit(self, damage):
+    def hit(self, damage,deflected):
         self.targetHealth -= damage
-        print(self.currentHealth)
         
     

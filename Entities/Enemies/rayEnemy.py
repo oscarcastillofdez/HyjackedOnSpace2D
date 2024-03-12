@@ -65,5 +65,5 @@ class RayEnemy(pygame.sprite.Sprite, Entity):
     def die(self,world, player,cameraOffset,enemies_group):
         pass
     
-    def hit(self,damage):
+    def hit(self,damage,deflected):
         pass    

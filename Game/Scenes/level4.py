@@ -12,13 +12,14 @@ from Game.world import World
 from UI.ui import Ui
 from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
 from UI.uiCounter import UICounter
+from UI.uiRahmCroshair import UIRahmCroshair
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts
 from UI.uiEnergy import UIEnergy
 from UI.uiCounter import UICounter
 from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
-from UI.uiBossHealthBar import UIBossHealthBar
+from UI.uiHealthBar import UIBossHealthBar
 
 
 class Level4(Scene):
@@ -43,14 +44,15 @@ class Level4(Scene):
         self.uiEnergy = UIEnergy()
         self.uiCounter = UICounter()
         self.healthBar = UIBossHealthBar()
-        self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar)
+        self.uiCroshair = UIRahmCroshair()
+        self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter)
 
         self.world = World("Lvl4", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
         self.world.inicialOffset(self.cameraOffset)
 
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.dificulty)
-        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar)
+        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
         self.interactiveGroup.update(self.cameraOffset)
@@ -185,6 +187,9 @@ class Level4(Scene):
         self.bullets_group.draw(surface)
         self.gunPickups.draw(surface)
         self.triggerGroup.draw(surface)
+
+        for bullet in self.bullets_group:
+            bullet.draw(surface)
 
         #for interactive in self.interactiveGroup:
             #interactive.draw2(surface)

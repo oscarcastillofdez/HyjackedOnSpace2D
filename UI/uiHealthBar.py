@@ -26,6 +26,7 @@ class UIBossHealthBar():
 
     def setMaxHp(self, hp):
         self.maxHP = hp
+        self.currentHealth = self.maxHP
         self.healthRatio = self.maxHP / self.healthBarLength
 
     def draw(self, screen):

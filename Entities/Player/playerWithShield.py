@@ -33,12 +33,10 @@ class PlayerWithShield(PlayerAbstract):
 
             self.shield = Shield(self.shieldImage)
             self.applyShield = False
-            self.coolDown = 30
 
             self.deflectedShotsList = []
             self.shield.addObserver(ui.uiEnergy)
             ui.uiEnergy.show()
-            print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
 
 
         def move_left(self):
@@ -75,23 +73,14 @@ class PlayerWithShield(PlayerAbstract):
                 
         def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
             cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset)
-            self.coolDown -= 1
-
-            for shot in self.deflectedShotsList:
-                shot.update(cameraOffset)
-                if shot.checkBulletCollision(world, enemies_group) or shot.checkDespawnTime():
-                    self.deflectedShotsList.remove(shot)
-                    del shot
 
             self.shield.update(self)
 
             return cameraOffset
 
-        def deflect(self, direction, newBulletImage, velocidadBala):
-            if self.coolDown <= 0:
-                self.coolDown = 30
-                disparo = Bullet(newBulletImage, direction, velocidadBala, self.player.position().x, self.player.position().y)
-                self.deflectedShotsList.append(disparo)
+        def deflect(self, direction, bulletImage, velocidadBala, damage, posx, posy, bullets_group):
+            disparo = Bullet(bulletImage, direction, damage, velocidadBala, posx, posy, self, self, True)
+            bullets_group.add(disparo)
 
         def shoot(self, direction, bullets_group):
             self.player.shoot(direction,bullets_group)
@@ -101,8 +90,6 @@ class PlayerWithShield(PlayerAbstract):
             if self.applyShield:
                 self.shield.draw(screen)
                 self.applyShield = False
-            for disparo in self.deflectedShotsList:
-                disparo.draw(screen)
 
         def position(self):
             return self.player.position()
