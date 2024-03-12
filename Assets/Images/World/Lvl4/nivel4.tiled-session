@@ -11,10 +11,10 @@
     "fileStates": {
         "lvlData.json": {
             "scale": 0.41,
-            "selectedLayer": 1,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1221.9512195121952,
-                "y": 1847.560975609756
+                "x": 1843.90243902439,
+                "y": 1657.3170731707319
             }
         },
         "texturas.json": {
