@@ -3,7 +3,6 @@
     "expandedProjectPaths": [
         "."
     ],
-    "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "datosNivelB.json": {
             "scale": 0.26446614583333333,
@@ -32,5 +31,7 @@
     "recentFiles": [
         "lvlData.json",
         "datosNivelB.json"
+        "datosNivelB.json",
+        "lvlData.json"
     ]
 }

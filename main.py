@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-from MovementAndCollisions.aux_functions import *
+from MovementAndCollisions.movement import *
 
 from Game.game import Game
 from Constants.constants import *

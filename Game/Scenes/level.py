@@ -17,15 +17,15 @@ from UI.uiEnergy import UIEnergy
 from UI.uiCounter import UICounter
 from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
-from UI.uiBossHealthBar import UIBossHealthBar
 
 
-class Level1(Scene):
+class Level(Scene):
     def __init__(self, director, offset, dificulty):
-        super(Level1, self).__init__(director)
+        super(Level, self).__init__(director)
         self.cameraOffset = offset
         self.dificulty = dificulty
         self.enemies_group = pygame.sprite.Group()
+        self.randomEnemyFactory = RandomEnemyFactory()
         self.interactiveGroup = pygame.sprite.Group()
 
         self.healthPickUps = pygame.sprite.Group()
@@ -41,23 +41,7 @@ class Level1(Scene):
         self.uiHearts = UIHearts()
         self.uiEnergy = UIEnergy()
         self.uiCounter = UICounter()
-        self.healthBar = UIBossHealthBar()
-        self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter)
-
-        self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
-        self.world.inicialOffset(self.cameraOffset)
-
-        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.dificulty)
-        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar)
-        
-        self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
-        self.interactiveGroup.update(self.cameraOffset)
-        self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
-        self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
-        self.destructibles_group.update(self.cameraOffset)
-        self.gunPickups.update(self.cameraOffset)
-        self.triggerGroup.update(self.cameraOffset)
 
     def manageJoystick(self, joystick):
         if joystick.get_axis(0) < -0.5:
@@ -67,21 +51,21 @@ class Level1(Scene):
         if joystick.get_button(2):
             self.player.jump()
         if joystick.get_axis(2) > 0.5 and joystick.get_axis(3) < -0.5:
-            self.player.shoot(45,self.bullets_group)
+            self.player.shoot(45)
         if joystick.get_axis(2) < -0.5 and joystick.get_axis(3) < -0.5:
-            self.player.shoot(135,self.bullets_group)
+            self.player.shoot(135)
         if joystick.get_axis(2) > 0.5 and joystick.get_axis(3) > 0.5:
-            self.player.shoot(315,self.bullets_group)
+            self.player.shoot(315)
         if joystick.get_axis(2) < -0.5 and joystick.get_axis(3) > 0.5:
-            self.player.shoot(225,self.bullets_group)
+            self.player.shoot(225)
         if joystick.get_axis(2) > 0.5:
-            self.player.shoot(0,self.bullets_group)
+            self.player.shoot(0)
         if joystick.get_axis(2) < -0.5:
-            self.player.shoot(180,self.bullets_group)
+            self.player.shoot(180)
         if joystick.get_axis(3) < -0.5:
-            self.player.shoot(90,self.bullets_group)
+            self.player.shoot(90)
         if joystick.get_axis(3) > 0.5:
-            self.player.shoot(270,self.bullets_group)
+            self.player.shoot(270)
         if joystick.get_button(3):
             self.player.cover()
         if joystick.get_button(4):
@@ -108,21 +92,21 @@ class Level1(Scene):
         if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
             self.player.idle()
         if keys[pygame.K_RIGHT] and keys[pygame.K_UP]:
-            self.player.shoot(45, self.bullets_group)
+            self.player.shoot(45)
         if keys[pygame.K_LEFT] and keys[pygame.K_UP]:
-            self.player.shoot(135,self.bullets_group)
+            self.player.shoot(135)
         if keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
-            self.player.shoot(315,self.bullets_group)
+            self.player.shoot(315)
         if keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
-            self.player.shoot(225,self.bullets_group)
+            self.player.shoot(225)
         if keys[pygame.K_RIGHT]:
-            self.player.shoot(0,self.bullets_group)
+            self.player.shoot(0)
         if keys[pygame.K_LEFT]:
-            self.player.shoot(180,self.bullets_group)
+            self.player.shoot(180)
         if keys[pygame.K_UP]:
-            self.player.shoot(90,self.bullets_group)
+            self.player.shoot(90)
         if keys[pygame.K_DOWN]:
-            self.player.shoot(270,self.bullets_group)
+            self.player.shoot(270)
         if keys[pygame.K_a]:
             self.player.move_left()
         if keys[pygame.K_d]:
@@ -152,7 +136,6 @@ class Level1(Scene):
         self.interactiveGroup.update(self.cameraOffset)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)
         self.grenades_group.update(self.cameraOffset, dt, self.world, self.enemies_group, self.destructibles_group, self.grenades_group,self.back_animations_group)
-        self.bullets_group.update(self.cameraOffset, dt, self.world, self.enemies_group, self.destructibles_group, self.bullets_group, self.back_animations_group)
         self.back_animations_group.update(self.cameraOffset, self.back_animations_group)
         self.destructibles_group.update(self.cameraOffset)
         self.gunPickups.update(self.cameraOffset)
@@ -166,12 +149,6 @@ class Level1(Scene):
             scene = game_over.GameOver(self.director)
             self.director.changeScene(scene)
 
-        for trigger in self.triggerGroup:
-            text = trigger.update(self.cameraOffset)
-            if text != "":
-                if text == "lvl2":
-                    scene = lvl2.Level2(self.director, LVL1_TO_LVL2, self.dificulty)
-                    self.director.changeScene(scene)
 
         #if self.player.checkInteractuable(self.world):
             #self.text.showInteractuableText("Presiona E para interactuar.", "white")
@@ -186,7 +163,6 @@ class Level1(Scene):
         self.interactiveGroup.draw(surface)
         self.healthPickUps.draw(surface)
         self.grenades_group.draw(surface)
-        self.bullets_group.draw(surface)
         self.gunPickups.draw(surface)
         self.triggerGroup.draw(surface)
 

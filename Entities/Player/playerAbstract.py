@@ -1,7 +1,7 @@
 import pygame
 from math import floor
 from Constants.constants import *
-from MovementAndCollisions.aux_functions import *
+from MovementAndCollisions.movement import *
 
 class PlayerAbstract():
     def __init__(self,x,y, dificulty):
