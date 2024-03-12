@@ -244,7 +244,7 @@ class Rahm(pygame.sprite.Sprite, Entity):
             if self.shootCooldown <= 0:
                 self.shotsCount += 1
                 self.shootCooldown = 4
-                disparo = Bullet(self.bulletImage, self.angle, math.floor(self.damage), self.bulletSpeed, self.rect.x, self.rect.y, self, player, False)
+                disparo = Bullet(self.bulletImage, self.angle, math.floor(self.damage), self.bulletSpeed, self.rect.x + 60, self.rect.y, self, player, False)
                 self.bulletsGroup.add(disparo)
         else: 
             self.shotsCount = 0
