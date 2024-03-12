@@ -60,6 +60,8 @@ class Level4(Scene):
         self.gunPickups.update(self.cameraOffset)
         self.triggerGroup.update(self.cameraOffset)
 
+        self.music = 'Assets/Audio/Project_63.mp3'
+
     def manageJoystick(self, joystick):
         if joystick.get_axis(0) < -0.5:
             self.player.move_left()

@@ -164,12 +164,15 @@ class Level2(Scene):
             if text != "":
                 if text == "lvl1":
                     scene = lvl1.Level1(self.director, LVL2_TO_LVL1, self.dificulty)
+                    scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl3":
                     scene = lvl3.Level3(self.director, LVL2_TO_LVL3, self.dificulty)
+                    scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl4":
                     scene = lvl4.Level4(self.director, LVL2_TO_LVL4, self.dificulty)
+                    scene.startup()
                     self.director.changeScene(scene)
 
 

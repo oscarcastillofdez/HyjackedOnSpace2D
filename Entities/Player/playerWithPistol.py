@@ -47,6 +47,9 @@ class PlayerWithPistol(PlayerAbstract):
         self.standing = self.state.get_initial()
         self.deadImage = pygame.transform.rotate(self.standing,90)
         self.hitImage = pygame.transform.rotate(self.standing,90)
+
+        # SoundEffects
+        self.shootEffect = pygame.mixer.Sound('Assets/Audio/SoundEffects/laserGun.mp3')
     
 
     def idle(self):
@@ -89,6 +92,8 @@ class PlayerWithPistol(PlayerAbstract):
         self.player.state.next_state = self.player.state.posibleNexts["SHOOT"]
 
         if self.shootCooldown <= 0:
+            self.shootEffect.stop()
+            self.shootEffect.play()
             self.shootCooldown = self.shootCooldownConst
             disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().centerx - 40, self.player.position().top - 40, self, self)
             bullets_group.add(disparo)

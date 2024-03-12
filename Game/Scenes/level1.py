@@ -59,6 +59,8 @@ class Level1(Scene):
         self.gunPickups.update(self.cameraOffset)
         self.triggerGroup.update(self.cameraOffset)
 
+        self.music = 'Assets/Audio/bbbbb.mp3'
+
     def manageJoystick(self, joystick):
         if joystick.get_axis(0) < -0.5:
             self.player.move_left()
@@ -139,8 +141,8 @@ class Level1(Scene):
             self.player.doInteract(self.interactiveGroup)
         if keys[pygame.K_LSHIFT]:
             self.player.dash()
-        else:
-            self.player.unDash()
+        #else:
+            #self.player.unDash()
         if keys[pygame.K_w]:
             self.player.lookUp()
         if keys[pygame.K_s]:

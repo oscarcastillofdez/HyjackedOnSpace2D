@@ -20,9 +20,13 @@ class Scene(object):
         # Si se quieren diferentes fuentes para diferentes
         # Escenas, se pueden declarar en cada escena
         self.font = pygame.font.Font("Assets/Fonts/Airstrip_Four.ttf", 36)
+        self.music = 'Assets/Audio/MainMenu.mp3'
     
-    def startup(self, persistent):
+    def startup(self, persistent={}):
         self.persist = persistent
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load(self.music)
+        pygame.mixer.music.play(-1)
     
     def update(self, *args):
         raise NotImplemented("Tiene que implementar el metodo update.")

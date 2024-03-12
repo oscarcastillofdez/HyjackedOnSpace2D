@@ -23,6 +23,7 @@ class Splash(Scene):
         self.time_active += dt
         if self.time_active >= 0:
             scene = Menu(self.director)
+            scene.startup()
             self.director.changeScene(scene)
     
     def draw(self, surface):
