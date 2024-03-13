@@ -49,7 +49,7 @@ class Level(Scene):
         self.uiPistolUpgrade = uipistolUpgrade
         self.uiGrenadeLauncher = uigrenadeLauncher
         
-        self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair)
+        self.randomEnemyFactory = SelectedEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair, self.dificulty, self.gunPickups)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter, self.bullets_group)
 
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
