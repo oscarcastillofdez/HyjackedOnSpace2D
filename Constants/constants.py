@@ -27,6 +27,7 @@ ANIMATIONS_PATH = "Assets/Images/Animations/"
 # Para calcular las coordenadas se mira las del tilted (x*32-1280/2, y*32-736/2)
 #INIT_OFFSET = (2600,220)
 INIT_OFFSET = (100,950)
+INIT_OFFSET2 = (100,300)
 LVL1_TO_LVL2 = (740,0)
 LVL2_TO_LVL1 = (100,950)
 LVL2_TO_LVL3 = (1952,1104)

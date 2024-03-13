@@ -76,7 +76,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
             self.visionLine.x = self.rect.centerx - 500
             self.visionLine.y = self.rect.y
 
-        if self.visionLine.colliderect(player.position()) and self.current_state != "attacking":
+        if self.visionLine.colliderect(player.position()) and self.state_name != "attacking":
             self.chaseTime = 120
             self.current_state.done = True
             self.current_state.next_state = "chasing"
@@ -224,18 +224,20 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         else:
             self.current_state.left = False
     
-    def attack(self, world, player,cameraOffset,enemies_group):
+    def attack(self, world, player,cameraOffset,enemies_group, dt):
         player.hit(self.damage)
         self.current_state.done = True
         self.current_state.next_state = "chasing"
 
     def die(self,world, player,cameraOffset,enemies_group):
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         enemies_group.remove(self)
 
     def hit(self, damage,deflected):
         self.health -= damage
         if self.health <= 0:
+            self.state_name = "die"
             self.current_state.done = True
-            self.current_state.next_state  = "die"  
+            self.current_state.next_state = "die"
 
     

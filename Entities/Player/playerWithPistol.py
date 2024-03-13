@@ -87,7 +87,7 @@ class PlayerWithPistol(PlayerAbstract):
 
     def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset):
         cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset)
-        self.shootCooldown -= 1
+        self.shootCooldown -= 4 * (dt/100)
         
         return cameraOffset
             
@@ -108,7 +108,7 @@ class PlayerWithPistol(PlayerAbstract):
             self.shootEffect.stop()
             self.shootEffect.play()
             self.shootCooldown = self.shootCooldownConst
-            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().centerx - 40, self.player.position().top - 40, self, self, False)
+            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().x - 40, self.player.position().y - 50, self, self, False)
             bullets_group.add(disparo)
             
 

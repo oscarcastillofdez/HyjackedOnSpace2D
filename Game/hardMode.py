@@ -28,19 +28,19 @@ class HardMode():
         self.rayEnemyMinChasingTime = 50
         self.rayEnemyMaxChasingTime = 110
 
-        self.enemyBulletSpeed = 12
+        self.enemyBulletSpeed = 90
 
         self.flyingEnemyMaxViewDistance = 800
         self.enemyMinAttackDistance = 450
 
-        self.playerBulletSpeed = 10
+        self.playerBulletSpeed = 60
         self.playerBulletDamage = 1
         self.playerGrenadeDamage = 1
         self.playerShootGrenadeCooldown = 30
         self.playerShootCooldown = 15
         self.healthPickupHealingPower = 1
 
-        self.maxEnemyCountOnComputerSecuence = 20
+        self.maxEnemyCountOnComputerSecuence = 30
         self.countdownOnComputerScene = 90
         self.spawnDelayOnComputerScene = 20
 

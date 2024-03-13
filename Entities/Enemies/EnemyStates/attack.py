@@ -9,4 +9,4 @@ class Attack(pState):
         self.entity = entity
     
     def update(self, dt, world, player, cameraOffset, enemies_group):
-        self.entity.attack(world, player, cameraOffset,enemies_group)
+        self.entity.attack(world, player, cameraOffset,enemies_group, dt)

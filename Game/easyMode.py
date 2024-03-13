@@ -28,19 +28,19 @@ class EasyMode():
         self.rayEnemyMinChasingTime = 60
         self.rayEnemyMaxChasingTime = 120
 
-        self.enemyBulletSpeed = 8
+        self.enemyBulletSpeed = 80
 
         self.flyingEnemyMaxViewDistance = 400
         self.enemyMinAttackDistance = 300
 
-        self.playerBulletSpeed = 12
+        self.playerBulletSpeed = 80
         self.playerBulletDamage = 1
         self.playerGrenadeDamage = 3
         self.playerShootGrenadeCooldown = 25
         self.playerShootCooldown = 12
         self.healthPickupHealingPower = 3
 
-        self.maxEnemyCountOnComputerSecuence = 10
+        self.maxEnemyCountOnComputerSecuence = 20
         self.countdownOnComputerScene = 30
         self.spawnDelayOnComputerScene = 60
 
