@@ -7,14 +7,14 @@ from .playerAbstract import PlayerAbstract
 from Entities.bullet import Bullet
 from Constants.constants import *
 
-class PlayerWithPistol(PlayerAbstract):
+class PlayerWithPistolUpgrade(PlayerAbstract):
     def __init__(self, player):
         super().__init__(player.position().x, player.position().y, player.getDificulty())
         self.player = player
 
         self.shootCooldown = self.shootCooldownConst
-        self.disparoImg = pygame.transform.scale(pygame.image.load(PLAYER_PATH + 'lazer_1.png'), (128,128))
-
+        self.disparoImg = pygame.transform.scale(pygame.image.load(PLAYER_PATH + 'lazer_2.png'), (128,128))
+        self.bulletDamageUpgraded = self.bulletDamage + 2
         # Imagenes
         self.states = {
             "IDLE": Idle(True),
@@ -53,14 +53,10 @@ class PlayerWithPistol(PlayerAbstract):
     
 
     def idle(self):
-        self.player.state.done = True
-        self.player.state.next_state = self.player.state.posibleNexts["IDLE"]
+        self.player.idle()
 
     def stopShooting(self):
-        self.player.direction == None
-        self.player.state.done = True
-        self.player.state.next_state = self.player.state.posibleNexts["STOP-SHOOT"]
-        pass
+        self.player.stopShooting()
 
     def move_left(self):
         self.player.move_left()
@@ -87,20 +83,18 @@ class PlayerWithPistol(PlayerAbstract):
         self.player.deflect(direction, bulletImage, velocidadBala, damage, posx, posy, bullets_group)
 
     def shootUpdateSprites(self, direction):
-        self.player.direction = direction
-        self.player.state.done = True
-        self.player.state.next_state = self.player.state.posibleNexts["SHOOT"]
+        self.player.shootUpdateSprites(direction)
 
     def shoot(self, direction, bullets_group):
-        self.player.direction = direction
-        self.player.state.done = True
-        self.player.state.next_state = self.player.state.posibleNexts["SHOOT"]
+
+        
+        self.shootUpdateSprites(direction)
 
         if self.shootCooldown <= 0:
             self.shootEffect.stop()
             self.shootEffect.play()
             self.shootCooldown = self.shootCooldownConst
-            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().centerx - 40, self.player.position().top - 40, self, self, False)
+            disparo = Bullet(self.disparoImg, direction, self.bulletDamageUpgraded, self.bulletSpeed, self.player.position().centerx - 40, self.player.position().top - 40, self, self, False)
             bullets_group.add(disparo)
             
 

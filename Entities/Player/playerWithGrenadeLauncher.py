@@ -71,6 +71,9 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
         
         def deflect(self, direction, newBulletImage, velocidadBala):
             self.player.deflect(direction, newBulletImage, velocidadBala)
+        
+        def shootUpdateSprites(self, direction):
+            self.player.shootUpdateSprites(direction)
 
         def shoot(self, direction, bullets_group):
             self.player.shoot(direction,bullets_group)

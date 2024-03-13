@@ -2,6 +2,7 @@ import pygame
 import json
 from Entities.Enemies.meleeEnemy import *
 from Entities.Player.playerWithPistol import *
+from Entities.pistolUpgrade import PistolUpgrade
 from Entities.shieldPickup import ShieldPickup
 from Interactives.computer import Computer
 from Constants.constants import *
@@ -189,6 +190,10 @@ class World():
 
                     en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight, textureRect)
                     self.destructibles_group.add(en)
+                elif tile == 8:
+                    pistol = PistolUpgrade(mapaX * tileWidth, mapaY * tileHeight)
+                    self.gunPickups.add(pistol)
+
 
                 elif tile == 40:
                     trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth*6, tileHeight, "lvl1")

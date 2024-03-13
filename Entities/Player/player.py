@@ -351,6 +351,9 @@ class Player(PlayerAbstract):
             if self.healthPoints >= self.maxHealthPoints:
                 self.healthPoints = self.maxHealthPoints
             self.notify()
+        
+        def shootUpdateSprites(self, direction):
+            pass
             
         def launchGrenade(self, direction,grenades_group):
             print("No tengo lanza grandas")

@@ -38,6 +38,11 @@ class PlayerWithShield(PlayerAbstract):
             self.shield.addObserver(ui.uiEnergy)
             ui.uiEnergy.show()
 
+        def idle(self):
+            self.player.idle()
+
+        def stopShooting(self):
+            self.player.stopShooting()
 
         def move_left(self):
             self.player.move_left()
@@ -82,6 +87,9 @@ class PlayerWithShield(PlayerAbstract):
             disparo = Bullet(bulletImage, direction, damage, velocidadBala, posx, posy, self, self, True)
             bullets_group.add(disparo)
 
+        def shootUpdateSprites(self, direction):
+            self.player.shootUpdateSprites(direction)
+            
         def shoot(self, direction, bullets_group):
             self.player.shoot(direction,bullets_group)
 

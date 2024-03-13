@@ -121,7 +121,8 @@ class Rahm(pygame.sprite.Sprite, Entity):
             self.notify(player)
             if self.targetHealth < 0:
                 self.index = 0
-                self.current_state = "die"
+                if self.current_state != "dead":
+                    self.current_state = "die"
         
         self.globalOffset = world.getGlobalOffset()
             
