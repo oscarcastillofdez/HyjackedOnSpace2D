@@ -12,6 +12,9 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
         super().__init__(player.position().x, player.position().y, player.getDificulty())
         self.player = player
 
+        self.disparoImg = pygame.transform.scale(pygame.image.load(PLAYER_PATH + 'lazer_2.png'), (128,128))
+        self.bulletDamageUpgraded = self.bulletDamage + 2
+
         self.shootCooldown = self.shootCooldownConst        
         # Imagenes
         self.states = {
