@@ -77,7 +77,7 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
 
     def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset):
         cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset)
-        self.shootCooldown -= 1
+        self.shootCooldown -= 4 * (dt/100)
         
         return cameraOffset
             

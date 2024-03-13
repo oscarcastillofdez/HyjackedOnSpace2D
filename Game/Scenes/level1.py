@@ -10,7 +10,6 @@ import Game.Scenes.level3 as lvl3
 import Game.Scenes.level4 as lvl4
 from Game.world import World
 from UI.ui import Ui
-from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
 from UI.uiCounter import UICounter
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts

@@ -9,7 +9,7 @@ from Entities.Enemies.EnemyStates.attack import Attack
 from Entities.Enemies.EnemyStates.die import Die
 
 class MeleeEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y, dificulty, onlyChase, bullets_group):
+    def __init__(self,x,y, dificulty, onlyChase):
         pygame.sprite.Sprite.__init__(self)
         # Otros objetos
         self.collisionHandler = CollisionHandler()
@@ -76,7 +76,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
             self.visionLine.x = self.rect.centerx - 500
             self.visionLine.y = self.rect.y
 
-        if self.visionLine.colliderect(player.position()) and self.state_name != "attacking":
+        if self.visionLine.colliderect(player.position()) and self.state_name != "attacking" and self.state_name != "die":
             self.chaseTime = 120
             self.current_state.done = True
             self.current_state.next_state = "chasing"
@@ -230,7 +230,6 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         self.current_state.next_state = "chasing"
 
     def die(self,world, player,cameraOffset,enemies_group):
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         enemies_group.remove(self)
 
     def hit(self, damage,deflected):

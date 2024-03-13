@@ -160,7 +160,7 @@ class World():
                     self.healthPickUps.add(health)
 
                 elif tile == 5:
-                    en = self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight, self.dificulty,self.gunPickups)
+                    en = self.enemyFactory.createMelee(mapaX * tileWidth, mapaY * tileHeight)
                     self.enemies.add(en)
 
                 elif tile == 6:
@@ -168,7 +168,7 @@ class World():
                     self.interactiveGroup.add(computer)
 
                 elif tile == 7:
-                    en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight,self.destructibleTile_list)
+                    en = self.enemyFactory.createBox(mapaX * tileWidth, mapaY * tileHeight,self.destructibleTile_list)
                     self.destructibleTile_list.append(en.rect)
                     self.destructibles_group.add(en)
 
@@ -180,6 +180,29 @@ class World():
                     dash = Dash(mapaX * tileWidth, mapaY * tileHeight)
                     self.gunPickups.add(dash)
 
+                elif tile == 10:
+                    en = self.enemyFactory.createShooter(mapaX * tileWidth, mapaY * tileHeight)
+                    self.enemies.add(en)
+
+                elif tile == 11:
+                    en = self.enemyFactory.createFlying(mapaX * tileWidth, mapaY * tileHeight)
+                    self.enemies.add(en)
+
+                elif tile == 12:
+                    en = self.enemyFactory.createRay(mapaX * tileWidth, mapaY * tileHeight)
+                    self.enemies.add(en)
+
+                elif tile == 13:
+                    en = self.enemyFactory.createBarnacle(mapaX * tileWidth, mapaY * tileHeight)
+                    self.enemies.add(en)
+
+                elif tile == 13:
+                    en = self.enemyFactory.createRahm(mapaX * tileWidth, mapaY * tileHeight)
+                    self.enemies.add(en)
+
+                elif tile == 13:
+                    en = self.enemyFactory.createVonreg(mapaX * tileWidth, mapaY * tileHeight)
+                    self.enemies.add(en)
 
                 elif tile == 40:
                     trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth*6, tileHeight, "lvl1")

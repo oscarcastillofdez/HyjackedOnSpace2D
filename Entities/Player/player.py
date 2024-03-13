@@ -292,7 +292,7 @@ class Player(PlayerAbstract):
 
             self.interact(interactuableGroup)
             self.interactTrigger(triggerGroup)
-            self.hitCooldown -= 1
+            self.hitCooldown -= 5 * (dt/100)
 
             # dashUpdate calcula el dash y devuelve True si no se está en un dash
             if self.dashUpdate():
@@ -325,7 +325,6 @@ class Player(PlayerAbstract):
                 self.change_state()
 
             self.interact(interactuableGroup)
-            self.hitCooldown -= 1
 
             if self.anim > 6:
                 self.standing = self.state.next_sprite(self.direction)

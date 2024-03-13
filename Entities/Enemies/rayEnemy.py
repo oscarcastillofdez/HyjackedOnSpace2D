@@ -6,7 +6,7 @@ from Entities.Enemies.entity import Entity
 from Game.spritesheet import Spritesheet
 
 class RayEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y, dificulty, onlyChase) -> None:
+    def __init__(self,x,y, dificulty) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.spriteList = Spritesheet(ENEMIES_PATH + 'Ray/Ray_spritesheet.png', (64,256)).cargar_sprites(16,78)
         #self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Ray/Ray_spritesheet.png'), (64,64))

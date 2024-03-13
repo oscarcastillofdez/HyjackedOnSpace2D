@@ -18,8 +18,8 @@ class EasyMode():
         self.enemyChaseTime = 100
         self.enemyShootCooldown = 40
 
-        self.enemyMinChasingSpeed = 2
-        self.enemyMaxChasingSpeed = 2
+        self.enemyMinChasingSpeed = 3
+        self.enemyMaxChasingSpeed = 3
         self.enemyMinPatrollingSpeed = 1
         self.enemyMaxPatrollingSpeed = 1
 
