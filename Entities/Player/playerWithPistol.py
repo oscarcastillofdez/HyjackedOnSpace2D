@@ -54,6 +54,12 @@ class PlayerWithPistol(PlayerAbstract):
 
         self.addObserver(ui.uiPistol)
         ui.uiPistol.toggleShow()
+
+    def getUiText(self):
+        return self.player.getUiText()
+        
+    def getUiHearts(self):
+        return self.player.getUiHearts()
     
 
     def idle(self):

@@ -38,6 +38,12 @@ class PlayerWithShield(PlayerAbstract):
             self.shield.addObserver(ui.uiEnergy)
             ui.uiEnergy.show()
 
+        def getUiText(self):
+            return self.player.getUiText()
+        
+        def getUiHearts(self):
+            return self.player.getUiHearts()
+
         def idle(self):
             self.player.idle()
 

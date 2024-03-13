@@ -53,6 +53,12 @@ class PlayerWithDash(PlayerAbstract):
         self.shootEffect.set_volume(self.volume)
         ui.uiPistolUpgrade.toggleShow()
 
+    def getUiText(self):
+        return self.player.getUiText()
+        
+    def getUiHearts(self):
+        return self.player.getUiHearts()
+
     def idle(self):
         self.player.idle()
 
@@ -124,7 +130,7 @@ class PlayerWithDash(PlayerAbstract):
       if self.getDashCooldown() == 0 and self.getHoldDash() == False:
         self.setDashing(True)
         self.player.setDashDuration(0)
-        self.player.setDashCooldown(100)
+        self.player.setDashCooldown(50)
         self.player.setHoldDash(True)
 
     def unDash(self):
