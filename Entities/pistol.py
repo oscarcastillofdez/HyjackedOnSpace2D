@@ -22,7 +22,8 @@ class Pistol(pygame.sprite.Sprite):
             gunsGroup.remove(self)
             return True
 
-    def getPlayerWithIt(self, player,ui):
+    def getPlayerWithIt(self, player,ui, volume):
         newPlayer = PlayerWithPistol(player,ui)
+        newPlayer.setVolume(volume)
         newPlayer.changeStates()
         return newPlayer

@@ -22,7 +22,7 @@ class GrenadeLauncher(pygame.sprite.Sprite):
             gunsGroup.remove(self)
             return True
 
-    def getPlayerWithIt(self, player, ui):
+    def getPlayerWithIt(self, player, ui, volume):
         newPlayer = PlayerWithGrenadeLauncher(player,ui)
-        #newPlayer.changeStates()
+        newPlayer.setVolume(volume)
         return newPlayer

@@ -22,7 +22,9 @@ class ShieldPickup(pygame.sprite.Sprite):
             gunsGroup.remove(self)
             return True
 
-    def getPlayerWithIt(self, player, ui):
+    def getPlayerWithIt(self, player, ui, volume):
+        newPlayer = PlayerWithShield(player, ui)
+        newPlayer.setVolume(volume)
         #player.addObserver(ui.uiEnergy)
         #ui.uiEnergy.show()
-        return PlayerWithShield(player, ui)
+        return newPlayer

@@ -153,11 +153,12 @@ class Level(Scene):
 
         for gun in self.gunPickups:
             if gun.collidesWithPlayer(self.player, self.gunPickups):
-                self.player = gun.getPlayerWithIt(self.player,self.ui)
+                self.player = gun.getPlayerWithIt(self.player,self.ui, self.director.sounds_volume)
 
         # Si se queda sin vidas acaba el juego
         if self.player.getHp() <= 0:
             scene = game_over.GameOver(self.director)
+            scene.startup()
             self.director.changeScene(scene)
 
 

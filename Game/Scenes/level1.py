@@ -52,6 +52,7 @@ class Level1(level.Level):
             if text != "":
                 if text == "lvl2":
                     scene = lvl2.Level2(self.director, LVL1_TO_LVL2, self.dificulty)
+                    scene.startup()
                     self.director.changeScene(scene)
 
         #if self.player.checkInteractuable(self.world):

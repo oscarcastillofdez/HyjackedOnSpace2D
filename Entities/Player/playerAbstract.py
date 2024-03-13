@@ -48,6 +48,9 @@ class PlayerAbstract():
 
         # SoundEffects
         self.jumpEffect = pygame.mixer.Sound('Assets/Audio/SoundEffects/JumpEffect.mp3')
+        self.volume = 0.7
+        self.jumpEffect.set_volume(self.volume)
+        
     
     # Metodo para cambiar los estados cuando se coge un arma diferente
     def changeStates(self):
@@ -107,6 +110,10 @@ class PlayerAbstract():
     
     def getDificulty(self):
         return self.dificulty
+    
+    def setVolume(self, volume):
+        self.jumpEffect.set_volume(volume)
+        self.volume = volume
     
 
 

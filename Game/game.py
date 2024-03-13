@@ -2,6 +2,7 @@ from collections import defaultdict
 import pygame
 from Constants.constants import *
 from .Scenes.splash import Splash
+from .Scenes.options import Settings
 
 class Game():
     # Director
@@ -23,6 +24,10 @@ class Game():
         # Lista de joysticks conectados
         #self.joysticks = defaultdict(list)
         self.joysticks = {}
+
+        # Ajustes musica y sonidos
+        self.music_volume = 0.7
+        self.sounds_volume = 0.8
 
     
     def loop(self, scene):

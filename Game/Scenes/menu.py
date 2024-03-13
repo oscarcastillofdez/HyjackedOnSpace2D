@@ -4,18 +4,15 @@ from Constants.constants import *
 from Game.Scenes.dificultySelector import DificultySelector
 from Game.Scenes.perifericSelectorMenu import PerifericSelector
 from .scene import Scene
-from .level1 import Level1
+from .options import Settings
 
 class Menu(Scene):
     def __init__(self,director):
         super(Menu, self).__init__(director)
         self.active_index = 0
         self.options = ["Play", "Options", "Quit"]
-        self.music = 'Assets/Audio/MainMenu.mp3'
         # pygame.mixer.Sound('Assets/Audio/MainMenu.mp3')
     
-    def onStartup(self):
-        pygame.mixer.music.play(-1)
     # Funcion renderiza el texto del menu, pone azul la opcion que 
     # se esta seleccionando
     def render_text(self, index):
@@ -28,13 +25,11 @@ class Menu(Scene):
     
     def handle_action(self):
         if self.active_index == 0:
-            #scene = Level1(self.director, INIT_OFFSET)
             scene = DificultySelector(self.director)
             self.director.stackScene(scene)
         elif self.active_index == 1:
-            print("OPCIONES NO INCORPORADAS GENIO")
-            #scene = Options()
-            #self.director.changeScene(scene)
+            scene = Settings(self.director)
+            self.director.stackScene(scene)
         elif self.active_index == 2:
             self.director.endApplication()
     
@@ -43,6 +38,15 @@ class Menu(Scene):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    self.active_index -= 1 if self.active_index >= 1 else 0
+                    print(self.active_index)
+                elif event.key == pygame.K_DOWN:
+                    self.active_index += 1 if self.active_index < 2 else 0
+                    print(self.active_index)
+                elif event.key == pygame.K_RETURN:
+                    self.handle_action()
             if event.type == pygame.JOYDEVICEADDED:
                 joy = pygame.joystick.Joystick(event.device_index)
                 joysticks[joy.get_instance_id()] = joy
@@ -65,12 +69,12 @@ class Menu(Scene):
                     if hat[1] == -1:
                         self.active_index += 1 if self.active_index < 2 else 0
 
-        if keys[pygame.K_UP]:
+        """if keys[pygame.K_UP]:
             self.active_index -= 1 if self.active_index >= 1 else 0
         if keys[pygame.K_DOWN]:
             self.active_index += 1 if self.active_index < 2 else 0
         if keys[pygame.K_RETURN]:
-            self.handle_action()
+            self.handle_action()"""
         
         """elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
