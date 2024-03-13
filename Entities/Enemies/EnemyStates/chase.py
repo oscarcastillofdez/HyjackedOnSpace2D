@@ -2,9 +2,10 @@ from Entities.Player.PlayerStates.base import pState
 from Game.spritesheet import Spritesheet
 
 class Chase(pState):
-    def __init__(self, file, entity):
+    def __init__(self, file, entity, scale, coords, color=(0,0,0)):
         super(Chase, self).__init__()
-        self.animation = Spritesheet(file,(120,120)).get_animation(96,96,48,48,2,(80,80,80))
+        x,y,w,h,n = coords
+        self.animation = Spritesheet(file,scale).get_animation(x,y,w,h,n,color)
         self.entity = entity
     
     def update(self, dt, world, player, cameraOffset,enemies_group):

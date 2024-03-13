@@ -1,11 +1,13 @@
 import pygame
 from Constants.constants import *
 from Entities.bullet import Bullet
-from Game.collisionHandler import CollisionHandler
 from .entity import Entity
-from Game.spritesheet import Spritesheet
+from Game.collisionHandler import CollisionHandler
+from Entities.Enemies.EnemyStates.patrol import Patrol
+from Entities.Enemies.EnemyStates.chase import Chase
+from Entities.Enemies.EnemyStates.attack import Attack
+from Entities.Enemies.EnemyStates.die import Die
 import math
-import random
 
 class ShooterEnemy(pygame.sprite.Sprite, Entity):
     def __init__(self,x,y,dificulty, onlyChase, bullets_group):
@@ -13,14 +15,13 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         # Otros objetos
         self.collisionHandler = CollisionHandler()
 
-        # Atributos de posicion e imagen
-        self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Box.png'), (64,64))
         # self.sprites = Spritesheet('Assets/Images/Entities/enemy trooper_walk.png',(120,120)).cargar_sprites(512,64)
         # self.image = self.sprites[0]
         # self.time = 0
         # self.index = 0
-
-        self.rect = self.image.get_rect()
+        # Atributos de posicion e imagen
+        self.time = 0
+        self.rect = pygame.Rect(0,0,100,100)
         self.rect.x = x
         self.rect.y = y
         
@@ -51,24 +52,39 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         # Atributos de control de estados
         self.chaseTime = dificulty.getEnemyChaseTime()
         self.onlyChase = onlyChase
-        self.states = {"patrolling": self.patrol,
+
+        coordinates = (0,0,64,64,6)
+        scale = (100,100)
+        color = (255,0,0)
+        self.states = {"patrolling": Patrol(ENEMIES_PATH + 'enemyTrooperWalk.png', self, scale, coordinates, color),
+                       "chasing": Chase(ENEMIES_PATH + 'enemyTrooperWalk.png', self, scale, coordinates, color),
+                       "attacking": Attack(ENEMIES_PATH + 'enemyTrooperWalk.png', self, scale, coordinates, color),
+                       "die": Die(ENEMIES_PATH + 'enemyTrooperWalk.png', self, scale, coordinates, color)
+        }
+        """self.states = {"patrolling": self.patrol,
                        "chasing": self.chase,
                        "attacking": self.attack,
-                       "die": self.die}
-        self.current_state = "patrolling"
+                       "die": self.die}"""
+    
+        self.state_name = "patrolling"
+        self.current_state = self.states[self.state_name]
         if onlyChase:
-            self.current_state = "chasing"
-
+            self.state_name = "chasing"
+            self.current_state = self.states[self.state_name]
         
-    def update(self, dt, world, player,cameraOffset, enemies_group):
-        # self.time += dt
-        # if self.time > 100:
-        #     self.index += 1
-        #     if self.index >= len(self.sprites):
-        #         self.index=0
-        #     self.image = self.sprites[self.index]
+        self.image = self.current_state.get_initial()
 
-        self.states[self.current_state](world, player, cameraOffset,enemies_group)
+    def update(self, dt, world, player,cameraOffset, enemies_group):
+        if self.viewDirection > 0:
+            self.current_state.left = False
+        else:
+            self.current_state.left = True
+        self.time += 1
+        if self.time > 6:
+            self.time = 0
+            self.image = self.current_state.next_sprite()
+
+        self.current_state.update(dt, world, player, cameraOffset,enemies_group)
         self.player_in_sight(world, player)
 
     def player_in_sight(self, world, player):
@@ -87,7 +103,8 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
 
         if self.visionLine.colliderect(player.position()) and self.current_state != "attacking":
             self.chaseTime = 120
-            self.current_state = "chasing"
+            self.current_state.done = True
+            self.current_state.next_state = "chasing"
     
     def patrol(self,world, player,cameraOffset,enemies_group):
         # Comportamiento cuando está patrullando
@@ -145,7 +162,8 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.chaseTime -= 1
 
         if self.chaseTime <= 0 and not self.onlyChase:
-            self.current_state = "patrolling"
+            self.current_state.done = True
+            self.current_state.next_state = "patrolling"
             
         dy = 0
         self.moved = 0
@@ -208,7 +226,8 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.rect.x -= self.moved
 
         if self.distanciaAlJugador < self.minAtackDistance:
-            self.current_state = "attacking"
+            self.current_state.done = True
+            self.current_state.next_state = "attacking"
     
     def attack(self,world, player,cameraOffset,enemies_group):
         # Disparar cada x segundos
@@ -241,8 +260,20 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.rect.y += dy - cameraOffset[1]
 
         if self.distanciaAlJugador > self.minAtackDistance:
-            self.current_state = "chasing"
+            self.current_state.done = True
+            self.current_state.next_state = "chasing"
+    
+    def change_state(self):
+        self.state_name = self.current_state.next_state
+        self.current_state.done = False
+        left = self.current_state.left
 
+        self.current_state = self.states[self.state_name]
+        if left:
+            self.current_state.left = True
+        else:
+            self.current_state.left = False
+    
     def drawBullets(self, screen):
         pass
 
@@ -252,4 +283,5 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
     def hit(self, damage,deflected):
         self.health -= damage
         if self.health <= 0:
-            self.current_state = "die"  
+            self.current_state.done = True
+            self.current_state.next_state = "die"  

@@ -55,10 +55,12 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         self.onlyChase = onlyChase
         self.chaseTime = dificulty.getEnemyChaseTime()
 
-        self.states = {"patrolling": Patrol(FLYING_ENEMY_PATH, self),
-                       "chasing": Chase(FLYING_ENEMY_PATH, self),
-                       "attacking": Attack(FLYING_ENEMY_PATH, self),
-                       "die": Die(FLYING_ENEMY_PATH, self)}
+        scale = (120,120)
+        color = (80,80,80)
+        self.states = {"patrolling": Patrol(FLYING_ENEMY_PATH, self, scale, (96,96,48,48,2), color),
+                       "chasing": Chase(FLYING_ENEMY_PATH, self, scale, (96,96,48,48,2), color),
+                       "attacking": Attack(FLYING_ENEMY_PATH, self, scale, (0,96,48,48,2), color),
+                       "die": Die(FLYING_ENEMY_PATH, self, scale, (0,0,24,24,4),color)}
 
         # self.states = {"patrolling": self.patrol,
         #                "chasing": self.chase,
