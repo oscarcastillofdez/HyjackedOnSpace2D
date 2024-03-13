@@ -8,11 +8,6 @@ class Scene(object):
     def __init__(self, director):
         self.director = director
 
-        """self.done = False
-        self.quit = False
-        self.next_state = None
-        """
-        # Esto para que lo necesitamos?
         self.screen_rect = pygame.display.get_surface().get_rect()
 
         self.persist = {}
@@ -26,6 +21,7 @@ class Scene(object):
         self.persist = persistent
         pygame.mixer.music.stop()
         pygame.mixer.music.load(self.music)
+        pygame.mixer.music.set_volume(self.director.music_volume)
         pygame.mixer.music.play(-1)
     
     def update(self, *args):

@@ -49,9 +49,11 @@ class Level3(level.Level):
             if text != "":
                 if text == "lvl2":
                     scene = lvl2.Level2(self.director, LVL3_TO_LVL2, self.dificulty)
+                    scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl2Vent":
                     scene = lvl2.Level2(self.director, LVL3_TO_LVL2_ALTER, self.dificulty)
+                    scene.startup()
                     self.director.changeScene(scene)
 
 

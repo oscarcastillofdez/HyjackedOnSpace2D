@@ -14,7 +14,6 @@ class DificultySelector(Scene):
         super(DificultySelector, self).__init__(director)
         self.active_index = 0
         self.options = ["Easy", "Medium", "Hard"]
-        self.music = pygame.mixer.Sound('Assets/Audio/MainMenu.mp3')
     
     # Funcion renderiza el texto del menu, pone azul la opcion que 
     # se esta seleccionando
@@ -35,10 +34,12 @@ class DificultySelector(Scene):
         elif self.active_index == 1:
             dificulty = MediumMode()
             scene = Level1(self.director,INIT_OFFSET, dificulty)
+            scene.startup()
             self.director.stackScene(scene)
         elif self.active_index == 2:
             dificulty = HardMode()
             scene = Level1(self.director,INIT_OFFSET, dificulty)
+            scene.startup()
             self.director.stackScene(scene)
     
     # Maneja la transicion entre las opciones del menu
@@ -46,6 +47,15 @@ class DificultySelector(Scene):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    self.active_index -= 1 if self.active_index >= 1 else 0
+                    print(self.active_index)
+                elif event.key == pygame.K_DOWN:
+                    self.active_index += 1 if self.active_index < 2 else 0
+                    print(self.active_index)
+                elif event.key == pygame.K_RETURN:
+                    self.handle_action()
             if event.type == pygame.JOYBUTTONDOWN:
                 print("Joystick button pressed.")
                 if event.button == 2:
@@ -58,21 +68,6 @@ class DificultySelector(Scene):
                         self.active_index -= 1 if self.active_index >= 1 else 0
                     if hat[1] == -1:
                         self.active_index += 1 if self.active_index < 2 else 0
-        if keys[pygame.K_UP]:
-            self.active_index -= 1 if self.active_index >= 1 else 0
-        if keys[pygame.K_DOWN]:
-            self.active_index += 1 if self.active_index < 2 else 0
-        if keys[pygame.K_RETURN]:
-            self.handle_action()
-        """elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                self.active_index -= 1 if self.active_index >= 1 else 0
-                print(self.active_index)
-            elif event.key == pygame.K_DOWN:
-                self.active_index += 1 if self.active_index < 2 else 0
-                print(self.active_index)
-            elif event.key == pygame.K_RETURN:
-                self.handle_action()"""
 
     def update(self, *args):
         pass 

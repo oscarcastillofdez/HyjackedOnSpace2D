@@ -89,8 +89,6 @@ class Bullet(pygame.sprite.Sprite):
         #screen.blit(self.player.image, self.player.rect)
         pass
 
-
-
     def bulletPosition(self):
         return self.rect
     

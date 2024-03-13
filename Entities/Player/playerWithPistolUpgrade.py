@@ -50,8 +50,8 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
 
         # SoundEffects
         self.shootEffect = pygame.mixer.Sound('Assets/Audio/SoundEffects/laserGun.mp3')
+        self.shootEffect.set_volume(self.volume)
         ui.uiPistolUpgrade.toggleShow()
-    
 
     def idle(self):
         self.player.idle()
@@ -87,8 +87,6 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
         self.player.shootUpdateSprites(direction)
 
     def shoot(self, direction, bullets_group):
-
-        
         self.shootUpdateSprites(direction)
 
         if self.shootCooldown <= 0:
@@ -128,3 +126,7 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
 
     def unSetGrabbed(self):
         self.player.unSetGrabbed()
+    
+    def setVolume(self, volume):
+        super().setVolume(volume)
+        self.shootEffect.set_volume(volume)

@@ -50,6 +50,7 @@ class PlayerWithPistol(PlayerAbstract):
 
         # SoundEffects
         self.shootEffect = pygame.mixer.Sound('Assets/Audio/SoundEffects/laserGun.mp3')
+        self.shootEffect.set_volume(self.volume)
 
         self.addObserver(ui.uiPistol)
         ui.uiPistol.toggleShow()
@@ -60,7 +61,6 @@ class PlayerWithPistol(PlayerAbstract):
         self.player.state.next_state = self.player.state.posibleNexts["IDLE"]
 
     def stopShooting(self):
-        self.player.direction == None
         self.player.state.done = True
         self.player.state.next_state = self.player.state.posibleNexts["STOP-SHOOT"]
 
@@ -135,3 +135,7 @@ class PlayerWithPistol(PlayerAbstract):
 
     def unSetGrabbed(self):
         self.player.unSetGrabbed()
+    
+    def setVolume(self, volume):
+        super().setVolume(volume)
+        self.shootEffect.set_volume(volume)
