@@ -47,7 +47,7 @@ class Level(Scene):
         self.uiPistolUpgrade = UIPistolUpgrade()
         self.uiGrenadeLauncher = UIGrenadeLauncher()
         self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair)
-        self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter)
+        self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter, self.bullets_group)
 
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.dificulty)
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
@@ -184,8 +184,8 @@ class Level(Scene):
         for bullet in self.bullets_group:
             bullet.draw(surface)
 
-        #for interactive in self.interactiveGroup:
-            #interactive.draw2(surface)
+        for interactive in self.interactiveGroup:
+            interactive.draw(surface)
         #for grenade in self.grenades_group:
             #grenade.draw(surface)
         for animation in self.back_animations_group:

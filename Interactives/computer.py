@@ -30,5 +30,9 @@ class Computer(pygame.sprite.Sprite):
     def getText(self):
         return "Presiona E para interactuar."
     
+    def draw(self,screen):
+        #self.interactiveIndicator.draw(screen)
+        pygame.draw.rect(screen, (255,255,255), self.randomEnemyFactorySecuence.spawnArea)
+    
     
         

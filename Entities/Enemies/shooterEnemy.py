@@ -8,7 +8,7 @@ import math
 import random
 
 class ShooterEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y,dificulty, onlyChase):
+    def __init__(self,x,y,dificulty, onlyChase, bullets_group):
         pygame.sprite.Sprite.__init__(self)
         # Otros objetos
         self.collisionHandler = CollisionHandler()
@@ -39,11 +39,11 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
 
         # Atributos de control de disparo
         self.shootCooldown = dificulty.getEnemyShootCooldown()
-        self.disparosList = []
         self.disparoImg = pygame.image.load('Assets/Images/Entities/Player/lazer_24.png')
         self.angle = 0
         self.velocidadBala = dificulty.getEnemyBulletSpeed()
         self.bulletDamage = dificulty.getShooterEnemyDamage()
+        self.bullets_group = bullets_group
 
         # Atributos de vida
         self.health = dificulty.getShooterEnemyHealth()
@@ -60,25 +60,6 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
             self.current_state = "chasing"
 
         
-    def checkBulletCollision2(self, world, player, disparo):
-        if disparo.bulletPosition().colliderect(player.position()):
-            if player.hit(self.bulletDamage):
-                return True
-            else:
-                #player.deflect(self.angle + 180, self.disparoImg, self.velocidadBala)
-                return True
-            
-        tileHitBoxList = world.getTilesList()
-        destructibleHitBoxList = world.getDestructiblesList()
-        
-        tileIndex = disparo.bulletPosition().collidelist(tileHitBoxList)
-
-        destructibleIndex = disparo.bulletPosition().collidelist(destructibleHitBoxList)
-        
-        if tileIndex >= 0 or destructibleIndex >= 0:
-            return True
-        
-
     def update(self, dt, world, player,cameraOffset, enemies_group):
         # self.time += dt
         # if self.time > 100:
@@ -86,12 +67,6 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         #     if self.index >= len(self.sprites):
         #         self.index=0
         #     self.image = self.sprites[self.index]
-
-        for disparo in self.disparosList:
-            disparo.update(cameraOffset)
-            if self.checkBulletCollision2(world, player, disparo) or disparo.checkDespawnTime():
-                self.disparosList.remove(disparo)
-                del disparo
 
         self.states[self.current_state](world, player, cameraOffset,enemies_group)
         self.player_in_sight(world, player)
@@ -248,8 +223,8 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.shootCooldown -= 1
         if self.shootCooldown <= 0:
             self.shootCooldown = 30
-            disparo = Bullet(self.disparoImg, self.angle, self.velocidadBala, self.rect.x, self.rect.y)
-            self.disparosList.append(disparo)
+            disparo = Bullet(self.disparoImg, self.angle, self.bulletDamage, self.velocidadBala, self.rect.x, self.rect.y, self, player, False)
+            self.bullets_group.add(disparo)
 
         tileHitBoxList = world.getTilesList()
         tileCollisions = self.collisionHandler.checkCollisions(self, tileHitBoxList, 0, dy)
@@ -269,8 +244,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
             self.current_state = "chasing"
 
     def drawBullets(self, screen):
-        for disparo in self.disparosList:
-            disparo.draw(screen)
+        pass
 
     def die(self,world, player,cameraOffset,enemies_group):
         enemies_group.remove(self)

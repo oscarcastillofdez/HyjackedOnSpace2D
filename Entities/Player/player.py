@@ -1,4 +1,6 @@
 import pygame
+
+from Game.collisionHandler import CollisionHandler
 from .PlayerStates.idle import Idle
 from .PlayerStates.run import Run
 from .PlayerStates.jump import Jump
@@ -13,6 +15,8 @@ import random
 class Player(PlayerAbstract):
         def __init__(self, x, y,uiHearts, uiText, dificulty):
             super().__init__(x, y, dificulty)
+            self.collisionHandler = CollisionHandler()
+
             self.dificulty = dificulty
             # Imagenes - patron estado
             self.states = {
@@ -289,8 +293,6 @@ class Player(PlayerAbstract):
             self.interactTrigger(triggerGroup)
             self.hitCooldown -= 1
 
-            print(self.dashing)
-
             # dashUpdate calcula el dash y devuelve True si no se está en un dash
             if self.dashUpdate():
                 self.normalMovement(dt)
@@ -304,7 +306,16 @@ class Player(PlayerAbstract):
                 dx = 0
                 dy = -self.dragSpeed
 
-            (dx, dy) = self.collisions(world, dx, dy)            
+            (dx, dy) = self.collisions(world, dx, dy)
+            # (dx, dy) = self.collisionHandler.checkCollisionsAll(self, world, dx, dy, True)  
+            
+            # if self.velY >= 0 or:
+                # if dy < 0 and self.velY == 0:
+                    # self.pressed_jump = MAX_JUMP_HEIGHT +1
+                # if dy >= 0:
+                    # self.inAir = False
+
+
             cameraOffsetX, cameraOffsetY = self.scroll(dx,dy)
 
             shakingX, shakingY = self.shake()

@@ -15,7 +15,7 @@ from Constants.constants import *
 from math import floor
 
 class RandomEnemyFactorySecuence(EnemyFactory):
-    def __init__(self,enemiesGroup, dificulty, uiCounter) -> None:
+    def __init__(self,enemiesGroup, dificulty, uiCounter,bullets_group) -> None:
         self.enemiesGroup = enemiesGroup
         self.dificulty = dificulty
         self.uiCounter = uiCounter
@@ -31,6 +31,7 @@ class RandomEnemyFactorySecuence(EnemyFactory):
         self.countdown = dificulty.getCountdownOnComputerScene()
         self.activeSecuence = False
         self.spawnDelay = dificulty.getSpawnDelayOnComputerScene()
+        self.bullets_group = bullets_group
 
     def getCounter(self):
         return str(self.countdown)
@@ -40,25 +41,25 @@ class RandomEnemyFactorySecuence(EnemyFactory):
             observer.update(self)
 
     def createEnemy(self, spawnCenterX, spawnCenterY):
-        self.spawnArea.x = spawnCenterX + 500
+        self.spawnArea.x = spawnCenterX + 1000
         self.spawnArea.y = spawnCenterY - 500
         spawnPointX = random.randrange(self.spawnArea.x, self.spawnArea.x + 500)
-        spawnPointY = random.randrange(self.spawnArea.y, self.spawnArea.y + 500)
+        spawnPointY = random.randrange(self.spawnArea.y, self.spawnArea.y + 250)
         
         currentCount = len(self.enemiesGroup) - self.initialCount
         if currentCount < self.maxEnemyCount:
             selectEnemy = random.randint(0, 3)
             if selectEnemy == 0:
-                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True)
+                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 1:
-                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True)
+                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 2:
-                en = BarnacleEnemy(spawnPointX, spawnPointY, self.dificulty, True)
+                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 3:
-                en = RayEnemy(spawnPointX, spawnPointY, self.dificulty, True)
+                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
                 self.enemiesGroup.add(en)
 
     def activate(self):

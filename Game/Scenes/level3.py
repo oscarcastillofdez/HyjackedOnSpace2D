@@ -59,30 +59,4 @@ class Level3(level.Level):
             #self.text.showInteractuableText("Presiona E para interactuar.", "white")
             
     def draw(self, surface):
-        surface.fill("black")
-        self.world.draw(surface, self.cameraOffset)
-        self.destructibles_group.draw(surface)
-        self.player.draw(surface)
-        self.enemies_group.draw(surface)
-        self.ui.draw(surface)
-        self.interactiveGroup.draw(surface)
-        self.healthPickUps.draw(surface)
-        self.grenades_group.draw(surface)
-        self.gunPickups.draw(surface)
-        self.triggerGroup.draw(surface)
-
-        #for interactive in self.interactiveGroup:
-            #interactive.draw2(surface)
-        #for grenade in self.grenades_group:
-            #grenade.draw(surface)
-        for animation in self.back_animations_group:
-            animation.draw(surface)
-
-        #self.text.draw(surface)
-        for enemy in self.enemies_group:
-            enemy.drawBullets(surface)
-        #for enemy in self.enemies_group:
-        #     #pygame.draw.rect(surface, (255,0,0), enemy.visionLine)
-        #     #print(enemy.lineStart)
-            #pygame.draw.line(surface, "red", enemy.lineStart, (self.player.position().centerx, self.player.position().centery), 5)
-            #enemy.drawBullets(surface)
+        super(Level3, self).draw(surface)
