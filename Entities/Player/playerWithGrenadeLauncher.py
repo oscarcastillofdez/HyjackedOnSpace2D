@@ -52,6 +52,12 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
 
         def jump(self):
             self.player.jump()
+        
+        def stopShooting(self):
+            self.player.stopShooting()
+        
+        def idle(self):
+            self.player.idle()
 
         def getHp(self):
             return self.player.getHp()
