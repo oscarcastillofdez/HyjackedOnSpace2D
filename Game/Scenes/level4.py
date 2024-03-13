@@ -11,7 +11,6 @@ import Game.Scenes.level4 as lvl4
 import Game.Scenes.level as level
 from Game.world import World
 from UI.ui import Ui
-from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
 from UI.uiCounter import UICounter
 from UI.uiGrenadeLauncherIcon import UIGrenadeLauncher
 from UI.uiPistolIcon import UIPistol

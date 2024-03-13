@@ -4,7 +4,7 @@ from Constants.constants import ENEMIES_PATH
 from Entities.Enemies.entity import Entity
 
 class BarnacleEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y, dificulty, onlyChase) -> None:
+    def __init__(self,x,y, dificulty) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Barnacle.png'), (64,64))
         self.rect = self.image.get_rect()

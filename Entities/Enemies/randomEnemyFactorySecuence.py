@@ -42,9 +42,9 @@ class RandomEnemyFactorySecuence(EnemyFactory):
 
     def createEnemy(self, spawnCenterX, spawnCenterY):
         self.spawnArea.x = spawnCenterX + 1000
-        self.spawnArea.y = spawnCenterY - 500
-        spawnPointX = random.randrange(self.spawnArea.x, self.spawnArea.x + 500)
-        spawnPointY = random.randrange(self.spawnArea.y, self.spawnArea.y + 500)
+        self.spawnArea.y = spawnCenterY - 200
+        spawnPointX = random.randrange(self.spawnArea.x, self.spawnArea.right)
+        spawnPointY = random.randrange(self.spawnArea.y, self.spawnArea.bottom)
         
         currentCount = len(self.enemiesGroup) - self.initialCount
         if currentCount < self.maxEnemyCount:
@@ -53,10 +53,10 @@ class RandomEnemyFactorySecuence(EnemyFactory):
                 en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 1:
-                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
+                en = FlyingEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 2:
-                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
+                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
                 self.enemiesGroup.add(en)
 
 
@@ -86,6 +86,4 @@ class RandomEnemyFactorySecuence(EnemyFactory):
                 self.createEnemy(x, y)
         
 
-    #def draw(self,screen):
-        #self.interactiveIndicator.draw(screen)
-        #pygame.draw.rect(screen, (255,255,255), self.randomEnemyFactorySecuence.spawnArea)
+    

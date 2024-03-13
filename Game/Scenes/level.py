@@ -5,7 +5,7 @@ from Game.Scenes.scene import Scene
 from Entities.Player.player import Player
 import Game.Scenes.game_over as game_over
 from UI.ui import Ui
-from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
+from Entities.Enemies.selectedEnemyFactory import SelectedEnemyFactory
 from UI.uiCounter import UICounter
 from UI.uiRahmCroshair import UIRahmCroshair
 from UI.uiText import UIText
@@ -49,7 +49,7 @@ class Level(Scene):
         self.uiGrenadeLauncher = uigrenadeLauncher
         self.healthBar = UIBossHealthBar()
         
-        self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair)
+        self.randomEnemyFactory = SelectedEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair, self.dificulty, self.gunPickups)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter, self.bullets_group)
 
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
