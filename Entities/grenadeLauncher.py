@@ -23,6 +23,6 @@ class GrenadeLauncher(pygame.sprite.Sprite):
             return True
 
     def getPlayerWithIt(self, player, ui):
-        newPlayer = PlayerWithGrenadeLauncher(player)
+        newPlayer = PlayerWithGrenadeLauncher(player,ui)
         newPlayer.changeStates()
         return newPlayer

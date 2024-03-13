@@ -11,7 +11,7 @@ from Entities.grenade import Grenade
 
 
 class PlayerWithGrenadeLauncher(PlayerAbstract):
-        def __init__(self, player):
+        def __init__(self, player,ui):
             print("BBBBBBBBBBBBB")
             super().__init__(player.position().x, player.position().y, player.getDificulty())
             self.player = player
@@ -40,6 +40,9 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             self.grenadeImg = pygame.image.load(PLAYER_PATH + "grenade.png")
             self.grenadeVelocity = 8
             self.shootCooldown = self.shootCooldownConst
+
+            self.addObserver(ui.uiGrenadeLauncher)
+            ui.uiGrenadeLauncher.toggleShow()
 
         def move_left(self):
             self.player.move_left()

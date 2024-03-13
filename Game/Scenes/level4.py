@@ -12,6 +12,9 @@ from Game.world import World
 from UI.ui import Ui
 from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
 from UI.uiCounter import UICounter
+from UI.uiGrenadeLauncherIcon import UIGrenadeLauncher
+from UI.uiPistolIcon import UIPistol
+from UI.uiPistolUpgradedIcon import UIPistolUpgrade
 from UI.uiRahmCroshair import UIRahmCroshair
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts
@@ -45,6 +48,9 @@ class Level4(Scene):
         self.uiCounter = UICounter()
         self.healthBar = UIBossHealthBar()
         self.uiCroshair = UIRahmCroshair()
+        self.uiPistol = UIPistol()
+        self.uiPistolUpgrade = UIPistolUpgrade()
+        self.uiGrenadeLauncher = UIGrenadeLauncher()
         self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter)
 
@@ -52,7 +58,7 @@ class Level4(Scene):
         self.world.inicialOffset(self.cameraOffset)
 
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.dificulty)
-        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair)
+        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
         self.interactiveGroup.update(self.cameraOffset)

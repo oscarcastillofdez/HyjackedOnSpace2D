@@ -8,7 +8,7 @@ from Entities.bullet import Bullet
 from Constants.constants import *
 
 class PlayerWithPistol(PlayerAbstract):
-    def __init__(self, player):
+    def __init__(self, player, ui):
         super().__init__(player.position().x, player.position().y, player.getDificulty())
         self.player = player
 
@@ -50,6 +50,9 @@ class PlayerWithPistol(PlayerAbstract):
 
         # SoundEffects
         self.shootEffect = pygame.mixer.Sound('Assets/Audio/SoundEffects/laserGun.mp3')
+
+        self.addObserver(ui.uiPistol)
+        ui.uiPistol.toggleShow()
     
 
     def idle(self):
