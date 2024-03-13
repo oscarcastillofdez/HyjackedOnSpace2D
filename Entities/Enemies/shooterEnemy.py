@@ -21,7 +21,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         # self.index = 0
         # Atributos de posicion e imagen
         self.time = 0
-        self.rect = pygame.Rect(0,0,64,64)
+        self.rect = pygame.Rect(0,0,100,100)
         self.rect.x = x
         self.rect.y = y
         
@@ -54,11 +54,12 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.onlyChase = onlyChase
 
         coordinates = (0,0,64,64,6)
-        scale = (64,64)
-        self.states = {"patrolling": Patrol(ENEMIES_PATH + 'enemy trooper_walk.png', self, scale, coordinates),
-                       "chasing": Chase(ENEMIES_PATH + 'enemy trooper_walk.png', self, scale, coordinates),
-                       "attacking": Attack(ENEMIES_PATH + 'enemy trooper_walk.png', self, scale, coordinates),
-                       "die": Die(ENEMIES_PATH + 'enemy trooper_walk.png', self, scale, coordinates)
+        scale = (100,100)
+        color = (255,0,0)
+        self.states = {"patrolling": Patrol(ENEMIES_PATH + 'enemyTrooperWalk.png', self, scale, coordinates, color),
+                       "chasing": Chase(ENEMIES_PATH + 'enemyTrooperWalk.png', self, scale, coordinates, color),
+                       "attacking": Attack(ENEMIES_PATH + 'enemyTrooperWalk.png', self, scale, coordinates, color),
+                       "die": Die(ENEMIES_PATH + 'enemyTrooperWalk.png', self, scale, coordinates, color)
         }
         """self.states = {"patrolling": self.patrol,
                        "chasing": self.chase,
@@ -103,7 +104,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         if self.visionLine.colliderect(player.position()) and self.current_state != "attacking":
             self.chaseTime = 120
             self.current_state.done = True
-            self.state_name = "chasing"
+            self.current_state.next_state = "chasing"
     
     def patrol(self,world, player,cameraOffset,enemies_group):
         # Comportamiento cuando está patrullando
@@ -162,7 +163,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
 
         if self.chaseTime <= 0 and not self.onlyChase:
             self.current_state.done = True
-            self.state_name = "patrolling"
+            self.current_state.next_state = "patrolling"
             
         dy = 0
         self.moved = 0
@@ -226,7 +227,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
 
         if self.distanciaAlJugador < self.minAtackDistance:
             self.current_state.done = True
-            self.state_name = "attacking"
+            self.current_state.next_state = "attacking"
     
     def attack(self,world, player,cameraOffset,enemies_group):
         # Disparar cada x segundos
@@ -260,7 +261,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
 
         if self.distanciaAlJugador > self.minAtackDistance:
             self.current_state.done = True
-            self.state_name = "chasing"
+            self.current_state.next_state = "chasing"
     
     def change_state(self):
         self.state_name = self.current_state.next_state
@@ -283,4 +284,4 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.health -= damage
         if self.health <= 0:
             self.current_state.done = True
-            self.state_name = "die"  
+            self.current_state.next_state = "die"  
