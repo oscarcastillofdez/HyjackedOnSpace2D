@@ -178,6 +178,9 @@ class Level(Scene):
         self.gunPickups.draw(surface)
         self.triggerGroup.draw(surface)
 
+        for destructible in self.destructibles_group:
+            destructible.draw(surface)
+
         for bullet in self.bullets_group:
             bullet.draw(surface)
 
