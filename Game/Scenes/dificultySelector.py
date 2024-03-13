@@ -40,7 +40,6 @@ class DificultySelector(Scene):
         uihearts = uiHearts.UIHearts()
         uienergy = uiEnergy.UIEnergy()
         uicounter = uiCounter.UICounter()
-        healthBar = uiHealthBar.UIBossHealthBar()
         uicroshair = uiRahmCroshair.UIRahmCroshair()
         uipistol = uiPistol.UIPistol()
         uipistolUpgrade = uiPistolUpgrade.UIPistolUpgrade()
@@ -48,19 +47,19 @@ class DificultySelector(Scene):
         if self.active_index == 0:
             dificulty = EasyMode()    
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)    
-            scene = Level4(self.director, INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, healthBar, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
+            scene = Level4(self.director, INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
             scene.startup()
             self.director.stackScene(scene)
         elif self.active_index == 1:
             dificulty = MediumMode()
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)
-            scene = Level1(self.director,INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, healthBar, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
+            scene = Level1(self.director,INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
             scene.startup()
             self.director.stackScene(scene)
         elif self.active_index == 2:
             dificulty = HardMode()
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)
-            scene = Level1(self.director,INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, healthBar, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
+            scene = Level1(self.director,INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
             scene.startup()
             self.director.stackScene(scene)
     

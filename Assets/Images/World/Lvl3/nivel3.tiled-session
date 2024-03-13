@@ -10,27 +10,27 @@
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "lvlData.json": {
-            "scale": 0.33814062500000003,
+            "scale": 0.75,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1599.9260662631114,
-                "y": 962.6172542858461
+                "x": 1610.6666666666665,
+                "y": 690
             }
         },
         "lvlData2.json": {
             "scale": 0.33814062500000003,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1599.9260662631114,
-                "y": 962.6172542858461
+                "x": 1602.883415738644,
+                "y": 962.617254285846
             }
         },
         "lvlData3.json": {
             "scale": 0.25,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 4800,
-                "y": 3198
+                "x": 4796,
+                "y": 3194
             }
         },
         "texturas.json": {
