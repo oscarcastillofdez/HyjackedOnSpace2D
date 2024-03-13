@@ -1,12 +1,26 @@
 {
-    "activeFile": "",
+    "activeFile": "lvlData.json",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "datosTexturas.json": {
+            "scaleInDock": 1
+        },
+        "lvlData.json": {
+            "scale": 0.33,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 727.2727272727274,
+                "y": 795.4545454545454
+            }
+        }
     },
     "openFiles": [
+        "lvlData.json"
     ],
     "project": "",
     "recentFiles": [
+        "lvlData.json"
     ]
 }

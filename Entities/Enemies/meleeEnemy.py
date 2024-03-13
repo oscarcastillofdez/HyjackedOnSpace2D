@@ -3,23 +3,20 @@ from Constants.constants import *
 from Game.collisionHandler import CollisionHandler
 from .entity import Entity
 from Game.spritesheet import Spritesheet
-import math
-import random
+from Entities.Enemies.EnemyStates.patrol import Patrol
+from Entities.Enemies.EnemyStates.chase import Chase
+from Entities.Enemies.EnemyStates.attack import Attack
+from Entities.Enemies.EnemyStates.die import Die
 
 class MeleeEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y, dificulty, onlyChase):
+    def __init__(self,x,y, dificulty, onlyChase, bullets_group):
         pygame.sprite.Sprite.__init__(self)
         # Otros objetos
         self.collisionHandler = CollisionHandler()
 
         # Atributos de posicion e imagen
-        self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Box.png'), (64,64))
-        #self.sprites = Spritesheet('Assets/Images/Entities/enemy trooper_walk.png',(120,120)).cargar_sprites(512,64)
-        #self.image = self.sprites[0]
-        #self.time = 0
-        #self.index = 0
-
-        self.rect = self.image.get_rect()
+        self.time = 0
+        self.rect = pygame.Rect(0,0,100,100)
         self.rect.x = x
         self.rect.y = y
 
@@ -42,26 +39,34 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         # Atributos de control de estados
         self.chaseTime = dificulty.getEnemyChaseTime()
         self.onlyChase = onlyChase
-        self.states = {"patrolling": self.patrol,
-                       "chasing": self.chase,
-                       "attacking": self.attack,
-                       "die": self.die}
-        self.current_state = "patrolling"
-        if onlyChase:
-            self.current_state = "chasing"
 
+        coordinates = (0,0,24,24,4)
+        scale = (100,100)
+        color = (80,80,80)
+        self.states = {"patrolling": Patrol(ENEMIES_PATH + 'aliens.png', self, scale, coordinates, color),
+                       "chasing": Chase(ENEMIES_PATH + 'aliens.png', self, scale, coordinates, color),
+                       "attacking": Attack(ENEMIES_PATH + 'aliens.png', self, scale, coordinates, color),
+                       "die": Die(ENEMIES_PATH + 'aliens.png', self, scale, coordinates, color)
+                       }
+        
+        self.state_name = "patrolling"
+        if onlyChase:
+            self.state_name = "chasing"
+        self.current_state = self.states[self.state_name]
+
+        self.image = self.current_state.get_initial()
 
 
     def update(self, dt, world, player,cameraOffset,enemies_group):
-        # self.time += dt
-        # if self.time > 100:
-        #     self.index += 1
-        #     if self.index >= len(self.sprites):
-        #         self.index=0
-        #     self.image = self.sprites[self.index]
+        self.time += 1
+        if self.time > 6:
+            self.time = 0
+            self.image = self.current_state.next_sprite()
 
-        self.states[self.current_state](world, player, cameraOffset,enemies_group) # Llama al estado correspondiente (patrol, chase o attack)
+        self.current_state.update(dt, world, player, cameraOffset,enemies_group) # Llama al estado correspondiente (patrol, chase o attack)
         self.player_in_sight(world, player) # Controla la vision con el jugador
+        if self.current_state.done:
+            self.change_state()
 
     def player_in_sight(self, world, player):
         if self.viewDirection == 1:
@@ -73,8 +78,9 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
 
         if self.visionLine.colliderect(player.position()) and self.current_state != "attacking":
             self.chaseTime = 120
-            self.current_state = "chasing"
-    
+            self.current_state.done = True
+            self.current_state.next_state = "chasing"
+
     def drawBullets(self, screen):
         pass
     
@@ -137,7 +143,8 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         self.chaseTime -= 1
 
         if self.chaseTime <= 0 and not self.onlyChase:
-            self.current_state = "patrolling"
+            self.current_state.done = True
+            self.current_state.next_state = "patrolling"
             
         dy = 0
         self.moved = 0
@@ -203,11 +210,24 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
 
         # Comprobacion de cambio al estado atacar
         if self.rect.colliderect(player.position()):
-            self.current_state = "attacking"
+            self.current_state.done = True
+            self.current_state.next_state = "attacking"
+    
+    def change_state(self):
+        self.state_name = self.current_state.next_state
+        self.current_state.done = False
+        left = self.current_state.left
+
+        self.current_state = self.states[self.state_name]
+        if left:
+            self.current_state.left = True
+        else:
+            self.current_state.left = False
     
     def attack(self, world, player,cameraOffset,enemies_group):
         player.hit(self.damage)
-        self.current_state = "chasing"
+        self.current_state.done = True
+        self.current_state.next_state = "chasing"
 
     def die(self,world, player,cameraOffset,enemies_group):
         enemies_group.remove(self)
@@ -215,6 +235,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
     def hit(self, damage,deflected):
         self.health -= damage
         if self.health <= 0:
-            self.current_state = "die"  
+            self.current_state.done = True
+            self.current_state.next_state  = "die"  
 
     

@@ -25,14 +25,14 @@ class Computer(pygame.sprite.Sprite):
         self.rect.y -= cameraOffset[1]
 
         self.randomEnemyFactorySecuence.update(self.rect.x, self.rect.y)
-            
 
     def getText(self):
         return "Presiona E para interactuar."
     
     def draw(self,screen):
+        pass
         #self.interactiveIndicator.draw(screen)
-        pygame.draw.rect(screen, (255,255,255), self.randomEnemyFactorySecuence.spawnArea)
+        #pygame.draw.rect(screen, (255,255,255), self.randomEnemyFactorySecuence.spawnArea)
     
     
         

@@ -50,16 +50,16 @@ class RandomEnemyFactorySecuence(EnemyFactory):
         if currentCount < self.maxEnemyCount:
             selectEnemy = random.randint(0, 3)
             if selectEnemy == 0:
-                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
+                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 1:
-                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
+                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 2:
-                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
+                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 3:
-                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
+                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
                 self.enemiesGroup.add(en)
 
     def activate(self):

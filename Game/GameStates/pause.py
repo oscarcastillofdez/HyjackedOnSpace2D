@@ -1,3 +1,0 @@
-"""
-    PAUSE - INGAME MENU
-"""

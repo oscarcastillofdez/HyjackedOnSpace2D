@@ -61,10 +61,6 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
                        "attacking": Attack(ENEMIES_PATH + 'enemyTrooperWalk.png', self, scale, coordinates, color),
                        "die": Die(ENEMIES_PATH + 'enemyTrooperWalk.png', self, scale, coordinates, color)
         }
-        """self.states = {"patrolling": self.patrol,
-                       "chasing": self.chase,
-                       "attacking": self.attack,
-                       "die": self.die}"""
     
         self.state_name = "patrolling"
         self.current_state = self.states[self.state_name]
@@ -79,6 +75,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
             self.current_state.left = False
         else:
             self.current_state.left = True
+
         self.time += 1
         if self.time > 6:
             self.time = 0
@@ -86,6 +83,8 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
 
         self.current_state.update(dt, world, player, cameraOffset,enemies_group)
         self.player_in_sight(world, player)
+        if self.current_state.done:
+            self.change_state()
 
     def player_in_sight(self, world, player):
         dx = player.position().centerx - self.rect.centerx
@@ -101,7 +100,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
             self.visionLine.x = self.rect.centerx - 500
             self.visionLine.y = self.rect.y
 
-        if self.visionLine.colliderect(player.position()) and self.current_state != "attacking":
+        if self.visionLine.colliderect(player.position()) and self.state_name != "attacking":
             self.chaseTime = 120
             self.current_state.done = True
             self.current_state.next_state = "chasing"
@@ -109,7 +108,6 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
     def patrol(self,world, player,cameraOffset,enemies_group):
         # Comportamiento cuando está patrullando
         dy = 0
-
         self.moved += 1
         if self.moved >= 400:
             self.viewDirection = -self.viewDirection
