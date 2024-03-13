@@ -14,6 +14,9 @@ from UI.uiEnergy import UIEnergy
 from UI.uiCounter import UICounter
 from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
+from UI.uiGrenadeLauncherIcon import UIGrenadeLauncher
+from UI.uiPistolIcon import UIPistol
+from UI.uiPistolUpgradedIcon import UIPistolUpgrade
 from UI.uiHealthBar import UIBossHealthBar
 
 
@@ -40,12 +43,15 @@ class Level(Scene):
         self.uiCounter = UICounter()
         self.healthBar = UIBossHealthBar()
         self.uiCroshair = UIRahmCroshair()
+        self.uiPistol = UIPistol()
+        self.uiPistolUpgrade = UIPistolUpgrade()
+        self.uiGrenadeLauncher = UIGrenadeLauncher()
         self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter)
 
         self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.dificulty)
-        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair)
-
+        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
+        
     def manageJoystick(self, joystick):
         if joystick.get_axis(0) < -0.5:
             self.player.move_left()

@@ -13,6 +13,9 @@ from Game.world import World
 from UI.ui import Ui
 from Entities.Enemies.randomEnemyFactory import RandomEnemyFactory
 from UI.uiCounter import UICounter
+from UI.uiGrenadeLauncherIcon import UIGrenadeLauncher
+from UI.uiPistolIcon import UIPistol
+from UI.uiPistolUpgradedIcon import UIPistolUpgrade
 from UI.uiRahmCroshair import UIRahmCroshair
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts
@@ -30,7 +33,7 @@ class Level4(level.Level):
         # Creacion del mapa y ajuste de los elementos por el offset inicial
         self.world = World("Lvl4", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
         self.world.inicialOffset(self.cameraOffset)
-        
+
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
         self.interactiveGroup.update(self.cameraOffset)
         self.healthPickUps.update(self.player, self.cameraOffset, self.healthPickUps)

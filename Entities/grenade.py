@@ -70,7 +70,7 @@ class Grenade(pygame.sprite.Sprite):
         # Si no la lanzo un enemigo, la lanzo el jugador: Haz daño a enemigos cercanos
         if not enemies_group.has(self.parent):
             for enemy in enemies:
-                enemy.hit(self.damage)
+                enemy.hit(self.damage, False)
         else: # Si no la lanzo el jugador, la lanzo un enemigo: Haz daño al jugador si esta en el area de explosion
             if self.damageArea.rect.colliderect(self.player.position()):
                 self.player.hit(self.damage)
