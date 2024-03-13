@@ -20,7 +20,7 @@ class RandomEnemyFactorySecuence(EnemyFactory):
         self.dificulty = dificulty
         self.uiCounter = uiCounter
 
-        self.spawnArea = Rect(0,0,500,500)
+        self.spawnArea = Rect(0,0,500,200)
         self.observers = []
         
         self.maxEnemyCount = dificulty.getMaxEnemyCountOnComputerSecuence()
@@ -44,23 +44,21 @@ class RandomEnemyFactorySecuence(EnemyFactory):
         self.spawnArea.x = spawnCenterX + 1000
         self.spawnArea.y = spawnCenterY - 500
         spawnPointX = random.randrange(self.spawnArea.x, self.spawnArea.x + 500)
-        spawnPointY = random.randrange(self.spawnArea.y, self.spawnArea.y + 250)
+        spawnPointY = random.randrange(self.spawnArea.y, self.spawnArea.y + 500)
         
         currentCount = len(self.enemiesGroup) - self.initialCount
         if currentCount < self.maxEnemyCount:
-            selectEnemy = random.randint(0, 3)
+            selectEnemy = random.randint(0, 2)
             if selectEnemy == 0:
                 en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 1:
-                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
+                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 2:
-                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
+                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
                 self.enemiesGroup.add(en)
-            elif selectEnemy == 3:
-                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True,self.bullets_group)
-                self.enemiesGroup.add(en)
+
 
     def activate(self):
         self.firstTick = pygame.time.get_ticks()

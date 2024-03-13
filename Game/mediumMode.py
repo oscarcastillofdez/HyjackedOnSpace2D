@@ -28,19 +28,19 @@ class MediumMode():
         self.rayEnemyMinChasingTime = 60
         self.rayEnemyMaxChasingTime = 120
 
-        self.enemyBulletSpeed = 10
+        self.enemyBulletSpeed = 90
 
         self.flyingEnemyMaxViewDistance = 600
         self.enemyMinAttackDistance = 400
 
-        self.playerBulletSpeed = 10
+        self.playerBulletSpeed = 60
         self.playerBulletDamage = 1
         self.playerGrenadeDamage = 2
         self.playerShootGrenadeCooldown = 30
         self.playerShootCooldown = 15
         self.healthPickupHealingPower = 2
 
-        self.maxEnemyCountOnComputerSecuence = 15
+        self.maxEnemyCountOnComputerSecuence = 20
         self.countdownOnComputerScene = 60
         self.spawnDelayOnComputerScene = 40
 

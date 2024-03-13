@@ -75,7 +75,7 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             return self.player.getInteractuableText()
                 
         def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
-            self.shootCooldown -= 1
+            self.shootCooldown -= 1 * (dt/100)
             return self.player.update(world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset)
         
         def deflect(self, direction, newBulletImage, velocidadBala):

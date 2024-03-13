@@ -27,6 +27,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = image.get_rect(center=(0, 0))
         self.rect.x = x
         self.rect.y = y + 30
+        self.mask = pygame.mask.from_surface(self.image)
 
         self.rect.width = image.get_width() / 8
         self.rect.height = image.get_width() / 8
@@ -39,10 +40,13 @@ class Bullet(pygame.sprite.Sprite):
         self.bulletImpact.play()
         back_animations.add(self.bulletImpact)
     def move(self,cameraOffset, dt, world, enemies_group, back_animations,bullets_group):
-        self.rect.x -= self.velocidadX + cameraOffset[0]
-        self.rect.y -= self.velocidadY + cameraOffset[1]
+        dx = self.velocidadX * (dt/100)
+        dy = self.velocidadY * (dt/100)
 
-        enemigoGolpeado = pygame.sprite.spritecollide(self, enemies_group, False)
+        self.rect.x -= dx + cameraOffset[0]
+        self.rect.y -= dy + cameraOffset[1]
+
+        enemigoGolpeado = pygame.sprite.spritecollide(self, enemies_group, False, pygame.sprite.collide_mask)
 
         if not enemies_group.has(self.parent): # Si la bala no la disparo un enemigo, la disparo el jugador
             for enemigo in enemigoGolpeado:

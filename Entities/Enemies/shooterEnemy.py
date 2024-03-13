@@ -39,8 +39,10 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.distanciaAlJugador = 0
 
         # Atributos de control de disparo
-        self.shootCooldown = dificulty.getEnemyShootCooldown()
-        self.disparoImg = pygame.image.load('Assets/Images/Entities/Player/lazer_24.png')
+        self.maxShootCooldown = dificulty.getEnemyShootCooldown()
+        self.shootCooldown = self.maxShootCooldown
+        self.disparoImg = pygame.transform.scale(pygame.image.load('Assets/Images/Entities/Player/lazer_24.png'), (64,64))
+
         self.angle = 0
         self.velocidadBala = dificulty.getEnemyBulletSpeed()
         self.bulletDamage = dificulty.getShooterEnemyDamage()
@@ -75,7 +77,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
             self.current_state.left = False
         else:
             self.current_state.left = True
-
+        
         self.time += 1
         if self.time > 6:
             self.time = 0
@@ -93,7 +95,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.distanciaAlJugador = math.sqrt((dx**2) + (dy**2))
         self.angle = -math.degrees(math.atan2(dy, dx))
 
-        if self.viewDirection == 1:
+        if self.viewDirection == -1:
             self.visionLine.x = self.rect.centerx
             self.visionLine.y = self.rect.y
         else:
@@ -227,7 +229,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
             self.current_state.done = True
             self.current_state.next_state = "attacking"
     
-    def attack(self,world, player,cameraOffset,enemies_group):
+    def attack(self,world, player,cameraOffset,enemies_group, dt):
         # Disparar cada x segundos
         dy = 0
 
@@ -237,9 +239,9 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         
         dy += self.velY
 
-        self.shootCooldown -= 1
+        self.shootCooldown -= 10 * (dt/100)
         if self.shootCooldown <= 0:
-            self.shootCooldown = 30
+            self.shootCooldown = self.maxShootCooldown
             disparo = Bullet(self.disparoImg, self.angle, self.bulletDamage, self.velocidadBala, self.rect.x, self.rect.y, self, player, False)
             self.bullets_group.add(disparo)
 
