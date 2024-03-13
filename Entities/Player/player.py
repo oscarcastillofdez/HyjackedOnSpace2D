@@ -139,20 +139,11 @@ class Player(PlayerAbstract):
             
         def getInteractuableText(self):
             return self.interactuableText
-
-        def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
-            cameraOffsetX, cameraOffsetY = cameraOffset
-
-            self.interact(interactuableGroup)
-            self.interactTrigger(triggerGroup)
-            self.hitCooldown -= 1
-
-            print(self.currentVelocity)
-
-            normalMovement = True
-            
+        
+        def dashUpdate(self):
+            if self.dashCooldown > 0:
+                self.dashCooldown -= 1
             if self.dashing:
-                normalMovement = False
                 if self.dashDuration == 0:
                     if self.moving_left and self.moving_right == False:
                         self.currentVelocity = -DASH_SPEED
@@ -171,54 +162,43 @@ class Player(PlayerAbstract):
                     if self.dashDuration == 0:
                         #Cancelar el dash
                         self.dashCooldown = 0
-                        normalMovement = True
+                        return True
+                    return False
                 elif self.dashDuration > 0 and self.dashDuration <= DASH_DURATION:
                     self.dashDuration += 1
+                    return False
                 else:
                     self.dashing = False
-                    normalMovement = True
-
-
-            if normalMovement:
-
-                # Calculo del movimiento horizontal
+                    return True
+            else:
+                return True
                 
-                self.left_mov = move_horizontal(self.moving_left, self.left_mov, dt)
-                self.right_mov = move_horizontal(self.moving_right, self.right_mov, dt)
-                self.currentVelocity = self.right_mov - self.left_mov
+        def normalMovement(self, dt):
+                
+            # Calculo del movimiento horizontal
+                
+            self.left_mov = move_horizontal(self.moving_left, self.left_mov, dt)
+            self.right_mov = move_horizontal(self.moving_right, self.right_mov, dt)
+            self.currentVelocity = self.right_mov - self.left_mov
             
+            # Calculo del movimiento vertical
+            if self.jumping and self.inAir == False and self.pressed_jump == 0:
+                self.velY = -MIN_JUMP_HEIGHT
+                self.hold_jump = True
+            elif self.jumping == False or self.pressed_jump > MAX_JUMP_HEIGHT:
+                self.hold_jump = False
+            elif self.jumping and self.inAir and self.hold_jump:
+                self.velY = -MIN_JUMP_HEIGHT
+                self.pressed_jump += 1
+            # Para que al mantener el espacio solo salte una vez
+            if self.jumping == False:
+                self.pressed_jump = 0
+            # Se añade la gravedad al movimiento en y
+            self.velY += (GRAVITY * dt//1000)
+            if self.velY > MAX_FALL_VELOCITY:
+                 self.velY = MAX_FALL_VELOCITY
 
-                # Calculo del movimiento vertical
-                if self.jumping and self.inAir == False and self.pressed_jump == 0:
-                    self.velY = -MIN_JUMP_HEIGHT
-                    self.hold_jump = True
-                elif self.jumping == False or self.pressed_jump > MAX_JUMP_HEIGHT:
-                    self.hold_jump = False
-                elif self.jumping and self.inAir and self.hold_jump:
-                    self.velY = -MIN_JUMP_HEIGHT
-                    self.pressed_jump += 1
-
-                # Para que al mantener el espacio solo salte una vez
-                if self.jumping == False:
-                    self.pressed_jump = 0
-
-                # Se añade la gravedad al movimiento en y
-                self.velY += (GRAVITY * dt//1000)
-                if self.velY > MAX_FALL_VELOCITY:
-                     self.velY = MAX_FALL_VELOCITY
-            dy = self.velY
-            dx = self.currentVelocity
-
-            if self.dashCooldown > 0:
-                self.dashCooldown -= 1
-
-            self.inAir = True
-
-            if self.grabbed:
-                dx = 0
-                dy = -self.dragSpeed
-
-            # Se calculan las colisiones en ambos ejes
+        def collisions(self, world, dx, dy):
             tileHitBoxList = world.getTilesList()
             platformHitBoxList = world.getPlatformsList()
             destructibleHitBoxList = world.getDestructiblesList()
@@ -266,10 +246,11 @@ class Player(PlayerAbstract):
                         """ self.state.done = True
                         self.state.next_state = self.state.posibleNexts["STOP-JUMP"]"""
             
+            return (dx, dy)
+
+        def scroll(self, dx, dy):
             cameraOffsetX = 0
             cameraOffsetY = 0
-
-
             # Si el jugador se mueve en los limites del scroll se mueve sin mas, si no se hace scroll
             if self.rect.x > SCREEN_WIDTH / 3 and self.rect.x < SCREEN_WIDTH - (SCREEN_WIDTH / 3):
                 self.rect.x += dx 
@@ -285,12 +266,9 @@ class Player(PlayerAbstract):
             else:
                 cameraOffsetY = dy
 
-            # Se reinician las variables de movimiento
-            self.moving_left = False
-            self.moving_right = False
-            self.lookingUp = False
-            self.lookingDown = False
-
+            return (cameraOffsetX,cameraOffsetY)
+        
+        def shake(self):
             shakingX = 0
             shakingY = 0
 
@@ -302,8 +280,34 @@ class Player(PlayerAbstract):
                 
                 #shakingX = random.randint(0, 8) - 4
                 #shakingY = random.randint(0,8) - 4
+            
+            return (shakingX, shakingY)
 
-            self.jumping = False
+        def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
+
+            self.interact(interactuableGroup)
+            self.interactTrigger(triggerGroup)
+            self.hitCooldown -= 1
+
+            print(self.dashing)
+
+            # dashUpdate calcula el dash y devuelve True si no se está en un dash
+            if self.dashUpdate():
+                self.normalMovement(dt)
+
+            dy = self.velY
+            dx = self.currentVelocity
+
+            self.inAir = True
+
+            if self.grabbed:
+                dx = 0
+                dy = -self.dragSpeed
+
+            (dx, dy) = self.collisions(world, dx, dy)            
+            cameraOffsetX, cameraOffsetY = self.scroll(dx,dy)
+
+            shakingX, shakingY = self.shake()
 
             if self.state.done:
                 self.change_state()
@@ -315,6 +319,13 @@ class Player(PlayerAbstract):
                 self.standing = self.state.next_sprite(self.direction)
                 self.anim = 0
             self.anim += 1
+
+            # Se reinician las variables de movimiento
+            self.moving_left = False
+            self.moving_right = False
+            self.lookingUp = False
+            self.lookingDown = False
+            self.jumping = False
             
             return (cameraOffsetX + shakingX, cameraOffsetY + shakingY)
 
