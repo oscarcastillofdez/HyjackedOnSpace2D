@@ -43,6 +43,12 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
 
             self.addObserver(ui.uiGrenadeLauncher)
             ui.uiGrenadeLauncher.toggleShow()
+        
+        def getUiText(self):
+            return self.player.getUiText()
+        
+        def getUiHearts(self):
+            return self.player.getUiHearts()
 
         def move_left(self):
             self.player.move_left()

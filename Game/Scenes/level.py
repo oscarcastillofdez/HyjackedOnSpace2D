@@ -21,8 +21,10 @@ from UI.uiHealthBar import UIBossHealthBar
 
 
 class Level(Scene):
-    def __init__(self, director, offset, dificulty):
+    def __init__(self, director, offset, dificulty, player, uienergy, uicounter, healthBar, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher):
         super(Level, self).__init__(director)
+
+        self.player = player
         self.cameraOffset = offset
         self.dificulty = dificulty
         self.enemies_group = pygame.sprite.Group()
@@ -37,19 +39,19 @@ class Level(Scene):
         self.gunPickups = pygame.sprite.Group()
         self.triggerGroup = pygame.sprite.Group()
 
-        self.uiText = UIText()
-        self.uiHearts = UIHearts()
-        self.uiEnergy = UIEnergy()
-        self.uiCounter = UICounter()
-        self.healthBar = UIBossHealthBar()
-        self.uiCroshair = UIRahmCroshair()
-        self.uiPistol = UIPistol()
-        self.uiPistolUpgrade = UIPistolUpgrade()
-        self.uiGrenadeLauncher = UIGrenadeLauncher()
-        self.randomEnemyFactory = SelectedEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair, self.dificulty, self.gunPickups)
+        self.uiText = self.player.getUiText()
+        self.uiHearts = self.player.getUiHearts()
+        self.uiEnergy = uienergy
+        self.uiCounter = uicounter
+        self.healthBar = healthBar
+        self.uiCroshair = uicroshair
+        self.uiPistol = uipistol
+        self.uiPistolUpgrade = uipistolUpgrade
+        self.uiGrenadeLauncher = uigrenadeLauncher
+        
+        self.randomEnemyFactory = RandomEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter, self.bullets_group)
 
-        self.player = Player(self.screen_rect.center[0], self.screen_rect.center[1],self.uiHearts,self.uiText, self.dificulty)
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
         
     def manageJoystick(self, joystick):

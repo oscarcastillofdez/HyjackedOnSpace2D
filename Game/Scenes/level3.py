@@ -21,8 +21,8 @@ from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
 
 
 class Level3(level.Level):
-    def __init__(self, director, offset, dificulty):
-        super(Level3, self).__init__(director, offset, dificulty)
+    def __init__(self, director, offset, dificulty, player, uienergy, uicounter, healthBar, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher):
+        super(Level3, self).__init__(director, offset, dificulty, player, uienergy, uicounter, healthBar, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
 
         self.world = World("Lvl3", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
         self.world.inicialOffset(self.cameraOffset)
@@ -47,11 +47,11 @@ class Level3(level.Level):
             text = trigger.update(self.cameraOffset)
             if text != "":
                 if text == "lvl2":
-                    scene = lvl2.Level2(self.director, LVL3_TO_LVL2, self.dificulty)
+                    scene = lvl2.Level2(self.director, LVL3_TO_LVL2, self.dificulty, self.player, self.uiEnergy, self.uiCounter, self.healthBar, self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
                     scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl2Vent":
-                    scene = lvl2.Level2(self.director, LVL3_TO_LVL2_ALTER, self.dificulty)
+                    scene = lvl2.Level2(self.director, LVL3_TO_LVL2_ALTER, self.dificulty, self.player, self.uiEnergy, self.uiCounter, self.healthBar, self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
                     scene.startup()
                     self.director.changeScene(scene)
 

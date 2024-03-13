@@ -13,8 +13,10 @@ import random
 
 
 class Player(PlayerAbstract):
-        def __init__(self, x, y,uiHearts, uiText, dificulty):
+        def __init__(self, x, y, dificulty, uiText, uiHearts):
             super().__init__(x, y, dificulty)
+            self.uiText = uiText
+            self.uiHearts = uiHearts
             self.collisionHandler = CollisionHandler()
 
             self.dificulty = dificulty
@@ -38,9 +40,16 @@ class Player(PlayerAbstract):
             self.currentVelocity = 0
             self.interactedOnce = False
 
-            self.addObserver(uiText)
             self.addObserver(uiHearts)
+            self.addObserver(uiText)
 
+            
+        def getUiText(self):
+            return self.uiText
+        
+        def getUiHearts(self):
+            return self.uiHearts
+        
         def changeStates(self):
             pass
 

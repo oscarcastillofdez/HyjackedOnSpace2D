@@ -54,6 +54,12 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
         self.shootEffect.set_volume(self.volume)
         ui.uiPistolUpgrade.toggleShow()
 
+    def getUiText(self):
+        return self.player.getUiText()
+        
+    def getUiHearts(self):
+        return self.player.getUiHearts()
+
     def idle(self):
         self.player.idle()
 
