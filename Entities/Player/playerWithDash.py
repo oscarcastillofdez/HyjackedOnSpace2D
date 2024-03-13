@@ -13,7 +13,7 @@ class PlayerWithDash(PlayerAbstract):
         self.player = player
 
         self.shootCooldown = self.shootCooldownConst
-        self.disparoImg = pygame.transform.scale(pygame.image.load(PLAYER_PATH + 'lazer_2.png'), (128,128))
+        
         self.bulletDamageUpgraded = self.bulletDamage + 2
         # Imagenes
         self.states = {
@@ -84,7 +84,7 @@ class PlayerWithDash(PlayerAbstract):
         self.player.shootUpdateSprites(direction)
 
     def shoot(self, direction, bullets_group):
-        self.shootUpdateSprites(direction)
+        self.player.shoot(direction, bullets_group)
 
     def draw(self, screen):
         self.player.draw(screen)
