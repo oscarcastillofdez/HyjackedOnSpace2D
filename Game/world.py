@@ -9,6 +9,7 @@ from Constants.constants import *
 from Entities.health import Health
 from Entities.grenadeLauncher import GrenadeLauncher
 from Entities.pistol import Pistol
+from Entities.dash import Dash
 import Interactives.trigger as Trigger
 
 
@@ -175,6 +176,10 @@ class World():
                     pistol = PistolUpgrade(mapaX * tileWidth, mapaY * tileHeight)
                     self.gunPickups.add(pistol)
 
+                elif tile == 9:
+                    dash = Dash(mapaX * tileWidth, mapaY * tileHeight)
+                    self.gunPickups.add(dash)
+
 
                 elif tile == 40:
                     trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth*6, tileHeight, "lvl1")
@@ -203,6 +208,7 @@ class World():
                 elif tile == 48:
                     trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth, tileHeight*4, "lvl2Vent")
                     self.triggerGroup.add(trigger)
+                
                     
                 # Se actualiza la posicion del mapa
                 mapaX += 1

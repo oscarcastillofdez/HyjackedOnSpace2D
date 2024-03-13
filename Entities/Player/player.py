@@ -41,14 +41,6 @@ class Player(PlayerAbstract):
             self.addObserver(uiText)
             self.addObserver(uiHearts)
 
-            #Dash (luego se mueve)
-            self.dashing = False
-            self.dashCooldown = 0
-            self.holdDash = False
-            self.dashDuration = 0
-            self.lookingUp = False
-            self.lookingDown = False
-
         def changeStates(self):
             pass
 
@@ -92,20 +84,29 @@ class Player(PlayerAbstract):
                 self.state.next_state = self.state.posibleNexts["JUMP"]
 
         def dash(self):
-            if self.dashCooldown == 0 and self.holdDash == False:
-                self.dashing = True
-                self.dashDuration = 0
-                self.dashCooldown = 100
-                self.holdDash = True 
+            pass
 
         def unDash(self):
-            self.holdDash = False
+            pass
         
         def lookUp(self):
             self.lookingUp = True
 
         def lookDown(self):
-            self.lookingDown = True
+            self.lookingDown = False
+
+        def getDashCooldown(self):
+            return self.dashCooldown
+        def getHoldDash(self):
+            return self.holdDash
+        def setHoldDash(self, b):
+            self.holdDash = b
+        def setDashing(self, b):
+            self.dashing = b
+        def setDashDuration(self, n):
+            self.dashDuration = n
+        def setDashCooldown(self, n):
+            self.dashCooldown = n
 
         def getHp(self):
             return self.healthPoints

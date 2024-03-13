@@ -10,11 +10,11 @@
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "lvlData.json": {
-            "scale": 0.8297,
-            "selectedLayer": 1,
+            "scale": 0.5027,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1941.665662287574,
-                "y": 1587.9233457876342
+                "x": 1499.9005370996615,
+                "y": 1580.4654863735823
             }
         },
         "texturas.json": {

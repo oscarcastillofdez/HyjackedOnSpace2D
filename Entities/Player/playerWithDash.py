@@ -7,12 +7,14 @@ from .playerAbstract import PlayerAbstract
 from Entities.bullet import Bullet
 from Constants.constants import *
 
-class PlayerWithPistolUpgrade(PlayerAbstract):
+class PlayerWithDash(PlayerAbstract):
     def __init__(self, player, ui):
         super().__init__(player.position().x, player.position().y, player.getDificulty())
         self.player = player
 
-        self.shootCooldown = self.shootCooldownConst        
+        self.shootCooldown = self.shootCooldownConst
+        self.disparoImg = pygame.transform.scale(pygame.image.load(PLAYER_PATH + 'lazer_2.png'), (128,128))
+        self.bulletDamageUpgraded = self.bulletDamage + 2
         # Imagenes
         self.states = {
             "IDLE": Idle(True),
@@ -73,11 +75,8 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
         self.player.interact(interactuableGroup)
 
     def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset):
-        cameraOffset = self.player.update(world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset)
-        self.shootCooldown -= 1
-        
-        return cameraOffset
-            
+        return self.player.update(world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset)
+                   
     def deflect(self, direction, bulletImage, velocidadBala, damage, posx, posy, bullets_group):
         self.player.deflect(direction, bulletImage, velocidadBala, damage, posx, posy, bullets_group)
 
@@ -86,14 +85,6 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
 
     def shoot(self, direction, bullets_group):
         self.shootUpdateSprites(direction)
-
-        if self.shootCooldown <= 0:
-            self.shootEffect.stop()
-            self.shootEffect.play()
-            self.shootCooldown = self.shootCooldownConst
-            disparo = Bullet(self.disparoImg, direction, self.bulletDamageUpgraded, self.bulletSpeed, self.player.position().centerx - 40, self.player.position().top - 40, self, self, False)
-            bullets_group.add(disparo)
-            
 
     def draw(self, screen):
         self.player.draw(screen)
@@ -129,12 +120,16 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
         super().setVolume(volume)
         self.shootEffect.set_volume(volume)
 
-    def dash(self):        
-            self.player.dash()
+    def dash(self):    
+      if self.getDashCooldown() == 0 and self.getHoldDash() == False:
+        self.setDashing(True)
+        self.player.setDashDuration(0)
+        self.player.setDashCooldown(100)
+        self.player.setHoldDash(True)
 
     def unDash(self):
-        self.player.unDash()
-      
+      self.player.setHoldDash(False)
+        
     def lookUp(self):
       self.player.lookUp()
 

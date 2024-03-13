@@ -139,3 +139,28 @@ class PlayerWithPistol(PlayerAbstract):
     def setVolume(self, volume):
         super().setVolume(volume)
         self.shootEffect.set_volume(volume)
+    
+    def dash(self):        
+            self.player.dash()
+
+    def unDash(self):
+        self.player.unDash()
+      
+    def lookUp(self):
+      self.player.lookUp()
+
+    def lookDown(self):
+      self.player.lookDown()
+
+    def getDashCooldown(self):
+        return self.player.getDashCooldown()
+    def getHoldDash(self):
+        return self.player.getHoldDash()
+    def setHoldDash(self, b):
+        self.player.setHoldDash(b)
+    def setDashing(self, b):
+        self.player.setDashing(b)
+    def setDashDuration(self, n):
+        self.player.setDashDuration(n)
+    def setDashCooldown(self, n):
+        self.player.setDashCooldown(n)

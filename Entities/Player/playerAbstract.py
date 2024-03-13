@@ -50,6 +50,14 @@ class PlayerAbstract():
         self.jumpEffect = pygame.mixer.Sound('Assets/Audio/SoundEffects/JumpEffect.mp3')
         self.volume = 0.7
         self.jumpEffect.set_volume(self.volume)
+
+        #Dash
+        self.dashing = False
+        self.dashCooldown = 0
+        self.holdDash = False
+        self.dashDuration = 0
+        self.lookingUp = False
+        self.lookingDown = False
         
     
     # Metodo para cambiar los estados cuando se coge un arma diferente
@@ -114,6 +122,18 @@ class PlayerAbstract():
     def setVolume(self, volume):
         self.jumpEffect.set_volume(volume)
         self.volume = volume
+
+    def dash(self):
+        pass
+
+    def unDash(self):
+        pass
+        
+    def lookUp(self):
+        pass
+
+    def lookDown(self):
+        pass
     
 
 

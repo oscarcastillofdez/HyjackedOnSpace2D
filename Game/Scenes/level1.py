@@ -55,6 +55,7 @@ class Level1(level.Level):
                     scene.startup()
                     self.director.changeScene(scene)
 
+
         #if self.player.checkInteractuable(self.world):
             #self.text.showInteractuableText("Presiona E para interactuar.", "white")
             

@@ -132,8 +132,8 @@ class Level(Scene):
             self.player.doInteract(self.interactiveGroup)
         if keys[pygame.K_LSHIFT]:
             self.player.dash()
-        #else:
-            #self.player.unDash()
+        else:
+            self.player.unDash()
         if keys[pygame.K_w]:
             self.player.lookUp()
         if keys[pygame.K_s]:
