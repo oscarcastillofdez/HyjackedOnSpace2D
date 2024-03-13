@@ -3,34 +3,38 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "lvlData.json",
+    "activeFile": "/home/juan/Escritorio/COSAS/CIIE/HyjackedOnSpace2D/Assets/Images/World/Lvl4/texturas.json",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
+        "/home/juan/Escritorio/COSAS/CIIE/HyjackedOnSpace2D/Assets/Images/World/Lvl4/texturas.json": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "lvlData.json": {
             "scale": 0.33814062500000003,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1599.9260662631114,
-                "y": 962.6172542858461
+                "x": 1591.0540178365138,
+                "y": 959.6599048103137
             }
         },
         "lvlData2.json": {
             "scale": 0.33814062500000003,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1599.9260662631114,
-                "y": 962.6172542858461
+                "x": 1596.9687167875788,
+                "y": 959.6599048103137
             }
         },
         "lvlData3.json": {
             "scale": 0.25,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 4800,
-                "y": 3198
+                "x": 4796,
+                "y": 3194
             }
         },
         "texturas.json": {
@@ -44,13 +48,15 @@
     "openFiles": [
         "lvlData3.json",
         "lvlData.json",
-        "lvlData2.json"
+        "lvlData2.json",
+        "/home/juan/Escritorio/COSAS/CIIE/HyjackedOnSpace2D/Assets/Images/World/Lvl4/texturas.json"
     ],
     "project": "nivel3.tiled-project",
     "recentFiles": [
         "lvlData3.json",
+        "lvlData.json",
         "lvlData2.json",
-        "lvlData.json"
+        "/home/juan/Escritorio/COSAS/CIIE/HyjackedOnSpace2D/Assets/Images/World/Lvl4/texturas.json"
     ],
     "tileset.lastUsedFormat": "json"
 }
