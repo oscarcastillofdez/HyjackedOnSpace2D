@@ -21,7 +21,7 @@ from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
 
 
-class Level3(Scene):
+class Level3(level.Level):
     def __init__(self, director, offset, dificulty):
         super(Level3, self).__init__(director, offset, dificulty)
 
