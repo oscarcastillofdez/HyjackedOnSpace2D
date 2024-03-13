@@ -63,7 +63,6 @@ class PlayerWithPistol(PlayerAbstract):
         self.player.direction == None
         self.player.state.done = True
         self.player.state.next_state = self.player.state.posibleNexts["STOP-SHOOT"]
-        pass
 
     def move_left(self):
         self.player.move_left()

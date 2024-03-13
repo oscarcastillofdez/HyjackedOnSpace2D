@@ -16,6 +16,6 @@ class RandomEnemyFactory(EnemyFactory):
     def createEnemy(self, columna, fila, dificulty, gunPickups):
         return Rahm(columna, fila, self.bulletsGroup, dificulty, self.uiBossHealthBar, gunPickups, self.uiCroshair)
     
-    def createEnemy2(self, columna, fila, hitBox):
-        return WallDestructible(columna, fila, hitBox)
+    def createEnemy2(self, columna, fila,destructibleTile_list):
+        return WallDestructible(columna, fila,destructibleTile_list)
         

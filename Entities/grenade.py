@@ -14,7 +14,7 @@ class GrenadeDamageArea(pygame.sprite.Sprite):
 
         def update(self,x,y):
             self.rect.x = x - self.rect.width / 2
-            self.rect.y = y - self.rect.height / 2 - 50
+            self.rect.y = y - self.rect.height / 2 - 40
             
 
 class Grenade(pygame.sprite.Sprite):
@@ -64,8 +64,7 @@ class Grenade(pygame.sprite.Sprite):
         enemies = pygame.sprite.spritecollide(self.damageArea, enemies_group, False)
 
         for destructible in destructibles:
-            destructible.destroy(back_animations,world)
-            destructibles_group.remove(destructible)
+            destructible.destroy(back_animations,world, destructibles_group)
 
         # Si no la lanzo un enemigo, la lanzo el jugador: Haz daño a enemigos cercanos
         if not enemies_group.has(self.parent):

@@ -28,8 +28,6 @@ class World():
             self.enemyFactory = enemyFactory
             self.triggerGroup = triggerGroup
             self.enemyFactorySecuence = enemyFactorySecuence
-            self.globalOffsetX = 0
-            self.globalOffsetY = 0
 
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
             pistola2 = pygame.image.load(PLAYER_PATH + '/pistol2.png')
@@ -38,10 +36,6 @@ class World():
 
             self.shieldImage = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/plasma_shield.png'), (45,45))
             self.cargarNivel(lvl)
-
-        def getGlobalOffset(self):
-            return (self.globalOffsetX, self.globalOffsetY)
-        
 
         def inicialOffset(self, cameraOffset):
 
@@ -59,11 +53,6 @@ class World():
                 platform[1].x -= cameraOffsetX
                 platform[1].y -= cameraOffsetY
             
-            for destructible in self.destructibleTile_list:
-                destructible.x -= cameraOffsetX
-                destructible.y -= cameraOffsetY
-
-
         def draw(self, screen, cameraOffset):
             # Se dibuja las tiles teniendo en cuenta el scroll
 
@@ -86,13 +75,6 @@ class World():
                 platform[1].x -= cameraOffsetX
                 platform[1].y -= cameraOffsetY
                 screen.blit(platform[0], platform[1])
-
-            for destructible in self.destructibleTile_list:
-                destructible.x -= cameraOffsetX
-                destructible.y -= cameraOffsetY
-            
-            self.globalOffsetX -= cameraOffsetX
-            self.globalOffsetY -= cameraOffsetY
 
         def seleccionarTextura(self, fila, columna, maxColumna, altura, anchura, imagen):
             if columna >= maxColumna:
@@ -185,11 +167,10 @@ class World():
                     self.interactiveGroup.add(computer)
 
                 elif tile == 7:
-                    textureRect = pygame.Rect(mapaX * tileWidth, mapaY * tileHeight, tileWidth,tileHeight)
-                    self.destructibleTile_list.append(textureRect)
-
-                    en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight, textureRect)
+                    en = self.enemyFactory.createEnemy2(mapaX * tileWidth, mapaY * tileHeight,self.destructibleTile_list)
+                    self.destructibleTile_list.append(en.rect)
                     self.destructibles_group.add(en)
+
                 elif tile == 8:
                     pistol = PistolUpgrade(mapaX * tileWidth, mapaY * tileHeight)
                     self.gunPickups.add(pistol)

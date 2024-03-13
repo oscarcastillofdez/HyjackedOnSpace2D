@@ -124,8 +124,6 @@ class Rahm(pygame.sprite.Sprite, Entity):
                 if self.current_state != "dead":
                     self.current_state = "die"
         
-        self.globalOffset = world.getGlobalOffset()
-            
         self.player_in_sight(world, player)
         self.states[self.current_state](world, player, cameraOffset, enemies_group) # Llama al estado correspondiente (patrol, chase o attack)
 
