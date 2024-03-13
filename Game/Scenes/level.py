@@ -21,7 +21,7 @@ from UI.uiHealthBar import UIBossHealthBar
 
 
 class Level(Scene):
-    def __init__(self, director, offset, dificulty, player, uienergy, uicounter, healthBar, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher):
+    def __init__(self, director, offset, dificulty, player, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher):
         super(Level, self).__init__(director)
 
         self.player = player
@@ -43,11 +43,11 @@ class Level(Scene):
         self.uiHearts = self.player.getUiHearts()
         self.uiEnergy = uienergy
         self.uiCounter = uicounter
-        self.healthBar = healthBar
         self.uiCroshair = uicroshair
         self.uiPistol = uipistol
         self.uiPistolUpgrade = uipistolUpgrade
         self.uiGrenadeLauncher = uigrenadeLauncher
+        self.healthBar = UIBossHealthBar()
         
         self.randomEnemyFactory = SelectedEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair, self.dificulty, self.gunPickups)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter, self.bullets_group)
