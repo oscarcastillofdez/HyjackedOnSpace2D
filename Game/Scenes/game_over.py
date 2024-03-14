@@ -45,6 +45,7 @@ class GameOver(Scene):
                            self.persist['UIPistol'],
                            self.persist['uipistolupgrade'],
                            self.persist['UIGrenadeLauncher'],
+                           self.persist['UIDash'],
                            self.persist)
             elif self.persist['checkpoint'] == c.CHECKPOINT_LVL3:
                 scene = level3.Level3(self.director, c.CHECKPOINT_LVL3,
@@ -54,6 +55,7 @@ class GameOver(Scene):
                             self.persist['UIPistol'],
                             self.persist['uipistolupgrade'],
                             self.persist['UIGrenadeLauncher'],
+                            self.persist['UIDash'],
                             self.persist)
             elif self.persist['checkpoint'] == c.INIT_OFFSET:
                 scene = level1.Level1(self.director, c.INIT_OFFSET,
@@ -63,6 +65,7 @@ class GameOver(Scene):
                             self.persist['UIPistol'],
                             self.persist['uipistolupgrade'],
                             self.persist['UIGrenadeLauncher'],
+                            self.persist['UIDash'],
                             self.persist)
             self.director.changeScene(scene)
         if keys[pygame.K_ESCAPE]:
