@@ -26,7 +26,6 @@ class PlayerAbstract():
         self.grabbed = False
         self.dragSpeed = 0
         self.shaking = 0
-
         
         #Vida
         self.maxHealthPoints = 3
@@ -41,7 +40,7 @@ class PlayerAbstract():
         self.bulletSpeed = dificulty.getPlayerBulletSpeed()
         self.shootCooldownConst = dificulty.getPlayerShootCooldown()
         self.shootGrenadeCooldownConst = dificulty.getPlayerShootGrenadeCooldown()
-        self.grenadeDamage = dificulty.getPlayerGrenadeDamage() + 100
+        self.grenadeDamage = dificulty.getPlayerGrenadeDamage()
         
         # Sprites
         self.direction = 0

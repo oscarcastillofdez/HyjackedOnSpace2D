@@ -277,6 +277,7 @@ class Rahm(pygame.sprite.Sprite, Entity):
     
     def stunned(self,world, player,cameraOffset,enemies_group):
         self.stunnedCooldown -= 1
+        self.image = self.spritesMelee[0]
         if self.stunnedCooldown < 0:
             self.shotsCount = 0
             self.attackCooldown = randint(220, 300)

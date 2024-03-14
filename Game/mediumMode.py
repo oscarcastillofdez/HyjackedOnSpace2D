@@ -42,7 +42,7 @@ class MediumMode():
 
         self.maxEnemyCountOnComputerSecuence = 20
         self.countdownOnComputerScene = 60
-        self.spawnDelayOnComputerScene = 40
+        self.spawnDelayOnComputerScene = 55
 
     
     def getMeleeEnemyDamage(self):

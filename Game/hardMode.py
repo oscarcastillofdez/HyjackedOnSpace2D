@@ -42,7 +42,7 @@ class HardMode():
 
         self.maxEnemyCountOnComputerSecuence = 30
         self.countdownOnComputerScene = 90
-        self.spawnDelayOnComputerScene = 20
+        self.spawnDelayOnComputerScene = 55
 
     
     def getMeleeEnemyDamage(self):

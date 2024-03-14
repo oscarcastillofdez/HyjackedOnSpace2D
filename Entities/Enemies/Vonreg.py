@@ -36,12 +36,13 @@ class Vonreg(pygame.sprite.Sprite, Entity):
 
         # Atributos de vision
         self.distanciaAlJugador = 100000
-        self.minMeleeAtackDistance = 50
+        self.minChasingDistance = 520
+        self.minMeleeAtackDistance = 225
         self.angle = 0
         self.lineStart = (self.rect.centerx, self.rect.centery)
 
         # Atributos de vida
-        self.maxHealth = 300
+        self.maxHealth = 100
         self.currentHealth = self.maxHealth
 
         self.healthChangeSpeed = 5
@@ -111,7 +112,8 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         self.player_in_sight(world, player)
 
     def patrol(self, world, player,cameraOffset,enemies_group):
-        if self.distanciaAlJugador < 50:
+        self.maxHealth = 100
+        if self.distanciaAlJugador < self.minChasingDistance:
             print(self.distanciaAlJugador)
             self.healthBar.togleShow()
             self.current_state = "chasing"
@@ -170,6 +172,11 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         if self.distanciaAlJugador < self.minMeleeAtackDistance:
             self.index = 0
             self.current_state = "attackingMelee"
+        
+        if self.distanciaAlJugador > self.minChasingDistance:
+            self.index = 0
+            self.healthBar.togleShow()
+            self.current_state = "patrolling"
 
     # Lógica para determinar si el jugador está dentro del rango de visión
     def player_in_sight(self, world, player):
