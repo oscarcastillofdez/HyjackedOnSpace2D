@@ -16,6 +16,7 @@ class Vonreg(pygame.sprite.Sprite, Entity):
     def __init__(self,x,y,grenadesGroup, dificulty, healthBar, gunPickups) -> None:
         pygame.sprite.Sprite.__init__(self)
         #self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Barnacle.png'), (64,64))
+        self.hitImage = pygame.image.load(ENEMIES_PATH + "hit.png")
         self.spritesheet = Spritesheet(ENEMIES_PATH + 'Vonreg/Vonreg_spritesheet.png', (200,200))
         self.spritesIdle = self.spritesheet.get_animation(0,100,100,100,8)
         self.spritesAtackMelee = self.spritesheet.get_animation(0,400,100,100,7)
@@ -187,6 +188,7 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         pass
     
     def hit(self, damage,deflected):
+        self.image = self.hitImage
         self.targetHealth -= damage
         
     

@@ -26,6 +26,8 @@ class Player(PlayerAbstract):
                 "RUN": Run(False),
                 "JUMP": Jump(False)
             }
+            self.hitImage = pygame.image.load(ENEMIES_PATH + "hit.png")
+
             """"RUN": Run(False),
                 "JUMP": Jump(False)"""
             self.anim = 0
@@ -35,13 +37,13 @@ class Player(PlayerAbstract):
 
             self.standing = self.state.get_initial()
             self.deadImage = pygame.transform.rotate(self.standing,90)
-            self.hitImage = pygame.transform.rotate(self.standing,90)
             self.shaking = -1
             self.currentVelocity = 0
             self.interactedOnce = False
 
             self.addObserver(uiHearts)
             self.addObserver(uiText)
+            
 
             
         def getUiText(self):

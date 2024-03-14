@@ -16,6 +16,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         self.collisionHandler = CollisionHandler()
 
         # Atributos de posicion e imagen
+        self.hitImage = pygame.image.load(ENEMIES_PATH + "hit.png")
         self.time = 0
         self.rect = pygame.Rect(0,0,100,60)
         self.rect.x = x
@@ -248,6 +249,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
 
     def hit(self, damage,deflected):
         self.health -= damage
+        self.image = self.hitImage
         if self.health <= 0:
             self.state_name = "die"
             self.current_state.done = True

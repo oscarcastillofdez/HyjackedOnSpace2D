@@ -12,6 +12,7 @@ class BarnacleEnemy(pygame.sprite.Sprite, Entity):
         self.rect.y = y
 
         self.tongueImage = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Barnacle_tongue.png'), (64,400))
+        self.hitImage = pygame.image.load(ENEMIES_PATH + "hit.png")
         #self.verticalRect = pygame.Rect(self.rect.centerx,self.rect.centery,10, 400)
         self.tongueRect = self.tongueImage.get_rect()
         self.tongueRect.x = self.rect.x
@@ -63,6 +64,7 @@ class BarnacleEnemy(pygame.sprite.Sprite, Entity):
 
     def hit(self, damage,deflected):
         self.health -= damage
+        self.image = self.hitImage
         if self.health <= 0:
             self.current_state = "die"
     
