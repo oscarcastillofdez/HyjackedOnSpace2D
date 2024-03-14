@@ -1,8 +1,10 @@
 import pygame
 from .scene import Scene
 import Game.Scenes.menu as menu
-from .level4 import Level4
-import Game.Scenes.level3 as level
+import Game.Scenes.level3 as level3
+import Game.Scenes.level4 as level4
+import Game.Scenes.level2 as level2
+import Game.Scenes.level1 as level1
 import Constants.constants as c
 
 class GameOver(Scene):
@@ -26,7 +28,7 @@ class GameOver(Scene):
         for event in events:
             if event.type == pygame.QUIT:
                 self.director.endApplication()
-                
+
         for joystick in joysticks.values():
             self.manageJoystick(joystick)
 
@@ -34,14 +36,34 @@ class GameOver(Scene):
             scene = menu.Menu(self.director)
             self.director.changeScene(scene)
         if keys[pygame.K_SPACE]:
-            scene = level.Level3(self.director, c.CHECKPOINT_LVL3, self.persist['dificulty'],
+            self.persist['player'].resetPlayerPos()
+            if self.persist['checkpoint'] == c.CHECKPOINT_LVL1:
+                scene = level1.Level1(self.director, c.CHECKPOINT_LVL1,
+                           self.persist['dificulty'],
                            self.persist['player'],
                            self.persist['uienergy'],
-                           self.persist['UICounter'],
-                           self.persist['uicroshair'],
                            self.persist['UIPistol'],
                            self.persist['uipistolupgrade'],
-                           self.persist['UIGrenadeLauncher'])
+                           self.persist['UIGrenadeLauncher'],
+                           self.persist)
+            elif self.persist['checkpoint'] == c.CHECKPOINT_LVL3:
+                scene = level3.Level3(self.director, c.CHECKPOINT_LVL3,
+                            self.persist['dificulty'],
+                            self.persist['player'],
+                            self.persist['uienergy'],
+                            self.persist['UIPistol'],
+                            self.persist['uipistolupgrade'],
+                            self.persist['UIGrenadeLauncher'],
+                            self.persist)
+            elif self.persist['checkpoint'] == c.INIT_OFFSET:
+                scene = level1.Level1(self.director, c.INIT_OFFSET,
+                            self.persist['dificulty'],
+                            self.persist['player'],
+                            self.persist['uienergy'],
+                            self.persist['UIPistol'],
+                            self.persist['uipistolupgrade'],
+                            self.persist['UIGrenadeLauncher'],
+                            self.persist)
             self.director.changeScene(scene)
         if keys[pygame.K_ESCAPE]:
             self.director.endApplication()

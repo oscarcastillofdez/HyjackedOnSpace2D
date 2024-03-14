@@ -43,6 +43,9 @@ class Player(PlayerAbstract):
             self.addObserver(uiHearts)
             self.addObserver(uiText)
             
+        def resetPlayerPos(self):
+            self.rect.x = SCREEN_WIDTH//2
+            self.rect.y = SCREEN_HEIGTH//2
 
             
         def getUiText(self):

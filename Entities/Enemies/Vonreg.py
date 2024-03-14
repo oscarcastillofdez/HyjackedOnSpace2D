@@ -41,7 +41,7 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         self.lineStart = (self.rect.centerx, self.rect.centery)
 
         # Atributos de vida
-        self.maxHealth = 300
+        self.maxHealth = 50
         self.currentHealth = self.maxHealth
 
         self.healthChangeSpeed = 5

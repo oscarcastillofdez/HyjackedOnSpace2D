@@ -12,7 +12,6 @@ from UI.uiRahmCroshair import UIRahmCroshair
 from UI.uiText import UIText
 from UI.uiHearts import UIHearts
 from UI.uiEnergy import UIEnergy
-from UI.uiCounter import UICounter
 from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
 from UI.uiGrenadeLauncherIcon import UIGrenadeLauncher
@@ -23,8 +22,8 @@ from UI.uiHealthBar import UIBossHealthBar
 
 class Level(Scene):
     def __init__(self, director, offset, dificulty,
-                 player, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher):
-        super(Level, self).__init__(director)
+                 player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, persist):
+        super(Level, self).__init__(director, persist)
 
         self.player = player
         self.cameraOffset = offset
@@ -44,8 +43,8 @@ class Level(Scene):
         self.uiText = self.player.getUiText()
         self.uiHearts = self.player.getUiHearts()
         self.uiEnergy = uienergy
-        self.uiCounter = uicounter
-        self.uiCroshair = uicroshair
+        self.uiCounter = UICounter()
+        self.uiCroshair = UIRahmCroshair()
         self.uiPistol = uipistol
         self.uiPistolUpgrade = uipistolUpgrade
         self.uiGrenadeLauncher = uigrenadeLauncher
@@ -55,7 +54,10 @@ class Level(Scene):
         self.randomEnemyFactory = SelectedEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair, self.dificulty, self.gunPickups)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter, self.bullets_group,self.gunPickups)
 
-        self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
+        self.ui = Ui(self.player, self.uiText, self.uiHearts,
+                     self.uiEnergy, self.uiCounter, self.healthBar,
+                     self.uiCroshair, self.uiPistol,
+                     self.uiPistolUpgrade, self.uiGrenadeLauncher)
         
     def manageJoystick(self, joystick):
         if joystick.get_axis(0) < -0.5:
@@ -159,20 +161,24 @@ class Level(Scene):
         for gun in self.gunPickups:
             if gun.collidesWithPlayer(self.player, self.gunPickups):
                 self.player = gun.getPlayerWithIt(self.player,self.ui, self.director.sounds_volume)
-                self.persist = {
-                    'player': self.player,
-                    'checkpoint': (self.player.rect.x,self.player.rect.y),
-                    'dificulty': self.dificulty,
-                    'uienergy': self.uiEnergy,
-                    'UICounter': self.uiCounter,
-                    'uicroshair': self.uiCroshair,
-                    'UIPistol': self.uiPistol,
-                    'uipistolupgrade': self.uiPistolUpgrade,
-                    'UIGrenadeLauncher': self.uiGrenadeLauncher
-                }
+                if gun.name == 'GrenadeLauncher':
+                    self.persist['checkpoint'] = CHECKPOINT_LVL1
+                    self.persist['player'] = self.player
+                elif gun.name == 'dash':
+                    print("TE EJECUTASTE?")
+                    self.persist['checkpoint'] = CHECKPOINT_LVL3
+                    self.persist['player'] = self.player
+                """'dificulty': self.dificulty,
+                        'uienergy': self.uiEnergy,
+                        'uicroshair': self.uiCroshair,
+                        'UIPistol': self.uiPistol,
+                        'uipistolupgrade': self.uiPistolUpgrade,
+                        'UIGrenadeLauncher': self.uiGrenadeLauncher"""
+                    
 
         # Si se queda sin vidas acaba el juego
         if self.player.getHp() <= 0:
+            self.persist['player'].setHealth(3)
             self.player.setHealth(3)
             scene = game_over.GameOver(self.director, self.persist)
             scene.startup()
@@ -193,7 +199,6 @@ class Level(Scene):
         self.grenades_group.draw(surface)
         self.bullets_group.draw(surface)
         self.gunPickups.draw(surface)
-        self.triggerGroup.draw(surface)
 
         for destructible in self.destructibles_group:
             destructible.draw(surface)

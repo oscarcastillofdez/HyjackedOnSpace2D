@@ -13,6 +13,8 @@ class PistolUpgrade(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+        self.name = 'pistolUpgrade'
+
     
     def update(self, cameraOffset):
         self.rect.x -= cameraOffset[0]

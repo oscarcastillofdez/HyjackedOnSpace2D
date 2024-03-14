@@ -53,6 +53,15 @@ class PlayerWithDash(PlayerAbstract):
         self.shootEffect.set_volume(self.volume)
         ui.uiPistolUpgrade.toggleShow()
 
+    def resetPlayerPos(self):
+            self.player.resetPlayerPos()
+        
+    def idle(self):
+        self.player.idle()
+
+    def stopShooting(self):
+        self.player.stopShooting()
+
     def getUiText(self):
         return self.player.getUiText()
         

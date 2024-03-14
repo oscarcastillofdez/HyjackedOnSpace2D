@@ -44,6 +44,15 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             self.addObserver(ui.uiGrenadeLauncher)
             ui.uiGrenadeLauncher.toggleShow()
         
+        def resetPlayerPos(self):
+            self.player.resetPlayerPos()
+        
+        def idle(self):
+            self.player.idle()
+
+        def stopShooting(self):
+            self.player.stopShooting()
+            
         def getUiText(self):
             return self.player.getUiText()
         
