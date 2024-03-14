@@ -37,7 +37,7 @@ class SelectedEnemyFactory(EnemyFactory):
         return ShooterEnemy(columna, fila,self.dificulty, False, self.bulletsGroup)
     
     def createMelee(self, columna, fila):
-        return MeleeEnemy(columna, fila,self.dificulty, False)
+        return MeleeEnemy(columna, fila,self.dificulty, False, False, self.gunPickups)
 
     def createBox(self, columna, fila,destructibleTile_list):
         return WallDestructible(columna, fila,destructibleTile_list)

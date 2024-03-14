@@ -1,5 +1,5 @@
 {
-    "activeFile": "lvlData2.json",
+    "activeFile": "lvlData.json",
     "expandedProjectPaths": [
         "."
     ],
@@ -7,18 +7,18 @@
     "fileStates": {
         "lvlData.json": {
             "scale": 0.27846875,
-            "selectedLayer": 0,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1601.6159802491302,
-                "y": 960.6104814274493
+                "x": 1023.454157782516,
+                "y": 838.5141959376052
             }
         },
         "lvlData2.json": {
             "scale": 0.27846875,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1598.0249130288407,
-                "y": 957.0194142071597
+                "x": 1601.6159802491302,
+                "y": 960.6104814274493
             }
         },
         "texturas.json": {
@@ -31,7 +31,7 @@
     ],
     "project": "nivel3.tiled-project",
     "recentFiles": [
-        "lvlData.json",
-        "lvlData2.json"
+        "lvlData2.json",
+        "lvlData.json"
     ]
 }

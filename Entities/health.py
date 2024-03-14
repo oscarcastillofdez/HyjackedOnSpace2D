@@ -6,7 +6,7 @@ class Health(pygame.sprite.Sprite):
     def __init__(self, x, y, dificulty) -> None:
         pygame.sprite.Sprite.__init__(self)
         
-        self.spritesheet = Spritesheet(INTERACTIVES_PATH + 'healing_pickup.png', (100,100))
+        self.spritesheet = Spritesheet(INTERACTIVES_PATH + 'healing_pickup.png', (64,64))
         
         # Cargar sprites
         self.spriteList = self.spritesheet.cargar_sprites(64, 64)

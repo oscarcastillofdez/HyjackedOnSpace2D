@@ -15,10 +15,11 @@ from Constants.constants import *
 from math import floor
 
 class RandomEnemyFactorySecuence(EnemyFactory):
-    def __init__(self,enemiesGroup, dificulty, uiCounter,bullets_group) -> None:
+    def __init__(self,enemiesGroup, dificulty, uiCounter,bullets_group, gunPickups) -> None:
         self.enemiesGroup = enemiesGroup
         self.dificulty = dificulty
         self.uiCounter = uiCounter
+        self.gunPickups = gunPickups
 
         self.spawnArea = Rect(0,0,500,200)
         self.observers = []
@@ -40,26 +41,30 @@ class RandomEnemyFactorySecuence(EnemyFactory):
         for observer in self.observers:
             observer.update(self)
 
-    def createEnemy(self, spawnCenterX, spawnCenterY):
+    def createEnemy(self, spawnCenterX, spawnCenterY, lastEnemy):
+        
         self.spawnArea.x = spawnCenterX + 1000
         self.spawnArea.y = spawnCenterY - 200
         spawnPointX = random.randrange(self.spawnArea.x, self.spawnArea.right)
         spawnPointY = random.randrange(self.spawnArea.y, self.spawnArea.bottom)
         
         currentCount = len(self.enemiesGroup) - self.initialCount
-        if currentCount < self.maxEnemyCount:
-            selectEnemy = random.randint(0, 2)
-            if selectEnemy == 0:
-                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True)
-                self.enemiesGroup.add(en)
-            elif selectEnemy == 1:
-                en = FlyingEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
-                self.enemiesGroup.add(en)
-            elif selectEnemy == 2:
-                en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
-                self.enemiesGroup.add(en)
-
-
+        if not lastEnemy:
+            if currentCount < self.maxEnemyCount:
+                selectEnemy = random.randint(0, 2)
+                if selectEnemy == 0:
+                    en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True, lastEnemy, self.gunPickups)
+                    self.enemiesGroup.add(en)
+                elif selectEnemy == 1:
+                    en = FlyingEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
+                    self.enemiesGroup.add(en)
+                elif selectEnemy == 2:
+                    en = ShooterEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
+                    self.enemiesGroup.add(en)
+        else:
+            en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True, lastEnemy,self.gunPickups)
+            self.enemiesGroup.add(en)
+            
     def activate(self):
         self.firstTick = pygame.time.get_ticks()
         self.initialCount = len(self.enemiesGroup)
@@ -76,6 +81,8 @@ class RandomEnemyFactorySecuence(EnemyFactory):
                 self.countdown -= 1
                 self.noitify()
                 if self.countdown == 0:
+                    self.createEnemy(x, y, True)
+
                     self.activeSecuence = False
                     for observer in self.observers:
                         self.observers.remove(observer)
@@ -83,7 +90,7 @@ class RandomEnemyFactorySecuence(EnemyFactory):
             self.spawnDelay -= 1
             if self.spawnDelay < 0:
                 self.spawnDelay = 60
-                self.createEnemy(x, y)
+                self.createEnemy(x, y, False)
         
 
     

@@ -1,5 +1,6 @@
 import pygame
 from Constants.constants import *
+from Entities.dash import Dash
 from Game.collisionHandler import CollisionHandler
 from .entity import Entity
 from Game.spritesheet import Spritesheet
@@ -9,7 +10,7 @@ from Entities.Enemies.EnemyStates.attack import Attack
 from Entities.Enemies.EnemyStates.die import Die
 
 class MeleeEnemy(pygame.sprite.Sprite, Entity):
-    def __init__(self,x,y, dificulty, onlyChase):
+    def __init__(self,x,y, dificulty, onlyChase, lastEnemy, gunPickups):
         pygame.sprite.Sprite.__init__(self)
         # Otros objetos
         self.collisionHandler = CollisionHandler()
@@ -39,6 +40,9 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         # Atributos de control de estados
         self.chaseTime = dificulty.getEnemyChaseTime()
         self.onlyChase = onlyChase
+
+        self.lastEnemy = lastEnemy
+        self.gunPickups = gunPickups
 
         coordinates = (0,0,24,24,4)
         scale = (100,100)
@@ -235,7 +239,12 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
         self.current_state.next_state = "chasing"
 
     def die(self,world, player,cameraOffset,enemies_group):
-        enemies_group.remove(self)
+        if self.lastEnemy:
+            grenadeLauncher = Dash(self.rect.centerx, self.rect.centery)
+            self.gunPickups.add(grenadeLauncher)
+            enemies_group.remove(self)
+        else:
+            enemies_group.remove(self)
 
     def hit(self, damage,deflected):
         self.health -= damage

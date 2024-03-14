@@ -32,7 +32,7 @@ class Computer(pygame.sprite.Sprite):
     def draw(self,screen):
         pass
         #self.interactiveIndicator.draw(screen)
-        pygame.draw.rect(screen, (255,255,255), self.randomEnemyFactorySecuence.spawnArea)
+        #pygame.draw.rect(screen, (255,255,255), self.randomEnemyFactorySecuence.spawnArea)
     
     
     

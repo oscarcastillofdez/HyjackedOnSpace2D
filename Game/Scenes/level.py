@@ -1,6 +1,7 @@
 import pygame
 from Constants.constants import *
 from Entities.Enemies.randomEnemyFactorySecuence import RandomEnemyFactorySecuence
+from Entities.Player.playerWithDash import PlayerWithDash
 from Game.Scenes.scene import Scene
 from Entities.Player.player import Player
 import Game.Scenes.game_over as game_over
@@ -48,11 +49,13 @@ class Level(Scene):
         self.uiPistolUpgrade = uipistolUpgrade
         self.uiGrenadeLauncher = uigrenadeLauncher
         self.healthBar = UIBossHealthBar()
+
         
         self.randomEnemyFactory = SelectedEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair, self.dificulty, self.gunPickups)
-        self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter, self.bullets_group)
+        self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter, self.bullets_group,self.gunPickups)
 
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
+        self.player = PlayerWithDash(self.player, self.ui)
         
     def manageJoystick(self, joystick):
         if joystick.get_axis(0) < -0.5:

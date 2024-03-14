@@ -9,12 +9,15 @@
     ],
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
+        "/home/juan/Escritorio/COSAS/CIIE/HyjackedOnSpace2D/Assets/Images/World/Lvl3/texturas.json": {
+            "scaleInDock": 1
+        },
         "lvlData.json": {
             "scale": 0.5132,
-            "selectedLayer": 2,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1794.6219797349959,
-                "y": 1922.2525331254872
+                "x": 2176.5393608729537,
+                "y": 1688.4255650818395
             }
         },
         "texturas.json": {
