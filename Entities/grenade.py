@@ -62,7 +62,7 @@ class Grenade(pygame.sprite.Sprite):
         self.grenadeExplosion.play()
         back_animations.add(self.grenadeExplosion)
 
-        self.player.shakeOn()
+        #self.player.shakeOn()
 
         destructibles = pygame.sprite.spritecollide(self.damageArea, destructibles_group, False)
         enemies = pygame.sprite.spritecollide(self.damageArea, enemies_group, False)

@@ -39,27 +39,42 @@ class DificultySelector(Scene):
         uitext = uiText.UIText()
         uihearts = uiHearts.UIHearts()
         uienergy = uiEnergy.UIEnergy()
-        uicounter = uiCounter.UICounter()
         uicroshair = uiRahmCroshair.UIRahmCroshair()
         uipistol = uiPistol.UIPistol()
         uipistolUpgrade = uiPistolUpgrade.UIPistolUpgrade()
         uigrenadeLauncher = uiGrenade.UIGrenadeLauncher()
+
+        self.persist = {
+                        'player': None,
+                        'checkpoint': INIT_OFFSET,
+                        'dificulty': None,
+                        'uienergy': uienergy,
+                        'UIPistol': uipistol,
+                        'uipistolupgrade': uipistolUpgrade,
+                        'UIGrenadeLauncher': uigrenadeLauncher
+                    }
         if self.active_index == 0:
-            dificulty = EasyMode()    
+            dificulty = EasyMode()  
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)    
-            scene = Level4(self.director, INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
+            self.persist['player'] = playerObj
+            self.persist['dificulty'] = dificulty
+            scene = Level1(self.director, INIT_OFFSET, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, self.persist)
             scene.startup()
             self.director.stackScene(scene)
         elif self.active_index == 1:
             dificulty = MediumMode()
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)
-            scene = Level1(self.director,INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
+            self.persist['player'] = playerObj
+            self.persist['dificulty'] = dificulty
+            scene = Level1(self.director,INIT_OFFSET, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, self.persist)
             scene.startup()
             self.director.stackScene(scene)
         elif self.active_index == 2:
             dificulty = HardMode()
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)
-            scene = Level1(self.director,INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
+            self.persist['player'] = playerObj
+            self.persist['dificulty'] = dificulty
+            scene = Level4(self.director,INIT_OFFSET4, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, self.persist)
             scene.startup()
             self.director.stackScene(scene)
     

@@ -38,6 +38,9 @@ class PlayerWithShield(PlayerAbstract):
             self.shield.addObserver(ui.uiEnergy)
             ui.uiEnergy.show()
 
+        def resetPlayerPos(self):
+            self.player.resetPlayerPos()
+
         def getUiText(self):
             return self.player.getUiText()
         

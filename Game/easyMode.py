@@ -16,7 +16,7 @@ class EasyMode():
         self.playerHittedCooldown = 65
 
         self.enemyChaseTime = 100
-        self.enemyShootCooldown = 40
+        self.enemyShootCooldown = 100
 
         self.enemyMinChasingSpeed = 3
         self.enemyMaxChasingSpeed = 3

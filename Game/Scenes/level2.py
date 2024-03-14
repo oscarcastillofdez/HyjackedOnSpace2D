@@ -22,8 +22,8 @@ from UI.uiHealthBar import UIBossHealthBar
 
 
 class Level2(level.Level):
-    def __init__(self, director, offset, dificulty, player, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher):
-        super(Level2, self).__init__(director, offset, dificulty, player, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
+    def __init__(self, director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, persist):
+        super(Level2, self).__init__(director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, persist)
 
 
         self.world = World("Lvl2", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
@@ -51,15 +51,15 @@ class Level2(level.Level):
             text = trigger.update(self.cameraOffset)
             if text != "":
                 if text == "lvl1":
-                    scene = lvl1.Level1(self.director, LVL2_TO_LVL1, self.dificulty, self.player, self.uiEnergy, self.uiCounter, self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
+                    scene = lvl1.Level1(self.director, LVL2_TO_LVL1, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.persist)
                     scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl3":
-                    scene = lvl3.Level3(self.director, LVL2_TO_LVL3, self.dificulty, self.player, self.uiEnergy, self.uiCounter, self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
+                    scene = lvl3.Level3(self.director, LVL2_TO_LVL3, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.persist)
                     scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl4":
-                    scene = lvl4.Level4(self.director, LVL2_TO_LVL4, self.dificulty, self.player, self.uiEnergy, self.uiCounter, self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
+                    scene = lvl4.Level4(self.director, LVL2_TO_LVL4, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.persist)
                     scene.startup()
                     self.director.changeScene(scene)
 

@@ -24,22 +24,6 @@ class PlayerWithPistol(PlayerAbstract):
             "JUMP-SHOOT": JumpShoot(),
             "RUN-SHOOT": RunShoot()
         }
-        """
-            "IDLE": Idle(False),
-            "RUN": Run(True),
-            "RUN-SHOOT": RunShoot(),
-            "RUN-SHOOT-DIAG-UP": RunShootDiagUp(),
-            "RUN-SHOOT-DIAG-DOWN": RunShootDiagDown(),
-            "RUN-SHOOT-DOWN": RunShootDown(),
-            "RUN-SHOOT-UP" : RunShootUp(),
-            "IDLE-SHOOT": IdleShoot(),
-            "IDLE-SHOOT-UP": IdleShoot(),
-            "IDLE-SHOOT-DOWN": IdleShoot(),
-            "IDLE-SHOOT-DIAG-UP": IdleShoot(),
-            "IDLE-SHOOT-DIAG-DOWN": IdleShoot(),
-            "JUMP-SHOOT": JumpShoot(),
-            "JUMP": Jump(True)
-        """
 
         self.anim = 0
         self.state_name = "IDLE"
@@ -54,6 +38,9 @@ class PlayerWithPistol(PlayerAbstract):
 
         self.addObserver(ui.uiPistol)
         ui.uiPistol.toggleShow()
+    
+    def resetPlayerPos(self):
+            self.player.resetPlayerPos()
 
     def getUiText(self):
         return self.player.getUiText()

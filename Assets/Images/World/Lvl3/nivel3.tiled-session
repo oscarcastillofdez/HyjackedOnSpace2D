@@ -3,14 +3,25 @@
     "expandedProjectPaths": [
         "."
     ],
-    "file.lastUsedOpenFilter": "Todos los archivos (*)",
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "/home/carlos/Documents/UDC/CIIE/HyjackedOnSpace2D/Assets/Images/World/Lvl1/datosTexturas.json": {
+            "scaleInDock": 1
+        },
+        "/home/carlos/Documents/UDC/CIIE/HyjackedOnSpace2D/Assets/Images/World/Lvl1/lvlData.json": {
+            "scale": 0.26125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1921.5311004784692,
+                "y": 801.9138755980861
+            }
+        },
         "lvlData.json": {
             "scale": 0.27846875,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1023.454157782516,
-                "y": 838.5141959376052
+                "x": 1601.6159802491302,
+                "y": 960.6104814274493
             }
         },
         "lvlData2.json": {
@@ -21,16 +32,31 @@
                 "y": 960.6104814274493
             }
         },
+        "lvlData3.json": {
+            "scale": 0.1102294921875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 4799.078626799556,
+                "y": 3197.8737541528235
+            }
+        },
         "texturas.json": {
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
     "openFiles": [
         "lvlData.json",
-        "lvlData2.json"
+        "lvlData2.json",
+        "/home/carlos/Documents/UDC/CIIE/HyjackedOnSpace2D/Assets/Images/World/Lvl1/lvlData.json",
+        "texturas.json",
+        "lvlData3.json"
     ],
     "project": "nivel3.tiled-project",
     "recentFiles": [
+        "lvlData3.json",
+        "texturas.json",
+        "/home/carlos/Documents/UDC/CIIE/HyjackedOnSpace2D/Assets/Images/World/Lvl1/lvlData.json",
         "lvlData2.json",
         "lvlData.json"
     ]
