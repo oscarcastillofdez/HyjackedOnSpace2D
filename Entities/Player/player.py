@@ -37,7 +37,6 @@ class Player(PlayerAbstract):
 
             self.standing = self.state.get_initial()
             self.deadImage = pygame.transform.rotate(self.standing,90)
-            self.shaking = -1
             self.currentVelocity = 0
             self.interactedOnce = False
 
@@ -284,18 +283,18 @@ class Player(PlayerAbstract):
 
             return (cameraOffsetX,cameraOffsetY)
         
+        def shakeOn(self):
+            self.shaking = 30
+        
         def shake(self):
+            print(self.shaking)
             shakingX = 0
             shakingY = 0
 
-            if self.jumping or self.shaking:
-                self.shaking = 30
-
-            if self.shaking:
+            if self.shaking > 0:
                 self.shaking -= 1
-                
-                #shakingX = random.randint(0, 8) - 4
-                #shakingY = random.randint(0,8) - 4
+                shakingX = random.randint(0, 8) - 4
+                shakingY = random.randint(0,8) - 4
             
             return (shakingX, shakingY)
 

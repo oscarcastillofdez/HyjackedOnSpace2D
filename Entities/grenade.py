@@ -51,14 +51,18 @@ class Grenade(pygame.sprite.Sprite):
         self.exploded = False
         self.exploding = False
         self.grenadeExplosion = GrenadeExplosion()
+
     
-    def explode(self, enemies_group, destructibles_group, back_animations,grenades_group, world):
+    def explode(self, enemies_group, destructibles_group, back_animations,grenades_group, world,cameraOffset):
+        
         self.grenadeExplosion.rect.x = self.rect.centerx - 250
         self.grenadeExplosion.rect.y = self.rect.centery - 250
 
         self.grenadeExplosion.scale((500,500))
         self.grenadeExplosion.play()
         back_animations.add(self.grenadeExplosion)
+
+        self.player.shakeOn()
 
         destructibles = pygame.sprite.spritecollide(self.damageArea, destructibles_group, False)
         enemies = pygame.sprite.spritecollide(self.damageArea, enemies_group, False)
@@ -125,7 +129,7 @@ class Grenade(pygame.sprite.Sprite):
         self.move(cameraOffset, dt, world)
 
         if self.checkDespawnTime():
-            self.explode(enemies_group, destructibles_group,back_animations,grenades_group,world)
+            self.explode(enemies_group, destructibles_group,back_animations,grenades_group,world,cameraOffset)
         
     def checkDespawnTime(self):
         self.despawnTime -= 1
