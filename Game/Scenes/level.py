@@ -22,7 +22,8 @@ from UI.uiHealthBar import UIBossHealthBar
 
 
 class Level(Scene):
-    def __init__(self, director, offset, dificulty, player, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher):
+    def __init__(self, director, offset, dificulty,
+                 player, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher):
         super(Level, self).__init__(director)
 
         self.player = player
@@ -55,7 +56,6 @@ class Level(Scene):
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter, self.bullets_group,self.gunPickups)
 
         self.ui = Ui(self.player, self.uiText, self.uiHearts,self.uiEnergy, self.uiCounter,self.healthBar,self.uiCroshair, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher)
-        self.player = PlayerWithDash(self.player, self.ui)
         
     def manageJoystick(self, joystick):
         if joystick.get_axis(0) < -0.5:
@@ -159,15 +159,26 @@ class Level(Scene):
         for gun in self.gunPickups:
             if gun.collidesWithPlayer(self.player, self.gunPickups):
                 self.player = gun.getPlayerWithIt(self.player,self.ui, self.director.sounds_volume)
+                self.persist = {
+                    'player': self.player,
+                    'checkpoint': (self.player.rect.x,self.player.rect.y),
+                    'dificulty': self.dificulty,
+                    'uienergy': self.uiEnergy,
+                    'UICounter': self.uiCounter,
+                    'uicroshair': self.uiCroshair,
+                    'UIPistol': self.uiPistol,
+                    'uipistolupgrade': self.uiPistolUpgrade,
+                    'UIGrenadeLauncher': self.uiGrenadeLauncher
+                }
 
         # Si se queda sin vidas acaba el juego
         if self.player.getHp() <= 0:
-            scene = game_over.GameOver(self.director)
+            self.player.setHealth(3)
+            scene = game_over.GameOver(self.director, self.persist)
             scene.startup()
             self.director.changeScene(scene)
-
-
-        #if self.player.checkInteractuable(self.world):
+            
+            #if self.player.checkInteractuable(self.world):
             #self.text.showInteractuableText("Presiona E para interactuar.", "white")
             
     def draw(self, surface):

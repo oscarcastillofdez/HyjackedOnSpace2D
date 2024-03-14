@@ -170,3 +170,6 @@ class PlayerWithPistol(PlayerAbstract):
         self.player.setDashDuration(n)
     def setDashCooldown(self, n):
         self.player.setDashCooldown(n)
+    
+    def setHealth(self, n):
+            self.player.setHealth(n)

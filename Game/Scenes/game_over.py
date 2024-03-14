@@ -1,13 +1,16 @@
 import pygame
 from .scene import Scene
 import Game.Scenes.menu as menu
+from .level4 import Level4
+import Game.Scenes.level3 as level
+import Constants.constants as c
 
 class GameOver(Scene):
-    def __init__(self,director):
-        super(GameOver, self).__init__(director)
+    def __init__(self,director, persist):
+        super(GameOver, self).__init__(director, persist)
         self.title = self.font.render("Game Over", True, pygame.Color("white"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
-        self.instructions = self.font.render("Presiona espacio para volver a empezar, o enter para ir al menu",
+        self.instructions = self.font.render("Presiona ESPACIO para volver a empezar, o ENTER para ir al menu",
                                              True, pygame.Color("white"))
         instructions_center = (self.screen_rect.center[0], self.screen_rect.center[1] + 50)
         self.instructions_rect = self.instructions.get_rect(center=instructions_center)
@@ -31,7 +34,15 @@ class GameOver(Scene):
             scene = menu.Menu(self.director)
             self.director.changeScene(scene)
         if keys[pygame.K_SPACE]:
-            self.director.finishScene()
+            scene = level.Level3(self.director, c.CHECKPOINT_LVL3, self.persist['dificulty'],
+                           self.persist['player'],
+                           self.persist['uienergy'],
+                           self.persist['UICounter'],
+                           self.persist['uicroshair'],
+                           self.persist['UIPistol'],
+                           self.persist['uipistolupgrade'],
+                           self.persist['UIGrenadeLauncher'])
+            self.director.changeScene(scene)
         if keys[pygame.K_ESCAPE]:
             self.director.endApplication()
     

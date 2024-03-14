@@ -134,7 +134,8 @@ class PlayerAbstract():
 
     def lookDown(self):
         pass
-    
 
+    def setHealth(self, n):
+        self.healthPoints = n
 
     

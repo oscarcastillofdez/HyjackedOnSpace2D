@@ -26,8 +26,7 @@ class Player(PlayerAbstract):
                 "RUN": Run(False),
                 "JUMP": Jump(False)
             }
-            """"RUN": Run(False),
-                "JUMP": Jump(False)"""
+
             self.anim = 0
                 # State para empezar
             self.state_name = "IDLE"
@@ -403,6 +402,10 @@ class Player(PlayerAbstract):
         def unSetGrabbed(self):
             self.grabbed = False
             self.dragSpeed = 0
+        
+        def setHealth(self, n):
+            self.uiHearts.update(self)
+            self.healthPoints = n
         
                 
 
