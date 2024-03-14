@@ -130,7 +130,7 @@ class Rahm(pygame.sprite.Sprite, Entity):
         self.states[self.current_state](world, player, cameraOffset, enemies_group) # Llama al estado correspondiente (patrol, chase o attack)
 
     def patrol(self, world, player,cameraOffset,enemies_group):
-        if self.distanciaAlJugador < 1000:
+        if self.distanciaAlJugador < 500:
             self.healthBar.togleShow()
             self.index = 0
             self.current_state = "chasing"
@@ -239,7 +239,6 @@ class Rahm(pygame.sprite.Sprite, Entity):
             self.index = 3
         self.image = self.spritesShooting[self.index]
         
-
         if self.shotsCount < self.maxShotsCount:
             self.shootCooldown -= 1
             if self.shootCooldown <= 0:
