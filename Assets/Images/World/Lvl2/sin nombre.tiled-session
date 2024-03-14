@@ -9,15 +9,18 @@
     ],
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
+        "/home/juan/Escritorio/COSAS/CIIE/HyjackedOnSpace2D/Assets/Images/World/Lvl3/texturas.json": {
+            "scaleInDock": 1
+        },
         "/home/oscarcastillo/Curso23-24/2ndCuatri/CIIE/Assets/Images/World/Lvl3/texturas.json": {
             "scaleInDock": 1
         },
         "lvlData.json": {
-            "scale": 0.75,
-            "selectedLayer": 1,
+            "scale": 0.5637,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 982.6666666666665,
-                "y": 571.3333333333333
+                "x": 2694.695760156111,
+                "y": 481.6391697711549
             }
         },
         "texturas.json": {

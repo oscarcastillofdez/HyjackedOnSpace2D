@@ -95,20 +95,22 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         self.distanciaAlJugador = math.sqrt((dx**2) + (dy**2))
         self.angle = -math.degrees(math.atan2(dy, dx))
 
-        if self.viewDirection == -1:
+        if self.viewDirection == 1:
             self.visionLine.x = self.rect.centerx
             self.visionLine.y = self.rect.y
         else:
             self.visionLine.x = self.rect.centerx - 500
             self.visionLine.y = self.rect.y
 
-        if self.visionLine.colliderect(player.position()) and self.state_name != "attacking":
-            self.chaseTime = 120
-            self.current_state.done = True
-            self.current_state.next_state = "chasing"
+        
     
     def patrol(self,world, player,cameraOffset,enemies_group):
         # Comportamiento cuando está patrullando
+        if self.visionLine.colliderect(player.position()):
+            self.chaseTime = 120
+            self.current_state.done = True
+            self.current_state.next_state = "chasing"
+            
         dy = 0
         self.moved += 1
         if self.moved >= 400:

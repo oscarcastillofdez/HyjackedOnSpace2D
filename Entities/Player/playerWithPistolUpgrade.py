@@ -12,7 +12,7 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
         super().__init__(player.position().x, player.position().y, player.getDificulty())
         self.player = player
 
-        self.disparoImg = pygame.transform.scale(pygame.image.load(PLAYER_PATH + 'lazer_2.png'), (128,128))
+        self.disparoImg = pygame.transform.scale(pygame.image.load(PLAYER_PATH + 'lazer_2.png'), (100,100))
         self.bulletDamageUpgraded = self.bulletDamage + 2
 
         self.shootCooldown = self.shootCooldownConst        
@@ -100,7 +100,7 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
             self.shootEffect.stop()
             self.shootEffect.play()
             self.shootCooldown = self.shootCooldownConst
-            disparo = Bullet(self.disparoImg, direction, self.bulletDamageUpgraded, self.bulletSpeed, self.player.position().centerx - 40, self.player.position().top - 40, self, self, False)
+            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().x - 40, self.player.position().y - 50, self, self, False)
             bullets_group.add(disparo)
             
 

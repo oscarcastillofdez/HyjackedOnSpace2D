@@ -196,11 +196,12 @@ class World():
                     en = self.enemyFactory.createBarnacle(mapaX * tileWidth, mapaY * tileHeight)
                     self.enemies.add(en)
 
-                elif tile == 13:
+                elif tile == 14:
+                    print("AAAAAAAAAAAAAAAAa")
                     en = self.enemyFactory.createRahm(mapaX * tileWidth, mapaY * tileHeight)
                     self.enemies.add(en)
 
-                elif tile == 13:
+                elif tile == 15:
                     en = self.enemyFactory.createVonreg(mapaX * tileWidth, mapaY * tileHeight)
                     self.enemies.add(en)
 

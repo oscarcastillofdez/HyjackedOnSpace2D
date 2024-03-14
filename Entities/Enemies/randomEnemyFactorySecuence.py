@@ -50,7 +50,7 @@ class RandomEnemyFactorySecuence(EnemyFactory):
         if currentCount < self.maxEnemyCount:
             selectEnemy = random.randint(0, 2)
             if selectEnemy == 0:
-                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)
+                en = MeleeEnemy(spawnPointX, spawnPointY, self.dificulty, True)
                 self.enemiesGroup.add(en)
             elif selectEnemy == 1:
                 en = FlyingEnemy(spawnPointX, spawnPointY, self.dificulty, True, self.bullets_group)

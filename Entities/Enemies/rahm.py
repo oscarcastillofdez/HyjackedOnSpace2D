@@ -43,7 +43,7 @@ class Rahm(pygame.sprite.Sprite, Entity):
         self.middleZoneX = 64 * 32
         self.middleZoneY = 68 * 32
         self.lowerZoneX = 57 * 32
-        self.lowerZoneY = 78 * 32
+        self.lowerZoneY = 75 * 32
         self.offsetX = 0
         self.offsetY = 0
         self.stunnedCooldownMax = 200
@@ -54,7 +54,7 @@ class Rahm(pygame.sprite.Sprite, Entity):
         self.velY = 0
 
         # Atributos de vida
-        self.maxHealth = 15
+        self.maxHealth = 30
         self.targetHealth = self.maxHealth
         self.currentHealth = self.maxHealth
         self.healthChangeSpeed = 1
@@ -67,7 +67,7 @@ class Rahm(pygame.sprite.Sprite, Entity):
         self.maxShotsCount = 3
         self.shotsCount = 0
         self.bulletImage =  pygame.transform.scale(pygame.image.load(ENEMIES_PATH + '/Rahm/rahm_bullet.png'), (50,35))
-        self.bulletSpeed = 35
+        self.bulletSpeed = 175
 
         # Atributos de interfaz
         self.uiCroshair = uiCroshair

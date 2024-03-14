@@ -91,7 +91,7 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         self.rect.y -= cameraOffset[1]
 
 
-        self.shootCooldown -= 1
+        self.shootCooldown -= 5 * (dt/100)
         self.spriteChangeCountDown -= 1
 
         if self.spriteChangeCountDown == 0:

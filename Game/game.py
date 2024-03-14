@@ -26,8 +26,8 @@ class Game():
         self.joysticks = {}
 
         # Ajustes musica y sonidos
-        self.music_volume = 0.7
-        self.sounds_volume = 0.8
+        self.music_volume = 0
+        self.sounds_volume = 0
 
     
     def loop(self, scene):

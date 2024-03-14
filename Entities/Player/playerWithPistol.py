@@ -13,7 +13,7 @@ class PlayerWithPistol(PlayerAbstract):
         self.player = player
 
         self.shootCooldown = self.shootCooldownConst
-        self.disparoImg = pygame.transform.scale(pygame.image.load(PLAYER_PATH + 'lazer_1.png'), (128,128))
+        self.disparoImg = pygame.transform.scale(pygame.image.load(PLAYER_PATH + 'lazer_1.png'), (100,100))
 
         # Imagenes
         self.states = {
@@ -108,7 +108,7 @@ class PlayerWithPistol(PlayerAbstract):
             self.shootEffect.stop()
             self.shootEffect.play()
             self.shootCooldown = self.shootCooldownConst
-            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().x - 40, self.player.position().y - 50, self, self, False)
+            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().x - 40, self.player.position().y - 40, self, self, False)
             bullets_group.add(disparo)
             
 

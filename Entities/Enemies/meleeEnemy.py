@@ -16,7 +16,7 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
 
         # Atributos de posicion e imagen
         self.time = 0
-        self.rect = pygame.Rect(0,0,100,100)
+        self.rect = pygame.Rect(0,0,100,60)
         self.rect.x = x
         self.rect.y = y
 
@@ -58,6 +58,11 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
 
 
     def update(self, dt, world, player,cameraOffset,enemies_group):
+        if self.viewDirection > 0:
+            self.current_state.left = False
+        else:
+            self.current_state.left = True
+        
         self.time += 1
         if self.time > 6:
             self.time = 0
@@ -197,9 +202,9 @@ class MeleeEnemy(pygame.sprite.Sprite, Entity):
                 dy = destructibleHitBoxList[destructibleCollisions[1]].top - self.rect.bottom
                 self.velY = 0
 
-        if platformHitBoxList[platformCollisions[0]].colliderect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height):
-            if self.velY >= 0 and (self.rect.bottom - platformHitBoxList[platformCollisions[0]].top) < 10: #Cayendo
-                dy = platformHitBoxList[platformCollisions[0]].top - self.rect.bottom
+        if platformHitBoxList[platformCollisions[1]].colliderect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height):
+            if self.velY >= 0 and (self.rect.bottom - platformHitBoxList[platformCollisions[1]].top) < 10: #Cayendo
+                dy = platformHitBoxList[platformCollisions[1]].top - self.rect.bottom
                 self.velY = 0
 
         # Actualización del movimiento
