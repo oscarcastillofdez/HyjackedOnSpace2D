@@ -111,6 +111,8 @@ class PlayerWithPistol(PlayerAbstract):
             disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().x - 40, self.player.position().y - 40, self, self, False)
             bullets_group.add(disparo)
             
+    def shakeOn(self):
+        self.player.shakeOn()
 
     def draw(self, screen):
         self.player.draw(screen)

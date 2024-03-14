@@ -20,6 +20,8 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
         # self.time = 0
         # self.index = 0
         # Atributos de posicion e imagen
+        self.hitImage = pygame.image.load(ENEMIES_PATH + "hit.png")
+        
         self.time = 0
         self.rect = pygame.Rect(0,0,100,100)
         self.rect.x = x
@@ -284,6 +286,7 @@ class ShooterEnemy(pygame.sprite.Sprite, Entity):
 
     def hit(self, damage,deflected):
         self.health -= damage
+        self.image = self.hitImage
         if self.health <= 0:
             self.current_state.done = True
             self.current_state.next_state = "die"  

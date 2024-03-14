@@ -132,6 +132,9 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
         def lookDown(self):
             self.player.lookDown()
 
+        def shakeOn(self):
+            self.player.shakeOn()
+
         def getDashCooldown(self):
             return self.player.getDashCooldown()
         def getHoldDash(self):

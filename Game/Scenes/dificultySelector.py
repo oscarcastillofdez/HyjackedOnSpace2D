@@ -47,7 +47,7 @@ class DificultySelector(Scene):
         if self.active_index == 0:
             dificulty = EasyMode()    
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)    
-            scene = Level3(self.director, INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
+            scene = Level4(self.director, INIT_OFFSET, dificulty, playerObj, uienergy, uicounter, uicroshair, uipistol, uipistolUpgrade, uigrenadeLauncher)
             scene.startup()
             self.director.stackScene(scene)
         elif self.active_index == 1:

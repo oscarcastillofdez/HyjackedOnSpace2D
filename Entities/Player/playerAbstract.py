@@ -25,6 +25,8 @@ class PlayerAbstract():
         self.pressed_jump = 0
         self.grabbed = False
         self.dragSpeed = 0
+        self.shaking = 0
+
         
         #Vida
         self.maxHealthPoints = 3

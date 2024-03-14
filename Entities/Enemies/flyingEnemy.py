@@ -21,6 +21,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         
         # Atributos de posicion e imagen
         #self.sprites = Spritesheet('Assets/Images/Entities/32bitsspritesheet.png',(120,120)).get_animation(0,0,223,223,30)
+        self.hitImage = pygame.image.load(ENEMIES_PATH + "hit.png")
         self.index = 0
         self.time = 0
         self.rect = pygame.Rect(0,0,120,120)
@@ -208,8 +209,8 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
 
     # Lógica para determinar si el jugador está dentro del rango de visión
     def player_in_sight(self, world, player):
-        dx = player.position().centerx - self.rect.centerx
-        dy = player.position().centery - self.rect.centery
+        dx = player.position().x - self.rect.x
+        dy = player.position().y - self.rect.y
 
         self.distanciaAlJugador = math.sqrt((dx**2) + (dy**2))
         self.angle = -math.degrees(math.atan2(dy, dx))
@@ -246,6 +247,7 @@ class FlyingEnemy(pygame.sprite.Sprite, Entity):
         
     def hit(self, damage, deflected):
         self.health -= damage
+        self.image = self.hitImage
         if self.health <= 0:
             self.current_state.done = True
             self.current_state.next_state = "die"

@@ -23,6 +23,8 @@ class Rahm(pygame.sprite.Sprite, Entity):
         self.image = self.spritesRunning[0]
         self.index = 0
         self.spriteChangeCountDown = 2
+        self.hitImage = pygame.image.load(ENEMIES_PATH + "hit.png")
+
 
         self.rect = self.image.get_rect()
         self.rect.x = 64 * 32
@@ -288,7 +290,6 @@ class Rahm(pygame.sprite.Sprite, Entity):
         # Si el daño recibido es distinto, entonces la bala la disparo directamente el jugador: 
             # Si Rahm no esta aturdido se teletransporta a una nueva ubicacion
             # Si Rahm esta aturdido, recibe daño
-        
         if deflected:
             self.stunnedCooldown = self.stunnedCooldownMax 
             self.index = 0
@@ -296,6 +297,7 @@ class Rahm(pygame.sprite.Sprite, Entity):
         else:
             if self.current_state == "stunned":
                 self.targetHealth -= damage
+                self.image = self.hitImage
             else:
                 self.teleport()
             
