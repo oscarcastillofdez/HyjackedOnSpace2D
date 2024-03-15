@@ -22,7 +22,7 @@ from UI.uiHealthBar import UIBossHealthBar
 
 class Level(Scene):
     def __init__(self, director, offset, dificulty,
-                 player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, persist):
+                 player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, persist):
         super(Level, self).__init__(director, persist)
 
         self.player = player
@@ -48,6 +48,7 @@ class Level(Scene):
         self.uiPistol = uipistol
         self.uiPistolUpgrade = uipistolUpgrade
         self.uiGrenadeLauncher = uigrenadeLauncher
+        self.uiDash = uidash
         self.healthBar = UIBossHealthBar()
 
         
@@ -57,7 +58,7 @@ class Level(Scene):
         self.ui = Ui(self.player, self.uiText, self.uiHearts,
                      self.uiEnergy, self.uiCounter, self.healthBar,
                      self.uiCroshair, self.uiPistol,
-                     self.uiPistolUpgrade, self.uiGrenadeLauncher)
+                     self.uiPistolUpgrade, self.uiGrenadeLauncher, uidash)
         
     def manageJoystick(self, joystick):
         if joystick.get_axis(0) < -0.5:

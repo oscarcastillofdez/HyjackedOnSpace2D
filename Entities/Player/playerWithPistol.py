@@ -37,7 +37,7 @@ class PlayerWithPistol(PlayerAbstract):
         self.shootEffect.set_volume(self.volume)
 
         self.addObserver(ui.uiPistol)
-        ui.uiPistol.toggleShow()
+        ui.uiPistol.uIShow()
     
     def resetPlayerPos(self):
             self.player.resetPlayerPos()

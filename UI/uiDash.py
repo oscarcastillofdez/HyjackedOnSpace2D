@@ -4,14 +4,14 @@ from Constants.constants import *
 from Game.spritesheet import Spritesheet
 from Constants.constants import *
 
-class UIPistol():
+class UIDash():
     def __init__(self) -> None:
-        self.image = pygame.transform.scale(pygame.image.load(UI_PATH + 'pistol.png'), (52,41.5))
+        self.image = pygame.transform.scale2x(pygame.image.load(INTERACTIVES_PATH + "CinturonCobete.png"))
 
         
         self.rect = self.image.get_rect()
         self.rect.x = 30
-        self.rect.y = 175
+        self.rect.y = 300
         self.show = False
 
     def update(self, player):

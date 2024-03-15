@@ -14,7 +14,7 @@ import Interactives.trigger as Trigger
 
 
 class World():
-        def __init__(self, lvl, enemies, enemyFactory, enemyFactorySecuence, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups,triggerGroup, dificulty):
+        def __init__(self, lvl, enemies, enemyFactory, enemyFactorySecuence, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups,triggerGroup, dificulty, boss):
             self.tile_list = []
             self.platform_list = []
             self.background_list = []
@@ -29,6 +29,7 @@ class World():
             self.enemyFactory = enemyFactory
             self.triggerGroup = triggerGroup
             self.enemyFactorySecuence = enemyFactorySecuence
+            self.boss = boss
 
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
             pistola2 = pygame.image.load(PLAYER_PATH + '/pistol2.png')
@@ -205,8 +206,9 @@ class World():
                     self.enemies.add(en)
 
                 elif tile == 15:
-                    en = self.enemyFactory.createVonreg(mapaX * tileWidth, mapaY * tileHeight)
-                    self.enemies.add(en)
+                    if self.boss:
+                        en = self.enemyFactory.createVonreg(mapaX * tileWidth, mapaY * tileHeight)
+                        self.enemies.add(en)
 
                 elif tile == 40:
                     trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth*6, tileHeight, "lvl1")

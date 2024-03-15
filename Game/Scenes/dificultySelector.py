@@ -18,6 +18,7 @@ import UI.uiPistolIcon as uiPistol
 import UI.uiPistolUpgradedIcon as uiPistolUpgrade
 import UI.uiGrenadeLauncherIcon as uiGrenade
 import UI.uiRahmCroshair as uiRahmCroshair
+import UI.uiDash as uiDash
 
 class DificultySelector(Scene):
     def __init__(self,director):
@@ -43,6 +44,7 @@ class DificultySelector(Scene):
         uipistol = uiPistol.UIPistol()
         uipistolUpgrade = uiPistolUpgrade.UIPistolUpgrade()
         uigrenadeLauncher = uiGrenade.UIGrenadeLauncher()
+        uidash = uiDash.UIDash()
 
         self.persist = {
                         'player': None,
@@ -51,14 +53,15 @@ class DificultySelector(Scene):
                         'uienergy': uienergy,
                         'UIPistol': uipistol,
                         'uipistolupgrade': uipistolUpgrade,
-                        'UIGrenadeLauncher': uigrenadeLauncher
+                        'UIGrenadeLauncher': uigrenadeLauncher,
+                        'UIDash': uidash
                     }
         if self.active_index == 0:
             dificulty = EasyMode()  
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)    
             self.persist['player'] = playerObj
             self.persist['dificulty'] = dificulty
-            scene = Level1(self.director, INIT_OFFSET, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, self.persist)
+            scene = Level1(self.director, INIT_OFFSET, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, self.persist)
             scene.startup()
             self.director.stackScene(scene)
         elif self.active_index == 1:
@@ -66,7 +69,7 @@ class DificultySelector(Scene):
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)
             self.persist['player'] = playerObj
             self.persist['dificulty'] = dificulty
-            scene = Level1(self.director,INIT_OFFSET, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, self.persist)
+            scene = Level1(self.director,INIT_OFFSET, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, self.persist)
             scene.startup()
             self.director.stackScene(scene)
         elif self.active_index == 2:
@@ -74,7 +77,7 @@ class DificultySelector(Scene):
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)
             self.persist['player'] = playerObj
             self.persist['dificulty'] = dificulty
-            scene = Level4(self.director,INIT_OFFSET4, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, self.persist)
+            scene = Level4(self.director,INIT_OFFSET4, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, self.persist)
             scene.startup()
             self.director.stackScene(scene)
     

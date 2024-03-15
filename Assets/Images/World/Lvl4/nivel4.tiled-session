@@ -13,11 +13,11 @@
             "scaleInDock": 1
         },
         "lvlData.json": {
-            "scale": 0.5132,
+            "scale": 0.75,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1089.2439594699922,
-                "y": 1920.3039750584567
+                "x": 2660,
+                "y": 1379.3333333333335
             }
         },
         "texturas.json": {

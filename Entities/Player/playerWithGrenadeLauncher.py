@@ -42,7 +42,7 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             self.shootCooldown = self.shootCooldownConst
 
             self.addObserver(ui.uiGrenadeLauncher)
-            ui.uiGrenadeLauncher.toggleShow()
+            ui.uiGrenadeLauncher.uIShow()
         
         def resetPlayerPos(self):
             self.player.resetPlayerPos()
