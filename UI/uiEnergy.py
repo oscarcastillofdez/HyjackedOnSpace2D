@@ -29,5 +29,5 @@ class UIEnergy():
         self.hide = False
         self.currentEnergy = self.spriteList[0]
 
-    def hide(self):
+    def hideIcon(self):
         self.hide = True

@@ -23,14 +23,16 @@ from UI.uiCounter import UICounter
 from Entities.Player.playerWithShield import PlayerWithShield
 from Entities.Player.playerWithGrenadeLauncher import PlayerWithGrenadeLauncher
 from UI.uiHealthBar import UIBossHealthBar
+import Game.Scenes.endScreen as endScreen
 
 
 class Level4(level.Level):
     def __init__(self, director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, persist):
         super(Level4, self).__init__(director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, persist)
 
+
         # Creacion del mapa y ajuste de los elementos por el offset inicial
-        self.world = World("Lvl4", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
+        self.world = World("Lvl4", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, True)
         self.world.inicialOffset(self.cameraOffset)
 
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
@@ -60,6 +62,10 @@ class Level4(level.Level):
                     scene.startup()
                     self.director.changeScene(scene)
 
+        if self.healthBar.getHealth() <= 0:
+            scene = endScreen.EndScreen(self.director, self.persist)
+            scene.startup()
+            self.director.changeScene(scene)
 
         #if self.player.checkInteractuable(self.world):
             #self.text.showInteractuableText("Presiona E para interactuar.", "white")

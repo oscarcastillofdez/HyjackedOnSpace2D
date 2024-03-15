@@ -3,7 +3,7 @@ from Constants.constants import *
 
 class UIBossHealthBar():
     def __init__(self) -> None:
-        self.currentHealth = 0
+        self.currentHealth = 1
         self.healthBarLength = SCREEN_WIDTH - 100
         self.maxHP = 1
         self.healthRatio = self.maxHP / self.healthBarLength
@@ -43,3 +43,5 @@ class UIBossHealthBar():
         else:
             self.show = True
             
+    def getHealth(self):
+        return self.currentHealth

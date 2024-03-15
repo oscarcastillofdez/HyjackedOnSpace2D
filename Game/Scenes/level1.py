@@ -24,8 +24,14 @@ class Level1(level.Level):
     def __init__(self, director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher,uidash, persist):
         super(Level1, self).__init__(director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher,uidash, persist)
 
-        self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
+        boss = True
+        if self.persist['checkpoint'] == CHECKPOINT_LVL1 or self.persist['checkpoint'] == CHECKPOINT_LVL3:
+            boss = False
+        self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, boss)
         self.world.inicialOffset(self.cameraOffset)
+
+        
+                
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
         self.interactiveGroup.update(self.cameraOffset)

@@ -26,7 +26,7 @@ class Level2(level.Level):
         super(Level2, self).__init__(director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, persist)
 
 
-        self.world = World("Lvl2", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty)
+        self.world = World("Lvl2", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, True)
         self.world.inicialOffset(self.cameraOffset)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)

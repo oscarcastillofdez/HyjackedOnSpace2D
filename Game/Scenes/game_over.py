@@ -49,7 +49,7 @@ class GameOver(Scene):
                            self.persist)
             elif self.persist['checkpoint'] == c.CHECKPOINT_LVL3:
                 self.persist['uipistolupgrade'].uIHide()
-                self.persist['uienergy'].hide()
+                self.persist['uienergy'].hideIcon()
                 scene = level3.Level3(self.director, c.CHECKPOINT_LVL3,
                             self.persist['dificulty'],
                             self.persist['player'],
