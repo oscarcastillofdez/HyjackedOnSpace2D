@@ -52,7 +52,7 @@ class PlayerWithDash(PlayerAbstract):
         self.shootEffect = pygame.mixer.Sound('Assets/Audio/SoundEffects/laserGun.mp3')
         self.shootEffect.set_volume(self.volume)
         self.addObserver(ui.uiDash)
-        ui.uiDash.toggleShow()
+        ui.uiDash.uIShow()
         
 
     def resetPlayerPos(self):

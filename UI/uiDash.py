@@ -22,8 +22,7 @@ class UIDash():
         if self.show:
             screen.blit(self.image, self.rect)
 
-    def toggleShow(self):
-        if self.show:
-            self.show = False
-        else:
-            self.show = True
+    def uIShow(self):
+        self.show = True
+    def uIHide(self):
+        self.show = False
