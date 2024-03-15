@@ -109,7 +109,7 @@ class PlayerWithPistolUpgrade(PlayerAbstract):
             self.shootEffect.stop()
             self.shootEffect.play()
             self.shootCooldown = self.shootCooldownConst
-            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().x - 40, self.player.position().y - 50, self, self, False)
+            disparo = Bullet(self.disparoImg, direction, self.bulletDamage, self.bulletSpeed, self.player.position().x - 40, self.player.position().y - 30, self, self, False)
             bullets_group.add(disparo)
             
 

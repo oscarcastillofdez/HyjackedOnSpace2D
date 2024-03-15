@@ -42,10 +42,10 @@ class World():
 
             (cameraOffsetX,cameraOffsetY) = cameraOffset
 
-            for background in self.background_list:
-                background[1].x -= cameraOffsetX
-                background[1].y -= cameraOffsetY
-            
+            offsetX =- cameraOffsetX
+            offsetY =- cameraOffsetY
+            self.background_list[1][1].move_ip(offsetX,offsetY)
+
             for tile in self.tile_list:
                 tile[1].x -= cameraOffsetX
                 tile[1].y -= cameraOffsetY
@@ -59,13 +59,16 @@ class World():
 
             (cameraOffsetX,cameraOffsetY) = cameraOffset
 
+            offsetX =- cameraOffsetX
+            offsetY =- cameraOffsetY
+            self.background_list[1][1].move_ip(offsetX,offsetY)
+
             for background in self.background_list:
                 #background[1].x -= cameraOffsetX
                 #background[1].y -= cameraOffsetY
-                offsetX =- cameraOffsetX
-                offsetY =- cameraOffsetY
-                background[1].move_ip(offsetX,offsetY)
                 screen.blit(background[0], background[1])
+            
+            
 
             for tile in self.tile_list:
                 tile[1].x -= cameraOffsetX
@@ -282,9 +285,14 @@ class World():
             textures = pygame.image.load(LVLS_PATH + nivel + '/texturas.png') 
 
             background = pygame.image.load(LVLS_PATH + nivel + '/background.png').convert_alpha()
+            spaceBackground = pygame.transform.scale(pygame.image.load(LVLS_PATH + '/space2.jpg'), (SCREEN_WIDTH,SCREEN_HEIGTH)).convert()
 
             backgroundRect = background.get_rect()
+            spaceBackgroundRect = spaceBackground.get_rect()
+            spaceBackgroundRect.width = 15
+            spaceBackgroundRect.height = 15
 
+            self.background_list.append((spaceBackground, spaceBackgroundRect))
             self.background_list.append((background, backgroundRect))
 
             self.loadMap(map, compression, columns, tileHeight, tileWidth, textures, mapWidth)
