@@ -15,7 +15,7 @@ import Interactives.trigger as Trigger
 
 
 class World():
-        def __init__(self, lvl, enemies, enemyFactory, enemyFactorySecuence, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups,triggerGroup, dificulty, boss):
+        def __init__(self, lvl, enemies, enemyFactory, enemyFactorySecuence, interactives, cameraOffset, healthPickUps, destructibles_group, gunPickups,triggerGroup, dificulty, boss, pistol, pistolUpgrade, shield):
             self.tile_list = []
             self.platform_list = []
             self.background_list = []
@@ -31,6 +31,9 @@ class World():
             self.triggerGroup = triggerGroup
             self.enemyFactorySecuence = enemyFactorySecuence
             self.boss = boss
+            self.pistol = pistol
+            self.pistolUpgrade = pistolUpgrade
+            self.shield = shield
 
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
 
@@ -143,12 +146,14 @@ class World():
                 # Si un tile               
 
                 if tile == 1:
-                    pistol = Pistol(mapaX * tileWidth, mapaY * tileHeight)
-                    self.gunPickups.add(pistol)
+                    if self.pistol == False:
+                        pistol = Pistol(mapaX * tileWidth, mapaY * tileHeight)
+                        self.gunPickups.add(pistol)
                 
                 elif tile == 2:
-                    shieldPickup = ShieldPickup(mapaX * tileWidth, mapaY * tileHeight)
-                    self.gunPickups.add(shieldPickup)
+                    if self.shield == False:
+                        shieldPickup = ShieldPickup(mapaX * tileWidth, mapaY * tileHeight)
+                        self.gunPickups.add(shieldPickup)
 
                 elif tile == 3:
                     grenadeLauncher = GrenadeLauncher(mapaX * tileWidth, mapaY * tileHeight)
@@ -168,8 +173,9 @@ class World():
                     self.destructibles_group.add(en)
 
                 elif tile == 8:
-                    pistol = PistolUpgrade(mapaX * tileWidth, mapaY * tileHeight)
-                    self.gunPickups.add(pistol)
+                    if self.pistolUpgrade == False:
+                        pistol = PistolUpgrade(mapaX * tileWidth, mapaY * tileHeight)
+                        self.gunPickups.add(pistol)
 
                 elif tile == 9:
                     dash = Dash(mapaX * tileWidth, mapaY * tileHeight)
