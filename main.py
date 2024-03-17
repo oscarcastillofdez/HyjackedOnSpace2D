@@ -12,6 +12,7 @@ def main():
     pygame.init()
     pygame.mixer.init()  
 
+
     # Iniciar el juego
     game = Game()
     game.run()

@@ -59,6 +59,7 @@ class BarnacleEnemy(Enemy):
         player.setGrabbed(0,self.rect)
         player.hit(self.damage)
     
+    # DrawBullets no es un buen nombre, solo se usa para dibujar la lengua del barnacle
     def drawBullets(self,screen):
         #pygame.draw.rect(screen, (255,255,255), self.verticalRect)
         screen.blit(self.tongueImage, self.tongueRect)
