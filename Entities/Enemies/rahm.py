@@ -3,14 +3,15 @@ from random import randint
 import pygame
 from Constants.constants import ENEMIES_PATH
 
-from Entities.Enemies.entity import Entity
+from Entities.Enemies.enemy import Enemy
 from Entities.bullet import Bullet
 from Game.collisionHandler import CollisionHandler
 from Game.spritesheet import Spritesheet
 
-class Rahm(pygame.sprite.Sprite, Entity):
+class Rahm(Enemy):
     def __init__(self,x,y,bulletsGroup, dificulty, healthBar, gunPickups, uiCroshair) -> None:
-        pygame.sprite.Sprite.__init__(self)
+        super().inheriteSprite()
+        
         self.collisionHandler = CollisionHandler()
         self.spritesheetRunning = Spritesheet(ENEMIES_PATH + '/Rahm/rahm_running.png', (128,128))
         self.spritesheetShooting = Spritesheet(ENEMIES_PATH + '/Rahm/rahm_range_attack.png', (128,128))

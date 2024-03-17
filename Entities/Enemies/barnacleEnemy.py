@@ -1,11 +1,12 @@
 import pygame
 from Constants.constants import ENEMIES_PATH
 
-from Entities.Enemies.entity import Entity
+from Entities.Enemies.enemy import Enemy
 
-class BarnacleEnemy(pygame.sprite.Sprite, Entity):
+class BarnacleEnemy(Enemy):
     def __init__(self,x,y, dificulty) -> None:
-        pygame.sprite.Sprite.__init__(self)
+        super().inheriteSprite()
+        
         self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Barnacle.png'), (64,64))
         self.rect = self.image.get_rect()
         self.rect.x = x

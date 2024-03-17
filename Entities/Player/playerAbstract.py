@@ -25,7 +25,6 @@ class PlayerAbstract():
         self.pressed_jump = 0
         self.grabbed = False
         self.dragSpeed = 0
-        self.shaking = 0
         
         #Vida
         self.maxHealthPoints = 3
@@ -59,8 +58,13 @@ class PlayerAbstract():
         self.dashDuration = 0
         self.lookingUp = False
         self.lookingDown = False
-        
+
+    def update(self, world, dt, enemies_group, interactuableGroup, triggerGroup, cameraOffset) -> tuple:
+        pass
     
+    def draw(self, screen):
+        pass
+        
     # Metodo para cambiar los estados cuando se coge un arma diferente
     def changeStates(self):
         self.player.states = self.states
@@ -86,18 +90,9 @@ class PlayerAbstract():
     def getHp(self):
         pass
     
-    def checkHit(self, enemies_group):
-        pass
-    
-    def update(self, world, dt) -> tuple:
-        pass
-    
     def shoot(self, direction, gv):
         pass
     
-    def draw(self, screen):
-        pass
-
     def addObserver(self, observer):
         self.uiElementsList.append(observer)
 
@@ -139,4 +134,5 @@ class PlayerAbstract():
     def setHealth(self, n):
         self.healthPoints = n
 
-    
+    def hit(self, damage):
+        pass

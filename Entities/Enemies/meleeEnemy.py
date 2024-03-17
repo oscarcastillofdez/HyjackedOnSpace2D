@@ -2,16 +2,17 @@ import pygame
 from Constants.constants import *
 from Entities.dash import Dash
 from Game.collisionHandler import CollisionHandler
-from .entity import Entity
+from .enemy import Enemy
 from Game.spritesheet import Spritesheet
 from Entities.Enemies.EnemyStates.patrol import Patrol
 from Entities.Enemies.EnemyStates.chase import Chase
 from Entities.Enemies.EnemyStates.attack import Attack
 from Entities.Enemies.EnemyStates.die import Die
 
-class MeleeEnemy(pygame.sprite.Sprite, Entity):
+class MeleeEnemy(Enemy):
     def __init__(self,x,y, dificulty, onlyChase, lastEnemy, gunPickups):
-        pygame.sprite.Sprite.__init__(self)
+        super().inheriteSprite()
+        
         # Otros objetos
         self.collisionHandler = CollisionHandler()
 

@@ -7,6 +7,9 @@ from .playerAbstract import PlayerAbstract
 from Entities.bullet import Bullet
 from Constants.constants import *
 
+# Esta clase es exactamente igual a playerWithPistol, lo unico que cambia es:
+# La bala hace +2 de daño
+# El sprite de la bala es distinto (Bala verde)
 class PlayerWithPistolUpgrade(PlayerAbstract):
     def __init__(self, player, ui):
         super().__init__(player.position().x, player.position().y, player.getDificulty())

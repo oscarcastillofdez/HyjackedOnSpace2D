@@ -1,9 +1,5 @@
-import time
 import pygame
 from Constants.constants import *
-from Entities.Enemies.randomEnemyFactorySecuence import RandomEnemyFactorySecuence
-from UI.uiCounter import UICounter
-import threading
 
 class Computer(pygame.sprite.Sprite):
     def __init__(self,x,y,enemy_factory):

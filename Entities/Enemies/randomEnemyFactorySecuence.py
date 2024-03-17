@@ -42,7 +42,6 @@ class RandomEnemyFactorySecuence(EnemyFactory):
             observer.update(self)
 
     def createEnemy(self, spawnCenterX, spawnCenterY, lastEnemy):
-        
         self.spawnArea.x = spawnCenterX + 1000
         self.spawnArea.y = spawnCenterY - 200
         spawnPointX = random.randrange(self.spawnArea.x, self.spawnArea.right)

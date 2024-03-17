@@ -12,9 +12,10 @@ from Entities.grenade import Grenade
 
 class PlayerWithGrenadeLauncher(PlayerAbstract):
         def __init__(self, player,ui):
-            print("BBBBBBBBBBBBB")
             super().__init__(player.position().x, player.position().y, player.getDificulty())
             self.player = player
+
+            # Atributos de imagen y posicion
 
             self.states = {
                 "IDLE": Idle(True),
@@ -28,8 +29,6 @@ class PlayerWithGrenadeLauncher(PlayerAbstract):
             self.state_name = "IDLE"
             self.state = self.states[self.state_name]
             self.standing = self.player.standing
-            self.deadImage = pygame.transform.rotate(self.standing,90)
-            self.hitImage = pygame.transform.rotate(self.standing,90)
 
             self.shieldImage = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/plasma_shield.png'), (150,150))
             self.shieldHitImage = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/plasma_shield_hit.png'), (150,150))

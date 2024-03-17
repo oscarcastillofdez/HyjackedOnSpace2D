@@ -7,14 +7,14 @@ from Entities.Enemies.EnemyStates.chase import Chase
 from Entities.Enemies.EnemyStates.die import Die
 from Entities.Enemies.EnemyStates.patrol import Patrol
 
-from Entities.Enemies.entity import Entity
+from Entities.Enemies.enemy import Enemy
 from Entities.grenade import Grenade
 from Entities.grenadeLauncher import GrenadeLauncher
 from Game.spritesheet import Spritesheet
 
-class Vonreg(pygame.sprite.Sprite, Entity):
+class Vonreg(Enemy):
     def __init__(self,x,y,grenadesGroup, dificulty, healthBar, gunPickups) -> None:
-        pygame.sprite.Sprite.__init__(self)
+        super().inheriteSprite()
         #self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Barnacle.png'), (64,64))
         self.hitImage = pygame.image.load(ENEMIES_PATH + "hit.png")
         self.spritesheet = Spritesheet(ENEMIES_PATH + 'Vonreg/Vonreg_spritesheet.png', (200,200))
@@ -129,7 +129,6 @@ class Vonreg(pygame.sprite.Sprite, Entity):
             self.index = 0
             self.current_state = "attackingDistance"
         
-
     def die(self,world, player,cameraOffset,enemies_group):
         if self.currentHealth <= 0:
             self.image = self.spritesDie[self.index]
@@ -147,6 +146,9 @@ class Vonreg(pygame.sprite.Sprite, Entity):
         self.deadDespawnCooldown -= 1
         if self.deadDespawnCooldown <= 0:
             enemies_group.remove(self)
+
+    def attack():
+        pass
     
     def attackingMelee(self, world, player,cameraOffset,enemies_group):
         if self.index >= len(self.spritesAtackMelee):

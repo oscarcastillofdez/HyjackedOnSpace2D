@@ -1,10 +1,11 @@
 import pygame
 from Constants.constants import *
 
+# Seria mas inteligente en vez de pasarle en el constructor todos los elementos de la interfaz
+# En vez de eso, hacer una lista uiElementsList e ir agregando y quitando ahi elementos segun se vayan a ver o no
+# Asi no tendriamos que estar en cada uno con toggleShow para ocultarlos
 class Ui():
-    def __init__(self, playerObservable, uiText, uiHearts, uiEnergy,uiCounter, bossHealthBar,rahmcroshair, uiPistol, uiPistolUpgrade, uiGrenadeLauncher, uiDash):
-        self.playerObservable = playerObservable
-        
+    def __init__(self, uiText, uiHearts, uiEnergy,uiCounter, bossHealthBar,rahmcroshair, uiPistol, uiPistolUpgrade, uiGrenadeLauncher, uiDash):
         self.pickUpText = ""
         self.uiText = uiText
         self.uiHearts = uiHearts
@@ -16,12 +17,15 @@ class Ui():
         self.uiPistolUpgrade = uiPistolUpgrade
         self.uiGrenadeLauncher = uiGrenadeLauncher
         self.uiDash = uiDash
+        #self.uiElementsList = []
     
-    # def update(self):
-        # self.hearts = pygame.transform.scale(pygame.image.load('Assets/img/hearts_'+ str(self.playerObservable.getHp()) +'.png').convert_alpha(), (180,100))
-        # self.text.setInteractualeText(self.playerObservable.getInteractuableText(), "black")
+    #def addUiElement(self, uiElement):
+        #self.uiElementsList.append(uiElement)
 
     def draw(self, screen):
+        #for uiElement in self.uiElementsList:
+            #uiElement.draw(screen)
+
         self.uiHearts.draw(screen)
         self.uiText.draw(screen)
         self.uiEnergy.draw(screen)

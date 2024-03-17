@@ -7,6 +7,8 @@ from .playerAbstract import PlayerAbstract
 from Entities.bullet import Bullet
 from Constants.constants import *
 
+
+
 class PlayerWithDash(PlayerAbstract):
     def __init__(self, player, ui):
         super().__init__(player.position().x, player.position().y, player.getDificulty())

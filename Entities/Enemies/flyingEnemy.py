@@ -1,7 +1,7 @@
 import pygame
 
 from Game.collisionHandler import CollisionHandler
-from .entity import Entity
+from .enemy import Enemy
 import math
 from Entities.Enemies.EnemyStates.patrol import Patrol
 from Entities.Enemies.EnemyStates.chase import Chase
@@ -13,9 +13,10 @@ from Constants.constants import *
 from Entities.bullet import Bullet
 
 
-class FlyingEnemy(pygame.sprite.Sprite, Entity):
+class FlyingEnemy(Enemy):
     def __init__(self,x,y, dificulty, onlyChase, bullets_group) -> None:
-        pygame.sprite.Sprite.__init__(self)
+        super().inheriteSprite()
+        
         # Otros objetos
         self.collisionHandler = CollisionHandler()
         

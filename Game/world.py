@@ -1,6 +1,7 @@
 import pygame
 import json
 from Entities.Enemies.meleeEnemy import *
+from Entities.Enemies.wallDestructible import WallDestructible
 from Entities.Player.playerWithPistol import *
 from Entities.pistolUpgrade import PistolUpgrade
 from Entities.shieldPickup import ShieldPickup
@@ -144,9 +145,6 @@ class World():
             for tile in map:
                 # Si un tile               
 
-                # TODO: Hacer pistola y shield un objeto propio, 
-                # facilitara el saber si se recogio una cosa u otra 
-                # y se le quitaria trabajo a la clase update() del player (actualmente comprueba colision con todos los pickups)
                 if tile == 1:
                     pistol = Pistol(mapaX * tileWidth, mapaY * tileHeight)
                     self.gunPickups.add(pistol)
@@ -163,16 +161,12 @@ class World():
                     health = Health(mapaX * tileWidth, mapaY * tileHeight, self.dificulty)
                     self.healthPickUps.add(health)
 
-                elif tile == 5:
-                    en = self.enemyFactory.createMelee(mapaX * tileWidth, mapaY * tileHeight)
-                    self.enemies.add(en)
-
                 elif tile == 6:
                     computer = Computer(mapaX * tileWidth, mapaY * tileHeight, self.enemyFactorySecuence)
                     self.interactiveGroup.add(computer)
 
                 elif tile == 7:
-                    en = self.enemyFactory.createBox(mapaX * tileWidth, mapaY * tileHeight,self.destructibleTile_list)
+                    en = WallDestructible(mapaX * tileWidth, mapaY * tileHeight,self.destructibleTile_list)
                     self.destructibleTile_list.append(en.rect)
                     self.destructibles_group.add(en)
 
@@ -184,31 +178,9 @@ class World():
                     dash = Dash(mapaX * tileWidth, mapaY * tileHeight)
                     self.gunPickups.add(dash)
 
-                elif tile == 10:
-                    en = self.enemyFactory.createShooter(mapaX * tileWidth, mapaY * tileHeight)
-                    self.enemies.add(en)
-
-                elif tile == 11:
-                    en = self.enemyFactory.createFlying(mapaX * tileWidth, mapaY * tileHeight)
-                    self.enemies.add(en)
-
-                elif tile == 12:
-                    en = self.enemyFactory.createRay(mapaX * tileWidth, mapaY * tileHeight)
-                    self.enemies.add(en)
-
-                elif tile == 13:
-                    en = self.enemyFactory.createBarnacle(mapaX * tileWidth, mapaY * tileHeight)
-                    self.enemies.add(en)
-
-                elif tile == 14:
-                    print("AAAAAAAAAAAAAAAAa")
-                    en = self.enemyFactory.createRahm(mapaX * tileWidth, mapaY * tileHeight)
-                    self.enemies.add(en)
-
-                elif tile == 15:
-                    if self.boss:
-                        en = self.enemyFactory.createVonreg(mapaX * tileWidth, mapaY * tileHeight)
-                        self.enemies.add(en)
+                # Crear enemigos
+                elif tile == 5 or (tile >= 10 and tile <= 15):
+                    self.enemyFactory.createEnemy(mapaX * tileWidth, mapaY * tileHeight, tile, self.boss, self.enemies)
 
                 elif tile == 40:
                     trigger = Trigger.Trigger(mapaX*tileWidth, mapaY*tileHeight, tileWidth*6, tileHeight, "lvl1")

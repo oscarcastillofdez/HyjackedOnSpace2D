@@ -55,7 +55,7 @@ class Level(Scene):
         self.randomEnemyFactory = SelectedEnemyFactory(self.bullets_group, self.grenades_group,self.healthBar,self.uiCroshair, self.dificulty, self.gunPickups)
         self.randomEnemyFactorySecuence = RandomEnemyFactorySecuence(self.enemies_group, self.dificulty, self.uiCounter, self.bullets_group,self.gunPickups)
 
-        self.ui = Ui(self.player, self.uiText, self.uiHearts,
+        self.ui = Ui(self.uiText, self.uiHearts,
                      self.uiEnergy, self.uiCounter, self.healthBar,
                      self.uiCroshair, self.uiPistol,
                      self.uiPistolUpgrade, self.uiGrenadeLauncher, uidash)
@@ -162,6 +162,8 @@ class Level(Scene):
         for gun in self.gunPickups:
             if gun.collidesWithPlayer(self.player, self.gunPickups):
                 self.player = gun.getPlayerWithIt(self.player,self.ui, self.director.sounds_volume)
+                # Mas limpio seria pasarle persist a getPlayerWithIt, asi no habria que hacer 28 ifs
+                # Mantiene la persistencia al coger armas (checkpoints)
                 if gun.name == 'GrenadeLauncher':
                     self.persist['checkpoint'] = CHECKPOINT_LVL1
                     self.persist['player'] = self.player
@@ -203,9 +205,6 @@ class Level(Scene):
 
         for destructible in self.destructibles_group:
             destructible.draw(surface)
-
-        for bullet in self.bullets_group:
-            bullet.draw(surface)
 
         for interactive in self.interactiveGroup:
             interactive.draw(surface)

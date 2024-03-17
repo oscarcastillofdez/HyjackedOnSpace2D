@@ -1,11 +1,10 @@
 import pygame
-from .entity import Entity
 import math
 from Constants.constants import *
 from Entities.bullet import Bullet
 from Animations.boxBreaking import BoxBreaking
 
-class WallDestructible(pygame.sprite.Sprite, Entity):
+class WallDestructible(pygame.sprite.Sprite):
     def __init__(self,x,y,destructibleTile_list) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(pygame.image.load(ENEMIES_PATH + 'Box.png'), (128, 128))
