@@ -2,10 +2,6 @@ import math
 from random import randint
 import pygame
 from Constants.constants import ENEMIES_PATH, PLAYER_PATH
-from Entities.Enemies.EnemyStates.attack import Attack
-from Entities.Enemies.EnemyStates.chase import Chase
-from Entities.Enemies.EnemyStates.die import Die
-from Entities.Enemies.EnemyStates.patrol import Patrol
 
 from Entities.Enemies.enemy import Enemy
 from Entities.grenade import Grenade

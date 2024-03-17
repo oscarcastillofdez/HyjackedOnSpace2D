@@ -1,13 +1,10 @@
 from pygame import Rect
 import pygame
 
-from Entities.Enemies.barnacleEnemy import BarnacleEnemy
-from Entities.Enemies.rayEnemy import RayEnemy
 from Entities.Enemies.shooterEnemy import ShooterEnemy
 
 from .enemyFactory import EnemyFactory
 from .flyingEnemy import FlyingEnemy
-from .wallDestructible import WallDestructible
 from .meleeEnemy import MeleeEnemy
 import random
 from Constants.constants import *

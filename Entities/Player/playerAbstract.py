@@ -1,5 +1,4 @@
 import pygame
-from math import floor
 from Constants.constants import *
 from MovementAndCollisions.movement import *
 

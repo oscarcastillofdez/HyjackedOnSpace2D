@@ -1,7 +1,6 @@
 import threading
 import time
 
-import pygame
 
 class Shield(): 
     def __init__(self, image) -> None:

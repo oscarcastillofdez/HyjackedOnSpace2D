@@ -49,15 +49,6 @@ class PerifericSelector(Scene):
                 self.director.endApplication()
             if event.type == pygame.JOYBUTTONDOWN:
                 self.handle_action()
-        """elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                self.active_index -= 1 if self.active_index >= 1 else 0
-                print(self.active_index)
-            elif event.key == pygame.K_DOWN:
-                self.active_index += 1 if self.active_index < 2 else 0
-                print(self.active_index)
-            elif event.key == pygame.K_RETURN:
-                self.handle_action()"""
 
     def update(self, *args):
         pass 

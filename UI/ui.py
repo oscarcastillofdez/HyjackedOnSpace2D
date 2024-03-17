@@ -1,4 +1,3 @@
-import pygame
 from Constants.constants import *
 
 # Seria mas inteligente en vez de pasarle en el constructor todos los elementos de la interfaz

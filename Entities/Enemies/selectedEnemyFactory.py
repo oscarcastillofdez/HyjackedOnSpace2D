@@ -5,7 +5,6 @@ from Entities.Enemies.rayEnemy import RayEnemy
 from Entities.Enemies.shooterEnemy import ShooterEnemy
 from .enemyFactory import EnemyFactory
 from .flyingEnemy import FlyingEnemy
-from .wallDestructible import WallDestructible
 from .meleeEnemy import MeleeEnemy
 
 

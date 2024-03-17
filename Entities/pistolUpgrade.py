@@ -1,6 +1,5 @@
 import pygame
 from Constants.constants import *
-from Entities.Player.playerWithPistol import PlayerWithPistol
 from Entities.Player.playerWithPistolUpgrade import PlayerWithPistolUpgrade
 
 class PistolUpgrade(pygame.sprite.Sprite):

@@ -89,14 +89,11 @@ class DificultySelector(Scene):
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     self.active_index -= 1 if self.active_index >= 1 else 0
-                    print(self.active_index)
                 elif event.key == pygame.K_DOWN:
                     self.active_index += 1 if self.active_index < 2 else 0
-                    print(self.active_index)
                 elif event.key == pygame.K_RETURN:
                     self.handle_action()
             if event.type == pygame.JOYBUTTONDOWN:
-                print("Joystick button pressed.")
                 if event.button == 2:
                     self.handle_action()
             for joystick in joysticks.values():

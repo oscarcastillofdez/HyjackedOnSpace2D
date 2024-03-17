@@ -1,7 +1,6 @@
 import pygame
 
 from Constants.constants import *
-from Game.spritesheet import Spritesheet
 from Constants.constants import *
 
 class UIDash():
