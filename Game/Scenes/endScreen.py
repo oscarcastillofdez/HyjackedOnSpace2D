@@ -16,6 +16,7 @@ class EndScreen(Scene):
                                              True, pygame.Color("white"))
         instructions_center = (self.screen_rect.center[0], self.screen_rect.center[1] + 50)
         self.instructions_rect = self.instructions.get_rect(center=instructions_center)
+        self.music = 'Assets/Audio/Super Mario 64 End theme.mp3'
 
     def manageJoystick(self, joystick):
         if joystick.get_button(9):  
