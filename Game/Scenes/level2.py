@@ -57,14 +57,17 @@ class Level2(level.Level):
             text = trigger.update(self.cameraOffset)
             if text != "":
                 if text == "lvl1":
+                    self.player.resetPlayerPos()
                     scene = lvl1.Level1(self.director, LVL2_TO_LVL1, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.uiDash,self.persist)
                     scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl3":
+                    self.player.resetPlayerPos()
                     scene = lvl3.Level3(self.director, LVL2_TO_LVL3, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.uiDash,self.persist)
                     scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl4":
+                    self.player.resetPlayerPos()
                     scene = lvl4.Level4(self.director, LVL2_TO_LVL4, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.uiDash,self.persist)
                     scene.startup()
                     self.director.changeScene(scene)

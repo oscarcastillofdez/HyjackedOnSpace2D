@@ -62,6 +62,7 @@ class Level4(level.Level):
             text = trigger.update(self.cameraOffset)
             if text != "":
                 if text == "lvl2":
+                    self.player.resetPlayerPos()
                     scene = lvl2.Level2(self.director, LVL4_TO_LVL2, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.uiDash,self.persist)
                     scene.startup()
                     self.director.changeScene(scene)
