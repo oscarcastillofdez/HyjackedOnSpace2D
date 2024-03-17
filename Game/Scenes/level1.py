@@ -29,8 +29,8 @@ class Level1(level.Level):
             boss = False
         
         pistol = self.persist['pistolPick']
-        pistolUpgrade = self.persist['pistolPick']
-        shield = self.persist['pistolPick']
+        pistolUpgrade = self.persist['pistolUpgradePick']
+        shield = self.persist['shield']
 
         self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, boss, pistol, pistolUpgrade, shield)
         self.world.inicialOffset(self.cameraOffset)
