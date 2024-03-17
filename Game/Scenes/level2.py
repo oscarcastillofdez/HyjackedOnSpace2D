@@ -37,6 +37,9 @@ class Level2(level.Level):
         self.gunPickups.update(self.cameraOffset)
         self.triggerGroup.update(self.cameraOffset)
 
+        self.music = 'Assets/Audio/RatchetAndClank_QwarkHideout.mp3'
+
+
     def manageJoystick(self, joystick):
         super(Level2, self).manageJoystick(joystick)
 
