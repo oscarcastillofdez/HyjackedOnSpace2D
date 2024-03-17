@@ -43,7 +43,7 @@ class CollisionHandler(pygame.sprite.Sprite):
                     entity.velY = 0
                 elif entity.velY >= 0: #Cayendo o en el suelo
                     dy = tileHitBoxList[tileIndex2].top - entity.rect.bottom
-                    print(dy)
+                    
                     entity.velY = 0
                     #entity.inAir = False
 

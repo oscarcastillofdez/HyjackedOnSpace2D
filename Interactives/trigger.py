@@ -1,6 +1,6 @@
 import pygame
 from Constants.constants import *
-import threading
+
 
 class Trigger(pygame.sprite.Sprite):
     def __init__(self,x,y,w,h,text):

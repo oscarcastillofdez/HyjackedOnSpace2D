@@ -1,7 +1,5 @@
 import pygame
-import math
 from Constants.constants import *
-from Entities.bullet import Bullet
 from Animations.boxBreaking import BoxBreaking
 
 class WallDestructible(pygame.sprite.Sprite):

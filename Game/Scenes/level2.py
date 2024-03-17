@@ -1,4 +1,4 @@
-import pygame
+
 from Constants.constants import *
 from Entities.Enemies.randomEnemyFactorySecuence import RandomEnemyFactorySecuence
 from Game.Scenes.scene import Scene
@@ -25,8 +25,11 @@ class Level2(level.Level):
     def __init__(self, director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, persist):
         super(Level2, self).__init__(director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, persist)
 
+        pistol = self.persist['pistolPick']
+        pistolUpgrade = self.persist['pistolUpgradePick']
+        shield = self.persist['shield']
 
-        self.world = World("Lvl2", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, True)
+        self.world = World("Lvl2", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, True, pistol, pistolUpgrade, shield)
         self.world.inicialOffset(self.cameraOffset)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
@@ -54,14 +57,17 @@ class Level2(level.Level):
             text = trigger.update(self.cameraOffset)
             if text != "":
                 if text == "lvl1":
+                    self.player.resetPlayerPos()
                     scene = lvl1.Level1(self.director, LVL2_TO_LVL1, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.uiDash,self.persist)
                     scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl3":
+                    self.player.resetPlayerPos()
                     scene = lvl3.Level3(self.director, LVL2_TO_LVL3, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.uiDash,self.persist)
                     scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl4":
+                    self.player.resetPlayerPos()
                     scene = lvl4.Level4(self.director, LVL2_TO_LVL4, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.uiDash,self.persist)
                     scene.startup()
                     self.director.changeScene(scene)

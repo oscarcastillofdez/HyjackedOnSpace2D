@@ -1,7 +1,6 @@
 import pygame
 from Constants.constants import *
 from Entities.Player.playerWithShield import PlayerWithShield
-from UI.uiEnergy import UIEnergy
 
 class ShieldPickup(pygame.sprite.Sprite):
     def __init__(self,x,y) -> None:

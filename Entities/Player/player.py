@@ -3,12 +3,9 @@ import pygame
 from .PlayerStates.idle import Idle
 from .PlayerStates.run import Run
 from .PlayerStates.jump import Jump
-from math import floor
 from Constants.constants import *
 from MovementAndCollisions.movement import *
 from .playerAbstract import PlayerAbstract
-from Entities.shield import Shield
-import random
 
 
 class Player(PlayerAbstract):
@@ -344,17 +341,17 @@ class Player(PlayerAbstract):
     # Dispara
     # El jugador sin pistola no puede disparar
     def shoot(self, direction, bulletsGroup):
-        print("No tengo arma")
+        pass
     
     # Utiliza el escudo
     # El jugador sin escudo no puede cubrirse
     def cover(self):
-        print("No tengo escudo.")
+        pass
 
     # Utiliza el lanzagranadas
     # El jugador sin lanzagranadas no puede lanzar granadas
     def launchGrenade(self, direction,grenades_group):
-        print("No tengo lanza grandas")
+        pass
 
     # Cura al jugador
     def heal(self, healingPower):

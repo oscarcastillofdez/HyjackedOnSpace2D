@@ -2,7 +2,6 @@ import pygame
 from .PlayerStates.idle import Idle, IdleShoot
 from .PlayerStates.run import Run, RunShoot
 from .PlayerStates.jump import Jump, JumpShoot
-from math import floor
 from Constants.constants import *
 from MovementAndCollisions.movement import *
 from .playerAbstract import PlayerAbstract

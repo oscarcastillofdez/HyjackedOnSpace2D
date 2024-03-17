@@ -3,7 +3,6 @@ from Constants.constants import *
 from Entities.dash import Dash
 from Game.collisionHandler import CollisionHandler
 from .enemy import Enemy
-from Game.spritesheet import Spritesheet
 from Entities.Enemies.EnemyStates.patrol import Patrol
 from Entities.Enemies.EnemyStates.chase import Chase
 from Entities.Enemies.EnemyStates.attack import Attack

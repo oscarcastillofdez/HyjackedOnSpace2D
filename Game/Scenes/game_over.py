@@ -48,6 +48,8 @@ class GameOver(Scene):
                            self.persist['UIDash'],
                            self.persist)
             elif self.persist['checkpoint'] == c.CHECKPOINT_LVL3:
+                self.persist['pistolUpgradePick'] = False
+                self.persist['shield'] = False
                 self.persist['uipistolupgrade'].uIHide()
                 self.persist['uienergy'].hideIcon()
                 scene = level3.Level3(self.director, c.CHECKPOINT_LVL3,
@@ -60,6 +62,7 @@ class GameOver(Scene):
                             self.persist['UIDash'],
                             self.persist)
             elif self.persist['checkpoint'] == c.INIT_OFFSET:
+                self.persist['pistolPick'] = False
                 self.persist['UIPistol'].uIHide()
                 scene = level1.Level1(self.director, c.INIT_OFFSET,
                             self.persist['dificulty'],

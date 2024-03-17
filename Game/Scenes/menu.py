@@ -41,23 +41,20 @@ class Menu(Scene):
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     self.active_index -= 1 if self.active_index >= 1 else 0
-                    print(self.active_index)
                 elif event.key == pygame.K_DOWN:
                     self.active_index += 1 if self.active_index < 2 else 0
-                    print(self.active_index)
                 elif event.key == pygame.K_RETURN:
                     self.handle_action()
             if event.type == pygame.JOYDEVICEADDED:
                 joy = pygame.joystick.Joystick(event.device_index)
                 joysticks[joy.get_instance_id()] = joy
-                print(f"Joystick {joy.get_instance_id()} connected")
                 scene = PerifericSelector(self.director, joy.get_name())
                 self.director.changeScene(scene)
             if event.type == pygame.JOYDEVICEREMOVED:
                 del joysticks[event.instance_id]
-                print(f"Joystick {event.instance_id} disconnected")
+                
             if event.type == pygame.JOYBUTTONDOWN:
-                print("Joystick button pressed.")
+                
                 if event.button == 2:
                     self.handle_action()
             for joystick in joysticks.values():
@@ -69,22 +66,6 @@ class Menu(Scene):
                     if hat[1] == -1:
                         self.active_index += 1 if self.active_index < 2 else 0
 
-        """if keys[pygame.K_UP]:
-            self.active_index -= 1 if self.active_index >= 1 else 0
-        if keys[pygame.K_DOWN]:
-            self.active_index += 1 if self.active_index < 2 else 0
-        if keys[pygame.K_RETURN]:
-            self.handle_action()"""
-        
-        """elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                self.active_index -= 1 if self.active_index >= 1 else 0
-                print(self.active_index)
-            elif event.key == pygame.K_DOWN:
-                self.active_index += 1 if self.active_index < 2 else 0
-                print(self.active_index)
-            elif event.key == pygame.K_RETURN:
-                self.handle_action()"""
 
     def update(self, *args):
         pass 

@@ -27,11 +27,13 @@ class Level1(level.Level):
         boss = True
         if self.persist['checkpoint'] == CHECKPOINT_LVL1 or self.persist['checkpoint'] == CHECKPOINT_LVL3:
             boss = False
-        self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, boss)
-        self.world.inicialOffset(self.cameraOffset)
-
         
-                
+        pistol = self.persist['pistolPick']
+        pistolUpgrade = self.persist['pistolUpgradePick']
+        shield = self.persist['shield']
+
+        self.world = World("Lvl1", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, boss, pistol, pistolUpgrade, shield)
+        self.world.inicialOffset(self.cameraOffset)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
         self.interactiveGroup.update(self.cameraOffset)
@@ -59,6 +61,7 @@ class Level1(level.Level):
             text = trigger.update(self.cameraOffset)
             if text != "":
                 if text == "lvl2":
+                    self.player.resetPlayerPos()
                     scene = lvl2.Level2(self.director, LVL1_TO_LVL2, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher,self.uiDash, self.persist)
                     scene.startup()
                     self.director.changeScene(scene)

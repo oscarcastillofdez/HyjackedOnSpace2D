@@ -1,10 +1,8 @@
 import pygame
-from .player import Player
 from .PlayerStates.idle import Idle, IdleShoot
-from .PlayerStates.run import Run, RunShoot, RunShootDiagUp, RunShootDiagDown, RunShootDown, RunShootUp
+from .PlayerStates.run import Run, RunShoot
 from .PlayerStates.jump import Jump, JumpShoot
 from .playerAbstract import PlayerAbstract
-from Entities.bullet import Bullet
 from Constants.constants import *
 
 

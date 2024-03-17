@@ -1,8 +1,6 @@
 import pygame
 from .PlayerStates.idle import Idle
 from .PlayerStates.run import Run
-from .PlayerStates.jump import Jump
-from math import floor
 from Constants.constants import *
 from MovementAndCollisions.movement import *
 from .playerAbstract import PlayerAbstract

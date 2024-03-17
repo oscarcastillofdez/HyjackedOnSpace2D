@@ -1,4 +1,4 @@
-import pygame
+
 from Constants.constants import *
 
 # Calcula movimiento en el eje x en una direccion

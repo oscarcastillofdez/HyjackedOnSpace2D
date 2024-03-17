@@ -8,7 +8,6 @@ from Entities.Enemies.EnemyStates.chase import Chase
 from Entities.Enemies.EnemyStates.attack import Attack
 from Entities.Enemies.EnemyStates.die import Die
 
-from Game.spritesheet import Spritesheet
 from Constants.constants import *
 from Entities.bullet import Bullet
 

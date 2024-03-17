@@ -25,7 +25,11 @@ class Level3(level.Level):
     def __init__(self, director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, persist):
         super(Level3, self).__init__(director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, persist)
 
-        self.world = World("Lvl3", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, True)
+        pistol = self.persist['pistolPick']
+        pistolUpgrade = self.persist['pistolUpgradePick']
+        shield = self.persist['shield']
+
+        self.world = World("Lvl3", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, True, pistol, pistolUpgrade, shield)
         self.world.inicialOffset(self.cameraOffset)
         
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)
@@ -48,10 +52,12 @@ class Level3(level.Level):
             text = trigger.update(self.cameraOffset)
             if text != "":
                 if text == "lvl2":
+                    self.player.resetPlayerPos()
                     scene = lvl2.Level2(self.director, LVL3_TO_LVL2, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.uiDash,self.persist)
                     scene.startup()
                     self.director.changeScene(scene)
                 if text == "lvl2Vent":
+                    self.player.resetPlayerPos()
                     scene = lvl2.Level2(self.director, LVL3_TO_LVL2_ALTER, self.dificulty, self.player, self.uiEnergy, self.uiPistol, self.uiPistolUpgrade, self.uiGrenadeLauncher, self.uiDash,self.persist)
                     scene.startup()
                     self.director.changeScene(scene)
