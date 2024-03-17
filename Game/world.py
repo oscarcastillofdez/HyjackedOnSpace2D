@@ -263,8 +263,7 @@ class World():
 
             backgroundRect = background.get_rect()
             spaceBackgroundRect = spaceBackground.get_rect()
-            spaceBackgroundRect.width = 15
-            spaceBackgroundRect.height = 15
+
 
             self.background_list.append((spaceBackground, spaceBackgroundRect))
             self.background_list.append((background, backgroundRect))

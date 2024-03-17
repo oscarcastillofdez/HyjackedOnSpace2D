@@ -1,7 +1,7 @@
 import pygame
 from .scene import Scene
 from .menu import Menu
-
+from Constants.constants import *
 """
     Este estado es la pantalla de carga, cuando inicias el juego
     tiene el titulo del juego.
@@ -27,5 +27,7 @@ class Splash(Scene):
             self.director.changeScene(scene)
     
     def draw(self, surface):
-        surface.fill(pygame.Color("Black"))
+        spaceBackground = pygame.transform.scale(pygame.image.load(LVLS_PATH + '/space2.jpg'), (SCREEN_WIDTH,SCREEN_HEIGTH)).convert()
+        spaceBackgroundRect = spaceBackground.get_rect()
+        surface.blit(spaceBackground,spaceBackgroundRect)
         surface.blit(self.title, self.title_rect)

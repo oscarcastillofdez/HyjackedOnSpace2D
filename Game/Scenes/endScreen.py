@@ -29,20 +29,27 @@ class EndScreen(Scene):
             if event.type == pygame.QUIT:
                 self.director.endApplication()
 
+        scene = menu.Menu(self.director)
+
         for joystick in joysticks.values():
             self.manageJoystick(joystick)
 
-        if keys[pygame.K_RETURN]:  
-            self.director.endApplication()
+        if keys[pygame.K_RETURN]:
+            scene.startup()  
+            self.director.changeScene(scene)
         if keys[pygame.K_SPACE]:
-            self.director.endApplication()
+            scene.startup()
+            self.director.changeScene(scene)
         if keys[pygame.K_ESCAPE]:
-            self.director.endApplication()
+            scene.startup()
+            self.director.changeScene(scene)
     
     def update(self, dt):
         pass
 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        spaceBackground = pygame.transform.scale(pygame.image.load(c.LVLS_PATH + '/space2.jpg'), (c.SCREEN_WIDTH,c.SCREEN_HEIGTH)).convert()
+        spaceBackgroundRect = spaceBackground.get_rect()
+        surface.blit(spaceBackground,spaceBackgroundRect)
         surface.blit(self.title, self.title_rect)
         surface.blit(self.instructions, self.instructions_rect)

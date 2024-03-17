@@ -56,7 +56,7 @@ class BarnacleEnemy(Enemy):
         enemies_group.remove(self)
 
     def attack(self, world, player,cameraOffset,enemies_group):
-        player.setGrabbed(0,self.rect)
+        player.unSetGrabbed()
         player.hit(self.damage)
     
     def drawBullets(self,screen):

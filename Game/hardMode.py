@@ -2,21 +2,21 @@ import random
 
 class HardMode():
     def __init__(self) -> None:
-        self.meleeEnemyDamage = 2
-        self.shooterEnemyDamage = 2
+        self.meleeEnemyDamage = 1
+        self.shooterEnemyDamage = 1
         self.flyingEnemyDamage = 1
         self.barnacleEnemyDamage = 3
         self.rayEnemyDamage = 3
 
-        self.meleeEnemyHealth = 5
+        self.meleeEnemyHealth = 3
         self.shoooterEnemyHealth = 3
         self.flyingEnemyHealth = 2
-        self.barnacleEnemyHealth = 2
+        self.barnacleEnemyHealth = 1
 
         self.playerHittedCooldown = 50
 
         self.enemyChaseTime = 150
-        self.enemyShootCooldown = 28
+        self.enemyShootCooldown = 50
 
         self.enemyMinChasingSpeed = 3
         self.enemyMaxChasingSpeed = 4
@@ -30,18 +30,18 @@ class HardMode():
 
         self.enemyBulletSpeed = 90
 
-        self.flyingEnemyMaxViewDistance = 800
-        self.enemyMinAttackDistance = 450
+        self.flyingEnemyMaxViewDistance = 500
+        self.enemyMinAttackDistance = 400
 
         self.playerBulletSpeed = 60
         self.playerBulletDamage = 1
         self.playerGrenadeDamage = 1
         self.playerShootGrenadeCooldown = 30
-        self.playerShootCooldown = 15
+        self.playerShootCooldown = 12
         self.healthPickupHealingPower = 1
 
         self.maxEnemyCountOnComputerSecuence = 30
-        self.countdownOnComputerScene = 90
+        self.countdownOnComputerScene = 50
         self.spawnDelayOnComputerScene = 55
 
     

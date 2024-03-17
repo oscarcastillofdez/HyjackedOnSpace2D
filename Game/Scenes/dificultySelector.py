@@ -77,7 +77,7 @@ class DificultySelector(Scene):
             playerObj = player.Player(self.screen_rect.center[0], self.screen_rect.center[1], dificulty, uitext, uihearts)
             self.persist['player'] = playerObj
             self.persist['dificulty'] = dificulty
-            scene = Level4(self.director,INIT_OFFSET4, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, self.persist)
+            scene = Level1(self.director,INIT_OFFSET, dificulty, playerObj, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, self.persist)
             scene.startup()
             self.director.stackScene(scene)
     
@@ -112,7 +112,9 @@ class DificultySelector(Scene):
         pass 
     
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        spaceBackground = pygame.transform.scale(pygame.image.load(LVLS_PATH + '/space2.jpg'), (SCREEN_WIDTH,SCREEN_HEIGTH)).convert()
+        spaceBackgroundRect = spaceBackground.get_rect()
+        surface.blit(spaceBackground,spaceBackgroundRect)
         #self.music.play()
         for index, option in enumerate(self.options):
             text_render = self.render_text(index)

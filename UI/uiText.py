@@ -3,7 +3,7 @@ from Constants.constants import *
 
 class UIText():
     def __init__(self) -> None:
-        self.font = pygame.font.Font(None, 96)
+        self.font = pygame.font.Font(None, 40)
         self.surfaceText = None
         self.surfaceText = self.font.render("", True, (255,255,255))
 

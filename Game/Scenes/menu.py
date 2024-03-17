@@ -90,7 +90,9 @@ class Menu(Scene):
         pass 
     
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        spaceBackground = pygame.transform.scale(pygame.image.load(LVLS_PATH + '/space2.jpg'), (SCREEN_WIDTH,SCREEN_HEIGTH)).convert()
+        spaceBackgroundRect = spaceBackground.get_rect()
+        surface.blit(spaceBackground,spaceBackgroundRect)
         #self.music.play()
         for index, option in enumerate(self.options):
             text_render = self.render_text(index)

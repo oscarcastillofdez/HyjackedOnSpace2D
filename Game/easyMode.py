@@ -5,7 +5,7 @@ class EasyMode():
         self.meleeEnemyDamage = 1
         self.shooterEnemyDamage = 1
         self.flyingEnemyDamage = 1
-        self.barnacleEnemyDamage = 1
+        self.barnacleEnemyDamage = 3
         self.rayEnemyDamage = 1
 
         self.meleeEnemyHealth = 3

@@ -70,6 +70,7 @@ class GameOver(Scene):
                             self.persist['UIGrenadeLauncher'],
                             self.persist['UIDash'],
                             self.persist)
+            scene.startup()
             self.director.changeScene(scene)
         if keys[pygame.K_ESCAPE]:
             self.director.endApplication()
@@ -78,6 +79,8 @@ class GameOver(Scene):
         pass
 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        spaceBackground = pygame.transform.scale(pygame.image.load(c.LVLS_PATH + '/space2.jpg'), (c.SCREEN_WIDTH,c.SCREEN_HEIGTH)).convert()
+        spaceBackgroundRect = spaceBackground.get_rect()
+        surface.blit(spaceBackground,spaceBackgroundRect)
         surface.blit(self.title, self.title_rect)
         surface.blit(self.instructions, self.instructions_rect)
