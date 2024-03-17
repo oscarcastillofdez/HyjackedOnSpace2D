@@ -68,29 +68,38 @@ class Level(Scene):
         if joystick.get_button(2):
             self.player.jump()
         if joystick.get_axis(2) > 0.5 and joystick.get_axis(3) < -0.5:
-            self.player.shoot(45)
+            self.player.shoot(45, self.bullets_group)
         if joystick.get_axis(2) < -0.5 and joystick.get_axis(3) < -0.5:
-            self.player.shoot(135)
+            self.player.shoot(135, self.bullets_group)
         if joystick.get_axis(2) > 0.5 and joystick.get_axis(3) > 0.5:
-            self.player.shoot(315)
+            self.player.shoot(315, self.bullets_group)
         if joystick.get_axis(2) < -0.5 and joystick.get_axis(3) > 0.5:
-            self.player.shoot(225)
+            self.player.shoot(225, self.bullets_group)
         if joystick.get_axis(2) > 0.5:
-            self.player.shoot(0)
+            self.player.shoot(0, self.bullets_group)
         if joystick.get_axis(2) < -0.5:
-            self.player.shoot(180)
+            self.player.shoot(180, self.bullets_group)
         if joystick.get_axis(3) < -0.5:
-            self.player.shoot(90)
+            self.player.shoot(90, self.bullets_group)
         if joystick.get_axis(3) > 0.5:
-            self.player.shoot(270)
+            self.player.shoot(270, self.bullets_group)
         if joystick.get_button(3):
             self.player.cover()
-        if joystick.get_button(4):
+        if joystick.get_button(3):
             self.player.launchGrenade(135,self.grenades_group)
-        if joystick.get_button(5):
+        if joystick.get_button(1):
             self.player.launchGrenade(45,self.grenades_group)
         if joystick.get_button(0):
             self.player.doInteract(self.interactiveGroup)
+        if joystick.get_button(4) or joystick.get_button(5):
+            self.player.dash()
+        else:
+            self.player.unDash()
+        if joystick.get_axis(1) < -0.5:
+            self.player.lookUp()
+        if joystick.get_axis(1) > 0.5:
+            self.player.lookDown()
+        
         # if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_SPACE]:
         #     self.player.idle()
         # if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
