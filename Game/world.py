@@ -33,9 +33,6 @@ class World():
             self.boss = boss
 
             self.pistola = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/pistol.png'), (45,45))
-            pistola2 = pygame.image.load(PLAYER_PATH + '/pistol2.png')
-            pistola3 = pygame.image.load(PLAYER_PATH + '/pistol3.png')
-            ordenador = pygame.image.load(INTERACTIVES_PATH + '/ibm5150.png')
 
             self.shieldImage = pygame.transform.scale(pygame.image.load(PLAYER_PATH + '/plasma_shield.png'), (45,45))
             self.cargarNivel(lvl)
