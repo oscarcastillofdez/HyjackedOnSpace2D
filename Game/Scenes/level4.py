@@ -31,8 +31,12 @@ class Level4(level.Level):
         super(Level4, self).__init__(director, offset, dificulty, player, uienergy, uipistol, uipistolUpgrade, uigrenadeLauncher, uidash, persist)
 
 
+        pistol = self.persist['pistolPick']
+        pistolUpgrade = self.persist['pistolPick']
+        shield = self.persist['pistolPick']
+
         # Creacion del mapa y ajuste de los elementos por el offset inicial
-        self.world = World("Lvl4", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, True)
+        self.world = World("Lvl4", self.enemies_group, self.randomEnemyFactory, self.randomEnemyFactorySecuence,self.interactiveGroup, self.cameraOffset, self.healthPickUps,self.destructibles_group, self.gunPickups, self.triggerGroup,self.dificulty, True, pistol, pistolUpgrade, shield)
         self.world.inicialOffset(self.cameraOffset)
 
         self.enemies_group.update(1, self.world, self.player, self.cameraOffset, self.enemies_group)

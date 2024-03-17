@@ -54,7 +54,11 @@ class DificultySelector(Scene):
                         'UIPistol': uipistol,
                         'uipistolupgrade': uipistolUpgrade,
                         'UIGrenadeLauncher': uigrenadeLauncher,
-                        'UIDash': uidash
+                        'UIDash': uidash,
+                        'pistolPick' : False,
+                        'pistolUpgradePick' : False,
+                        'shield' : False
+
                     }
         if self.active_index == 0:
             dificulty = EasyMode()  

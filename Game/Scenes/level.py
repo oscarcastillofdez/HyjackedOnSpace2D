@@ -168,16 +168,15 @@ class Level(Scene):
                     self.persist['checkpoint'] = CHECKPOINT_LVL1
                     self.persist['player'] = self.player
                 elif gun.name == 'dash':
-                    print("TE EJECUTASTE?")
                     self.persist['checkpoint'] = CHECKPOINT_LVL3
                     self.persist['player'] = self.player
-                """'dificulty': self.dificulty,
-                        'uienergy': self.uiEnergy,
-                        'uicroshair': self.uiCroshair,
-                        'UIPistol': self.uiPistol,
-                        'uipistolupgrade': self.uiPistolUpgrade,
-                        'UIGrenadeLauncher': self.uiGrenadeLauncher"""
-                    
+                elif gun.name == 'pistol':
+                    self.persist['pistolPick'] = True
+                elif gun.name == 'pistolUpgrade':
+                    self.persist['pistolUpgradePick'] = True
+                elif gun.name == 'shield':
+                    self.persist['shield'] = True
+
 
         # Si se queda sin vidas acaba el juego
         if self.player.getHp() <= 0:
