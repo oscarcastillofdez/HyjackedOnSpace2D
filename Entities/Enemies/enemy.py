@@ -7,27 +7,27 @@ class Enemy(pygame.sprite.Sprite, ABC):
         pygame.sprite.Sprite.__init__(self)
 
     @abstractmethod
-    def update(): # Actualiza el enemigo
+    def update(self, dt, world, player,cameraOffset, enemies_group): # Actualiza el enemigo
         pass
     
     @abstractmethod
-    def patrol(): # Enemigo patrulla
+    def patrol(self, world, player,cameraOffset,enemies_group): # Enemigo patrulla
         pass
     
     @abstractmethod
-    def chase(): # Enemigo persigue
+    def chase(self, world, player,cameraOffset,enemies_group): # Enemigo persigue
         pass
     
     @abstractmethod
-    def attack(): # Enemigo ataca**
+    def attack(self, world, player,cameraOffset,enemies_group): # Enemigo ataca**
         pass
 
     @abstractmethod
-    def die(): # Enemigo muere
+    def die(self, world, player,cameraOffset,enemies_group): # Enemigo muere
         pass
     
     @abstractmethod
-    def hit(): # Enemigo recibe daño
+    def hit(self, world, player,cameraOffset,enemies_group): # Enemigo recibe daño
         pass
     
     #** En attack, Vonreg define attackingMelee y attackingDistance. Arreglar esto para que solo llame a attack

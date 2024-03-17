@@ -18,26 +18,26 @@ class SelectedEnemyFactory(EnemyFactory):
         self.dificulty = dificulty
         self.gunPickups = gunPickups    
 
-    def createEnemy(self, columna, fila, enemyName, boss, enemies):
+    def createEnemy(self, columna, fila, enemyID, boss, enemies):
         en = None
-        if enemyName == 15:
+        if enemyID == 15:
             if boss: # Apaño rapido... Si Vonreg fue derrotado, no vuelvas a spawnearlo
                 en = Vonreg(columna, fila, self.grenadesGroup, self.dificulty, self.uiBossHealthBar, self.gunPickups)
                 enemies.add(en)
-        elif enemyName == 14:
+        elif enemyID == 14:
             en = Rahm(columna, fila, self.bulletsGroup, self.dificulty, self.uiBossHealthBar, self.gunPickups, self.uiCroshair)
-        elif enemyName == 12:
+        elif enemyID == 12:
             en = RayEnemy(columna, fila,self.dificulty)
-        elif enemyName == 13:
+        elif enemyID == 13:
             en = BarnacleEnemy(columna, fila,self.dificulty)
-        elif enemyName == 11:
+        elif enemyID == 11:
             en = FlyingEnemy(columna, fila,self.dificulty, False, self.bulletsGroup)
-        elif enemyName == 10:
+        elif enemyID == 10:
             en = ShooterEnemy(columna, fila,self.dificulty, False, self.bulletsGroup)
-        elif enemyName == 5:
+        elif enemyID == 5:
             en = MeleeEnemy(columna, fila,self.dificulty, False, False, self.gunPickups)
 
-        if enemyName != 15 or (enemyName == 15 and boss) and en != None:
+        if enemyID != 15 or (enemyID == 15 and boss) and en != None:
             enemies.add(en)
             
 
