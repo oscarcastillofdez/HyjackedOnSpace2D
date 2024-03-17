@@ -1,6 +1,7 @@
 from .scene import Scene
 import pygame
 from pygame.locals import *
+from Constants.constants import *
 
 class Settings(Scene):
     def __init__(self, director):
@@ -67,7 +68,9 @@ class Settings(Scene):
 
 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        spaceBackground = pygame.transform.scale(pygame.image.load(LVLS_PATH + '/space2.jpg'), (SCREEN_WIDTH,SCREEN_HEIGTH)).convert()
+        spaceBackgroundRect = spaceBackground.get_rect()
+        surface.blit(spaceBackground,spaceBackgroundRect)
         for index, item in enumerate(self.menu):
             text_render = self.render_text(index)
             surface.blit(text_render, self.get_text_position(text_render, index))
