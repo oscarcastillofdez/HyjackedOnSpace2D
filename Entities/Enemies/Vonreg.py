@@ -38,7 +38,7 @@ class Vonreg(Enemy):
         self.lineStart = (self.rect.centerx, self.rect.centery)
 
         # Atributos de vida
-        self.maxHealth = 5
+        self.maxHealth = 50
         self.currentHealth = self.maxHealth
 
         self.healthChangeSpeed = 5
