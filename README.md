@@ -1,6 +1,7 @@
 # HyjackedOnSpace2D
 
-A 2D action-adventure video game set in space where you need to fight aliens as they appear, and battle various bosses and hordes across a total of 4 levels. Made with Pygame in collaboration with [Oscar Castillo Fernandez](https://github.com/oscarcastillofdez) and [Carlos Rojo](https://github.com/carlosrojoudc)
+A 2D action-adventure video game set in space where you need to fight aliens as they appear, and battle various bosses and hordes across a total of 4 levels. 
+Made with Pygame.
 
 ## Controls
 
@@ -24,4 +25,9 @@ A 2D action-adventure video game set in space where you need to fight aliens as 
 - **Square**: Shield (yes, also throws a grenade)
 - **L1/R1**: Dash
 - **D-Pad**: Navigate menus
+
+## Contributors
+- **Juan Villaverde Rodriguez**: [GitHub](https://github.com/your-username)
+- **Oscar Castillo Fernandez**: [GitHub](https://github.com/oscar-castillo)
+- **Alvaro Argibay Garcia**: [GitHub](https://github.com/alvaro-argibay)
 
