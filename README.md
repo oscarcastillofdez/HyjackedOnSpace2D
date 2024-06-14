@@ -27,7 +27,7 @@ Made with Pygame.
 - **D-Pad**: Navigate menus
 
 ## Contributors
-- **Juan Villaverde Rodriguez**: [GitHub](https://github.com/your-username)
+- **Juan Villaverde Rodriguez**: [GitHub](https://github.com/JuanVillaverdeRodriguez)
 - **Oscar Castillo Fernandez**: [GitHub](https://github.com/oscar-castillo)
-- **Alvaro Argibay Garcia**: [GitHub](https://github.com/alvaro-argibay)
+- **Carlos Rojo**: [GitHub](https://github.com/carlosrojoudc)
 
